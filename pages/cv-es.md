@@ -7,7 +7,7 @@ title: Curriculum Vitae
 
 # Antonio Gonzalez Gea
 
-- Product Engineer @ [TypedDevs][typeddevs]
+- CTO & Product Engineer @ [CapturaCloud][capturacloud]
 - Creador de [Huezzle][huezzle]
 - Contribuidor activo en [bashunit][bashunit] y [Gacela][gacela]
 
@@ -31,11 +31,15 @@ Exploro la impresión 3D, fusionando creatividad y habilidades técnicas.
 
 ## Experiencia
 
+### CTO & Product Engineer _- [CapturaCloud][capturacloud]_
+
+Julio 2024 - Actualidad
+
 ### Product Engineer _- [TypedDevs][typeddevs]_
 
 Noviembre 2023 - Actualidad
 
-- Involucración completa desde la conceptualización hasta la realización de [bashunit][bashunit] y [Flagppe][flagppe].
+- Involucración completa desde la conceptualización hasta la realización de [bashunit][bashunit].
 
 ### Product Engineer _- [OncologyPipeline][oncology-pipeline]_
 
@@ -228,11 +232,11 @@ Contribuyo activamente en Gacela, especialmente en el desarrollo de su módulo d
 [huezzle]: /projects/huezzle
 [bashunit]: /projects/bashunit
 [captura-ternura]: https://capturaternura.com/
-[flagppe]: https://flagppe.com/
 [gacela]: /projects/gacela-project
 [zapp-studio]: https://zapp-studio.com/
 [leverade]: https://leverade.com/
 [convega]: https://www.convega.com/
+[capturacloud]: https://capturacloud.com/
 
 <script lang="ts" setup>
 import CurriculumVitaeLayout from '@/layouts/CurriculumVitaeLayout/CurriculumVitaeLayout.vue'

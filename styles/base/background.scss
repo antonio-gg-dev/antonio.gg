@@ -9,14 +9,14 @@ body {
   }
 
   &::before {
-    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] mix-blend-multiply blur-3xl;
+    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] mix-blend-multiply blur-3xl will-change-transform;
     translate: 50% 50%;
     animation: bg-rotate 60s linear infinite;
     background: conic-gradient(
-      theme('colors.background.teal'),
-      theme('colors.background.blue'),
-      theme('colors.background.purple'),
-      theme('colors.background.teal')
+      theme('colors.background.first'),
+      theme('colors.background.second'),
+      theme('colors.background.third'),
+      theme('colors.background.first')
     );
     content: '';
 
@@ -26,7 +26,7 @@ body {
   }
 
   &::after {
-    @apply fixed inset-0 z-body-background-before block bg-top;
+    @apply fixed inset-0 z-body-background-after block bg-top;
     background-image: radial-gradient(circle, theme('colors.black/0'), theme('colors.black/0.5'));
     background-size: 100% 100%;
     content: '';

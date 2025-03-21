@@ -6,7 +6,7 @@ title: 'Desarrollador Full Stack'
 
 # Antonio Gonzalez Gea
 
-- Product Engineer @ [TypedDevs][typeddevs]
+- CTO & Product Engineer @ [CapturaCloud][capturacloud]
 - Creador de [Huezzle][huezzle]
 - Contribuidor activo en [bashunit][bashunit] y [Gacela][gacela]
 
@@ -26,7 +26,7 @@ Me esfuerzo por mantener un equilibrio saludable entre mi vida profesional y per
   printables-handle="Katarn"
 />
 
-[typeddevs]: https://typeddevs.com/
+[capturacloud]: https://capturacloud.com/
 [huezzle]: /projects/huezzle
 [bashunit]: /projects/bashunit
 [gacela]: /projects/gacela-project
