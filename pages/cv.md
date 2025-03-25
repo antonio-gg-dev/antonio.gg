@@ -7,9 +7,9 @@ title: Curriculum Vitae
 
 # Antonio Gonzalez Gea
 
-- CTO & Product Engineer @ [CapturaCloud][capturacloud]
-- Creator of [Huezzle][huezzle]
-- Active Contributor to [bashunit][bashunit] and [Gacela][gacela]
+- CTO & Product Engineer @ [CapturaCloud](#cto-product-engineer-capturacloud)
+- Creator of [Huezzle](#huezzle)
+- Active Contributor to [bashunit](#bashunit) and [Gacela](#gacela)
 
 Full stack developer with over 10 years of experience,
 passionate about programming from a young age and dedicated to continuous learning and teaching of best practices.
@@ -39,7 +39,7 @@ July 2024 - Present
 
 November 2023 - Present
 
-- Full involvement from conceptualization to realization of [bashunit][bashunit].
+- Full involvement from conceptualization to realization of [bashunit](#bashunit).
 
 ### Product Engineer _- [OncologyPipeline][oncology-pipeline]_
 
@@ -94,9 +94,10 @@ March 2011 - August 2011 _(6 months)_
 bashunit is a testing framework for Bash scripts.
 I actively contribute to the planning, documentation, and development of the project.
 
+- [antonio.gg/projects/bashunit](/projects/bashunit) _(about this project)_
 - [bashunit.typeddevs.com][bashunit] _(documentation)_
 - [github.com/TypedDevs/bashunit](https://github.com/TypedDevs/bashunit) _(source code)_
-- [twitter.com/bashunit](https://twitter.com/bashunit) _(official account)_
+- [twitter.com/bashunit](https://twitter.com/bashunit) _(official X account)_
 
 ### Captura Ternura
 
@@ -113,9 +114,10 @@ so that every day all players face the same challenge.
 Project carried out solo from the conception of the idea to its publication.
 It has an average of 100 daily players.
 
+- [antonio.gg/projects/huezzle](/projects/huezzle) _(about this project)_
 - [huezzle.antonio.gg][huezzle] _(play now)_
 - [github.com/antonio-gg-dev/Huezzle](https://github.com/antonio-gg-dev/Huezzle) _(source code)_
-- [twitter.com/huezzle](https://twitter.com/huezzle) _(official account)_
+- [twitter.com/huezzle](https://twitter.com/huezzle) _(official X account)_
 
 ### Gacela
 
@@ -124,9 +126,10 @@ integration with other frameworks like Laravel or Symfony.
 
 I actively contribute to Gacela, especially in the development of its routing module.
 
+- [antonio.gg/projects/gacela-project](/projects/gacela-project) _(about this project)_
 - [gacela-project.com][gacela] _(documentation)_
 - [github.com/gacela-project](https://github.com/gacela-project) _(source code)_
-- [twitter.com/gacela_project](https://twitter.com/gacela_project) _(official account)_
+- [twitter.com/gacela_project](https://twitter.com/gacela_project) _(official X account)_
 
 </template>
 <template #education>
@@ -228,10 +231,10 @@ I actively contribute to Gacela, especially in the development of its routing mo
 [printables]: https://www.printables.com/@Katarn
 [oncology-pipeline]: https://www.oncologypipeline.com/
 [typeddevs]: https://typeddevs.com/
-[huezzle]: /projects/huezzle
-[bashunit]: /projects/bashunit
+[huezzle]: https://huezzle.antonio.gg/
+[bashunit]: https://bashunit.typeddevs.com/
 [captura-ternura]: https://capturaternura.com/
-[gacela]: /projects/gacela-project
+[gacela]: https://gacela-project.com/
 [zapp-studio]: https://zapp-studio.com/
 [leverade]: https://leverade.com/
 [convega]: https://www.convega.com/

@@ -7,9 +7,9 @@ title: Curriculum Vitae
 
 # Antonio Gonzalez Gea
 
-- CTO & Product Engineer @ [CapturaCloud][capturacloud]
-- Creador de [Huezzle][huezzle]
-- Contribuidor activo en [bashunit][bashunit] y [Gacela][gacela]
+- CTO & Product Engineer @ [CapturaCloud](#cto-product-engineer-capturacloud)
+- Creador de [Huezzle](#huezzle)
+- Contribuidor activo en [bashunit](#bashunit) y [Gacela](#gacela)
 
 Desarrollador full stack con más de 10 años de experiencia,
 apasionado por la programación desde joven y dedicado al aprendizaje continuo y la enseñanza de buenas prácticas.
@@ -39,7 +39,7 @@ Julio 2024 - Actualidad
 
 Noviembre 2023 - Actualidad
 
-- Involucración completa desde la conceptualización hasta la realización de [bashunit][bashunit].
+- Involucración completa desde la conceptualización hasta la realización de [bashunit](#bashunit).
 
 ### Product Engineer _- [OncologyPipeline][oncology-pipeline]_
 
@@ -95,6 +95,7 @@ Marzo 2011 - Agosto 2011 _(6 meses)_
 bashunit es un framework de testing para scripts de Bash.
 Contribuyo activamente en la planificación, documentación y desarrollo del proyecto.
 
+- [antonio.gg/projects/bashunit](/projects/bashunit) _(más sobre este proyecto)_
 - [bashunit.typeddevs.com][bashunit] _(documentación)_
 - [github.com/TypedDevs/bashunit](https://github.com/TypedDevs/bashunit) _(código fuente)_
 - [twitter.com/bashunit](https://twitter.com/bashunit) _(cuenta oficial de X)_
@@ -114,6 +115,7 @@ para que cada día todos los jugadores se enfrenten al mismo reto.
 Proyecto realizado en solitario desde la concepción de la idea hasta la publicación.
 Cuenta con una media de 100 jugadores diarios.
 
+- [antonio.gg/projects/huezzle](/projects/huezzle) _(más sobre este proyecto)_
 - [huezzle.antonio.gg][huezzle] _(juega ahora)_
 - [github.com/antonio-gg-dev/Huezzle](https://github.com/antonio-gg-dev/Huezzle) _(código fuente)_
 - [twitter.com/huezzle](https://twitter.com/huezzle) _(cuenta oficial de X)_
@@ -125,6 +127,7 @@ con otros frameworks como Laravel o Symfony.
 
 Contribuyo activamente en Gacela, especialmente en el desarrollo de su módulo de rutas.
 
+- [antonio.gg/projects/gacela-project](/projects/gacela-project) _(más sobre este proyecto)_
 - [gacela-project.com][gacela] _(documentación)_
 - [github.com/gacela-project](https://github.com/gacela-project) _(código fuente)_
 - [twitter.com/gacela_project](https://twitter.com/gacela_project) _(cuenta oficial de X)_
@@ -151,8 +154,8 @@ Contribuyo activamente en Gacela, especialmente en el desarrollo de su módulo d
 
 ## Idiomas
 
-- Spanish _(Nativo)_
-- English _(Profesional)_
+- Castellano _(Nativo)_
+- Inglés _(Profesional)_
 
 </template>
 <template #skills>
@@ -229,10 +232,10 @@ Contribuyo activamente en Gacela, especialmente en el desarrollo de su módulo d
 [printables]: https://www.printables.com/@Katarn
 [oncology-pipeline]: https://www.oncologypipeline.com/
 [typeddevs]: https://typeddevs.com/
-[huezzle]: /projects/huezzle
-[bashunit]: /projects/bashunit
+[huezzle]: https://huezzle.antonio.gg/
+[bashunit]: https://bashunit.typeddevs.com/
 [captura-ternura]: https://capturaternura.com/
-[gacela]: /projects/gacela-project
+[gacela]: https://gacela-project.com/
 [zapp-studio]: https://zapp-studio.com/
 [leverade]: https://leverade.com/
 [convega]: https://www.convega.com/
