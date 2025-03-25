@@ -1,15 +1,13 @@
 body {
   @apply bg-top pt-10;
   --rotation: 0deg;
-  background-image: url('/images/background.svg');
-  background-size: 60rem 30rem;
 
   @media print {
     @apply bg-none p-0;
   }
 
   &::before {
-    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] mix-blend-multiply blur-3xl will-change-transform;
+    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] blur-3xl will-change-transform;
     translate: 50% 50%;
     animation: bg-rotate 60s linear infinite;
     background: conic-gradient(
@@ -27,8 +25,11 @@ body {
 
   &::after {
     @apply fixed inset-0 z-body-background-after block bg-top;
-    background-image: radial-gradient(circle, theme('colors.black/0'), theme('colors.black/0.5'));
-    background-size: 100% 100%;
+    background-image: url('/images/background.png'),
+      radial-gradient(circle, theme('colors.black/0'), theme('colors.black/0.5'));
+    background-size:
+      60rem 30rem,
+      100% 100%;
     content: '';
 
     @media print {
