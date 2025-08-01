@@ -1,13 +1,12 @@
 ---
-title: Papelera para puerta de coche
+title: Papelera para puerta del coche
 description: Todo empezó con una molestia cotidiana, los pequeños residuos que se acumulan en el coche. Envoltorios,
   tickets, papeles...
 created_at: 2022-02-15
 cover_url: /images/projects/car-door-trash-bin.jpg
-cover_alt: Imagen de portada de bashunit constituida por su logo y escrito a su derecha bashunit, centrados sobre un
-  fondo casi blanco, el logotipo es un cuadrado redondeado de un gris oscuro ocupado casi en su totalidad por una
-  pequeña serpiente enroscada de color blanco, la serpiente tiene dos pequeños cuernos de color verde manzana sobre sus
-  ojos
+cover_alt: Primer plano de un pequeño cubo de basura negro impreso en 3D, colocado en el hueco de la puerta de un coche.
+  El cubo tiene una tapa abatible abierta y una bolsa de plástico en su interior, sujeta por un aro diseñado para
+  mantenerla en su sitio
 ---
 
 # {{ $frontmatter.title }}
