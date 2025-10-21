@@ -41,7 +41,7 @@ Noviembre 2023 - Actualidad
 
 - Involucración completa desde la conceptualización hasta la realización de [bashunit](#bashunit).
 
-### Product Engineer _- [OncologyPipeline][oncology-pipeline]_
+### Product Engineer _- [LandM][landm]_
 
 Mayo 2024 - Julio 2024 _(3 meses)_
 
@@ -230,7 +230,7 @@ Contribuyo activamente en Gacela, especialmente en el desarrollo de su módulo d
 [linkedin]: https://www.linkedin.com/in/agg-dev/
 [github]: https://github.com/antonio-gg-dev/
 [printables]: https://www.printables.com/@Katarn
-[oncology-pipeline]: https://www.oncologypipeline.com/
+[landm]: https://www.landm.net/
 [typeddevs]: https://typeddevs.com/
 [huezzle]: https://huezzle.antonio.gg/
 [bashunit]: https://bashunit.typeddevs.com/
