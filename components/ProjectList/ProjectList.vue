@@ -15,6 +15,7 @@ import ProjectCard from '@/components/ProjectList/ProjectCard.vue'
 
 export default defineComponent({
   components: { ProjectCard },
+
   props: {
     projects: {
       required: true,
