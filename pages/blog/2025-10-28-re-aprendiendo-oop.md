@@ -40,8 +40,8 @@ la comunidad de [Murcia Software Crafters][x-murcia-software-crafters] por ofrec
 Os dejo aquí algunos enlaces:
 
 - [Charla en YouTube](https://www.youtube.com/watch?v=FddyS7-crlQ)
-- [Slides "Re-aprendiendo OOP"](/talks/re-aprendiendo-oop/re-aprendiendo-oop-por-emmanuel-valverde-y-antonio-gonzalez.pdf){target="\_blank"}
-- [Cheat-sheet de pilares y relaciones](/talks/re-aprendiendo-oop/re-aprendiendo-oop-pilares-y-relaciones.pdf){target="\_blank"}
+- [Slides "Re-aprendiendo OOP"](/talks/re-aprendiendo-oop/re-aprendiendo-oop-por-emmanuel-valverde-y-antonio-gonzalez.pdf){target="_blank"}
+- [Cheat-sheet de pilares y relaciones](/talks/re-aprendiendo-oop/re-aprendiendo-oop-pilares-y-relaciones.pdf){target="_blank"}
 
 Y os invito a quienes la vean a reflexionar sobre cómo enseñamos y aplicamos OOP, y a redescubrir su propósito original: ayudarnos a construir sistemas más simples, sostenibles y comprensibles.
 
