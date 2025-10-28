@@ -31,12 +31,12 @@
     <a
       v-if="xHandle"
       class="social-links__link"
-      :href="`https://twitter.com/${xHandle}`"
+      :href="`https://x.com/${xHandle}`"
       target="_blank"
     >
       <img
         class="social-links__icon"
-        src="/images/x-twitter.svg"
+        src="/images/x.svg"
         alt="X"
       />
       X

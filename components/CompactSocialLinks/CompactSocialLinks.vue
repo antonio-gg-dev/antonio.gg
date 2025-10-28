@@ -17,13 +17,13 @@
     <a
       v-if="xHandle"
       class="compact-social-links__link"
-      :href="`https://twitter.com/${xHandle}`"
+      :href="`https://x.com/${xHandle}`"
       target="_blank"
       title="X"
     >
       <img
         class="compact-social-links__icon"
-        src="/images/x-twitter.svg"
+        src="/images/x.svg"
         alt="X"
       />
     </a>

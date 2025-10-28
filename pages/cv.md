@@ -97,7 +97,7 @@ I actively contribute to the planning, documentation, and development of the pro
 - [antonio.gg/projects/bashunit](/projects/bashunit) _(about this project)_
 - [bashunit.typeddevs.com][bashunit] _(documentation)_
 - [github.com/TypedDevs/bashunit](https://github.com/TypedDevs/bashunit) _(source code)_
-- [twitter.com/bashunit](https://twitter.com/bashunit) _(official X account)_
+- [x.com/bashunit](https://x.com/bashunit) _(official X account)_
 
 ### Captura Ternura
 
@@ -117,7 +117,7 @@ It has an average of 100 daily players.
 - [antonio.gg/projects/huezzle](/projects/huezzle) _(about this project)_
 - [huezzle.antonio.gg][huezzle] _(play now)_
 - [github.com/antonio-gg-dev/Huezzle](https://github.com/antonio-gg-dev/Huezzle) _(source code)_
-- [twitter.com/huezzle](https://twitter.com/huezzle) _(official X account)_
+- [x.com/huezzle](https://x.com/huezzle) _(official X account)_
 
 ### Gacela
 
@@ -129,7 +129,7 @@ I actively contribute to Gacela, especially in the development of its routing mo
 - [antonio.gg/projects/gacela-project](/projects/gacela-project) _(about this project)_
 - [gacela-project.com][gacela] _(documentation)_
 - [github.com/gacela-project](https://github.com/gacela-project) _(source code)_
-- [twitter.com/gacela_project](https://twitter.com/gacela_project) _(official X account)_
+- [x.com/gacela_project](https://x.com/gacela_project) _(official X account)_
 
 </template>
 <template #education>

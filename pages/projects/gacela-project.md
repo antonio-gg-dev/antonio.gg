@@ -43,8 +43,8 @@ Testing. Utilizando Infection, un framework de mutation testing para PHP, comenc
 metodología al resto de los módulos de Gacela. Este proceso no solo mejoró la calidad del código, sino que también
 reforzó la robustez de nuestros tests.
 
-[x-chema]: https://twitter.com/Chemaclass
-[x-jesus]: https://twitter.com/JesusValera96
+[x-chema]: https://x.com/Chemaclass
+[x-jesus]: https://x.com/JesusValera96
 [chico-framework]: https://github.com/antonio-gg-dev/chico-framework
 
 <script lang="ts" setup>

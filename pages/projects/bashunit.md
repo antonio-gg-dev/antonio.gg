@@ -36,7 +36,7 @@ sistemas de CI/CD.
 
 En la documentación se enfatiza el uso de ejemplos prácticos, mostrando cómo **bashunit** puede ser aplicado en
 situaciones reales de desarrollo. Además, la comunidad juega un papel crucial, con una activa participación en GitHub
-y un constante intercambio de ideas y mejoras a través de la plataforma y redes sociales como Twitter.
+y un constante intercambio de ideas y mejoras a través de la plataforma y redes sociales como X.
 
 En mi rol en el desarrollo de **bashunit**, he tenido la oportunidad de aplicar mi experiencia como desarrollador Full
 Stack para influir significativamente en la arquitectura y diseño del framework. Mi enfoque se ha centrado en asegurar
@@ -47,8 +47,8 @@ Para concluir, quiero expresar mi agradecimiento especial a [Manu][x-manu], entr
 contribución activa y valiosa a **bashunit**. Su dedicación y habilidades han sido fundamentales en el desarrollo y
 mejora continua del framework.
 
-[x-chema]: https://twitter.com/Chemaclass
-[x-manu]: https://twitter.com/evrtrabajo
+[x-chema]: https://x.com/Chemaclass
+[x-manu]: https://x.com/evrtrabajo
 
 <script lang="ts" setup>
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
