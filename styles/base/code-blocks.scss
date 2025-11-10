@@ -1,6 +1,6 @@
 // NOTE: regular <code> not inside <pre>
 :not(pre) > code {
-  @apply bg-black/50 px-1;
+  @apply whitespace-nowrap bg-black/50 px-1;
 
   @media print {
     @apply bg-black/20;

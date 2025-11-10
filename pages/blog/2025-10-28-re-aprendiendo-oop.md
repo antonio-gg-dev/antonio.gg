@@ -6,7 +6,8 @@ description: 'Esta charla nació de una conversación con un café de por medio.
   porqué antes que el cómo.'
 created_at: 2025-10-28
 cover_url: /images/blog/2025-10-28-re-aprendiendo-oop.png
-cover_alt: TODO
+cover_alt: 'Imagen de portada del artículo "Re-aprendiendo OOP: esta vez, bien", con las fotos de Antonio González Gea y
+  Emmanuel Valverde Ramos.'
 ---
 
 # {{ $frontmatter.title }}

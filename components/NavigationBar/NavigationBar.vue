@@ -17,8 +17,8 @@
 
       <div class="navigation-bar__separator"></div>
 
-      <a href="/projects/"> Proyectos </a>
       <a href="/blog/"> Blog </a>
+      <a href="/projects/"> Proyectos </a>
 
       <div class="navigation-bar__separator navigation-bar__separator--xs-hidden"></div>
 
