@@ -7,6 +7,7 @@ export default {
   ],
   theme: {
     colors: {
+      transparent: 'transparent',
       black: '#000000',
       white: '#ffffff',
       primary: {
