@@ -12,7 +12,11 @@ h6 {
 }
 
 h1 {
-  @apply text-4xl;
+  @apply text-2xl;
+
+  @screen sm {
+    @apply text-4xl;
+  }
 
   @media print {
     @apply text-2xl;
@@ -20,7 +24,11 @@ h1 {
 }
 
 h2 {
-  @apply text-3xl;
+  @apply text-xl;
+
+  @screen sm {
+    @apply text-3xl;
+  }
 
   @media print {
     @apply text-xl;
@@ -28,7 +36,11 @@ h2 {
 }
 
 h3 {
-  @apply text-2xl;
+  @apply text-lg;
+
+  @screen sm {
+    @apply text-2xl;
+  }
 
   @media print {
     @apply text-lg;
@@ -36,7 +48,11 @@ h3 {
 }
 
 h4 {
-  @apply text-xl;
+  @apply text-base;
+
+  @screen sm {
+    @apply text-xl;
+  }
 
   @media print {
     @apply text-base;
@@ -44,7 +60,11 @@ h4 {
 }
 
 h5 {
-  @apply text-lg;
+  @apply text-sm;
+
+  @screen sm {
+    @apply text-lg;
+  }
 
   @media print {
     @apply text-sm;
@@ -52,7 +72,11 @@ h5 {
 }
 
 h6 {
-  @apply text-base;
+  @apply text-xs;
+
+  @screen sm {
+    @apply text-base;
+  }
 
   @media print {
     @apply text-xs;
