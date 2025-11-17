@@ -143,7 +143,7 @@ export default defineComponent({
   }
 
   &__backdrop {
-    @apply absolute inset-0 right-0 hidden h-screen cursor-pointer;
+    @apply fixed inset-0 hidden cursor-pointer;
 
     &--open {
       @apply block;
@@ -155,7 +155,7 @@ export default defineComponent({
   }
 
   &__menu {
-    @apply ml-auto flex h-screen w-fit cursor-auto flex-col bg-black/75 px-8;
+    @apply ml-auto flex h-dvh w-fit cursor-auto flex-col bg-black/75 px-8;
 
     @screen md {
       @apply m-0 h-auto w-full flex-row gap-4 bg-transparent p-0;
