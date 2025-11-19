@@ -34,53 +34,55 @@
         @click="open = false"
       >
         <div
-          class="navigation-bar__menu"
+          class="navigation-bar__menu-background"
           @click.stop
         >
-          <button
-            class="navigation-bar__close-menu"
-            @click="open = false"
-          >
-            <img
-              class="navigation-bar__icon"
-              src="/images/close.svg"
-              alt="Abrir menú"
+          <div class="navigation-bar__menu-items">
+            <button
+              class="navigation-bar__close-menu"
+              @click="open = false"
+            >
+              <img
+                class="navigation-bar__icon"
+                src="/images/close.svg"
+                alt="Abrir menú"
+              />
+            </button>
+
+            <div class="navigation-bar__separator navigation-bar__separator--mobile-only"></div>
+
+            <a
+              class="navigation-bar__link navigation-bar__link--mobile-only"
+              href="/"
+              @click="open = false"
+            >
+              Inicio
+            </a>
+            <a
+              class="navigation-bar__link"
+              href="/blog/"
+              @click="open = false"
+            >
+              Blog
+            </a>
+            <a
+              class="navigation-bar__link"
+              href="/projects/"
+              @click="open = false"
+            >
+              Proyectos
+            </a>
+
+            <div class="navigation-bar__separator"></div>
+
+            <CompactSocialLinks
+              class="navigation-bar__social-links"
+              linked-in-handle="agg-dev"
+              x-handle="antonio_gg_dev"
+              git-hub-handle="antonio-gg-dev"
+              printables-handle="Katarn"
             />
-          </button>
-
-          <div class="navigation-bar__separator navigation-bar__separator--mobile-only"></div>
-
-          <a
-            class="navigation-bar__link navigation-bar__link--mobile-only"
-            href="/"
-            @click="open = false"
-          >
-            Inicio
-          </a>
-          <a
-            class="navigation-bar__link"
-            href="/blog/"
-            @click="open = false"
-          >
-            Blog
-          </a>
-          <a
-            class="navigation-bar__link"
-            href="/projects/"
-            @click="open = false"
-          >
-            Proyectos
-          </a>
-
-          <div class="navigation-bar__separator"></div>
-
-          <CompactSocialLinks
-            class="navigation-bar__social-links"
-            linked-in-handle="agg-dev"
-            x-handle="antonio_gg_dev"
-            git-hub-handle="antonio-gg-dev"
-            printables-handle="Katarn"
-          />
+          </div>
         </div>
       </div>
     </div>
@@ -154,11 +156,19 @@ export default defineComponent({
     }
   }
 
-  &__menu {
-    @apply ml-auto flex h-dvh w-fit cursor-auto flex-col bg-black/75 px-8;
+  &__menu-background {
+    @apply ml-auto h-screen w-fit cursor-auto bg-black/75;
 
     @screen md {
-      @apply m-0 h-auto w-full flex-row gap-4 bg-transparent p-0;
+      @apply m-0 h-auto w-full bg-transparent;
+    }
+  }
+
+  &__menu-items {
+    @apply flex h-dvh flex-col px-8;
+
+    @screen md {
+      @apply h-auto flex-row gap-4 p-0;
     }
   }
 

@@ -7,7 +7,7 @@ body {
   }
 
   &::before {
-    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] blur-3xl will-change-transform;
+    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] blur-3xl;
     translate: 50% 50%;
     animation: bg-rotate 60s linear infinite;
     background: conic-gradient(
@@ -24,7 +24,7 @@ body {
   }
 
   &::after {
-    @apply fixed inset-0 z-body-background-after block bg-top;
+    @apply fixed inset-0 z-body-background-after block h-screen w-screen bg-top;
     background-image: url('/images/background.png'),
       radial-gradient(circle, theme('colors.black/0'), theme('colors.black/0.5'));
     background-size:
