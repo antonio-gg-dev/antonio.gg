@@ -1,6 +1,10 @@
 <template>
   <div class="layout__container">
-    <NavigationBar />
+    <NavBar
+      :open="isMenuOpen"
+      @open="openMenu"
+      @close="closeMenu"
+    />
 
     <Content />
   </div>
@@ -8,12 +12,22 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import NavigationBar from '@/components/NavigationBar/NavigationBar.vue'
+import NavBar from '@/components/NavBar/NavBar.vue'
+import { Content } from 'vitepress'
 
 export default defineComponent({
   components: {
-    NavigationBar,
+    // eslint-disable-next-line vue/no-reserved-component-names
+    Content,
+    NavBar,
   },
+
+  data() {
+    return {
+      isMenuOpen: false,
+    }
+  },
+
   mounted() {
     document.addEventListener('scroll', function () {
       const bodyStyles = document.body.style
@@ -24,6 +38,18 @@ export default defineComponent({
         bodyStyles.setProperty(property, rotation)
       }
     })
+  },
+
+  methods: {
+    openMenu() {
+      this.isMenuOpen = true
+      document.body.classList.add('lock')
+    },
+
+    closeMenu() {
+      this.isMenuOpen = false
+      document.body.classList.remove('lock')
+    },
   },
 })
 </script>

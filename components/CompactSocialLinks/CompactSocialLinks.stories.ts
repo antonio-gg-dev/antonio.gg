@@ -3,8 +3,6 @@ import { type Meta, type StoryObj } from '@storybook/vue3'
 
 export default {
   component: CompactSocialLinks,
-  tags: ['autodocs'],
-  argTypes: {},
 } satisfies Meta<typeof CompactSocialLinks>
 
 export const AllEnabled: StoryObj<typeof CompactSocialLinks> = {

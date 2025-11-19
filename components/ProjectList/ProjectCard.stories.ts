@@ -3,8 +3,6 @@ import { type Meta, type StoryObj } from '@storybook/vue3'
 
 export default {
   component: ProjectCard,
-  tags: ['autodocs'],
-  argTypes: {},
   render(args) {
     return {
       setup() {

@@ -2,8 +2,7 @@ import type { StorybookConfig } from '@storybook/vue3-vite'
 
 export default {
   stories: [
-    '../components/**/*.mdx',
-    '../components/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../components/**/*.stories.ts',
   ],
   addons: [
     '@storybook/addon-links',
@@ -15,8 +14,5 @@ export default {
   framework: {
     name: '@storybook/vue3-vite',
     options: {},
-  },
-  docs: {
-    autodocs: 'tag',
   },
 } satisfies StorybookConfig

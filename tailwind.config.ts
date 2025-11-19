@@ -1,4 +1,5 @@
 import { type Config } from 'tailwindcss'
+import { Viewport } from './config/Viewport'
 
 export default {
   content: [
@@ -6,6 +7,29 @@ export default {
     './components/**/*.vue',
   ],
   theme: {
+    screens: {
+      [Viewport.sm.name]: Viewport.sm.pixelWidth,
+      [Viewport.md.name]: Viewport.md.pixelWidth,
+      [Viewport.lg.name]: Viewport.lg.pixelWidth,
+      [Viewport.xl.name]: Viewport.xl.pixelWidth,
+      [Viewport.xxl.name]: Viewport.xxl.pixelWidth,
+    },
+
+    fontFamily: {
+      sans: [
+        'Inter',
+        'sans-serif',
+      ],
+      serif: [
+        'Aleo',
+        'serif',
+      ],
+      mono: [
+        'Source Code Pro',
+        'monospace',
+      ],
+    },
+
     colors: {
       transparent: 'transparent',
       black: '#000000',
@@ -72,29 +96,18 @@ export default {
       },
     },
 
-    fontFamily: {
-      sans: [
-        'Inter',
-        'sans-serif',
+    zIndex: generateZIndexes(
+      [
+        'body-background-after',
+        'body-background-before',
       ],
-      serif: [
-        'Aleo',
-        'serif',
+      [
+        'code-lang',
+        'code-copy',
+        'navbar',
+        'menu',
       ],
-      mono: [
-        'Source Code Pro',
-        'monospace',
-      ],
-    },
-
-    zIndex: {
-      'body-background-before': '-2',
-      'body-background-after': '-1',
-
-      'code-lang': '1',
-      'code-copy': '2',
-      'navigation-bar': '3',
-    },
+    ),
 
     extend: {
       transitionDuration: {
@@ -104,3 +117,17 @@ export default {
   },
   plugins: [],
 } satisfies Config
+
+function generateZIndexes(negative: string[], positive: string[]): Record<string, string> {
+  const result: Record<string, string> = { auto: 'auto' }
+
+  negative.forEach((component, i) => {
+    result[component] = (-1 - i).toString()
+  })
+
+  positive.forEach((component, i) => {
+    result[component] = (i + 1).toString()
+  })
+
+  return result
+}

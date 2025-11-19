@@ -3,8 +3,6 @@ import { type Meta, type StoryObj } from '@storybook/vue3'
 
 export default {
   component: ProjectList,
-  tags: ['autodocs'],
-  argTypes: {},
 } satisfies Meta<typeof ProjectList>
 
 export const Default: StoryObj<typeof ProjectList> = {
