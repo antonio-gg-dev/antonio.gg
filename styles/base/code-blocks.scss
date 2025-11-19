@@ -60,3 +60,37 @@
     }
   }
 }
+
+.vp-code-group {
+  .tabs {
+    @apply flex border-b-1 border-white/25  bg-black/25 backdrop-blur-sm;
+
+    label {
+      @apply block cursor-pointer px-6 py-2 transition-all;
+      box-shadow: 0 0.25rem 0 0 transparent;
+
+      &:hover,
+      &:focus {
+        @apply bg-white/10;
+      }
+    }
+
+    input {
+      @apply hidden;
+
+      &:checked + label {
+        box-shadow: 0 0.25rem 0 0 theme('colors.primary.500');
+      }
+    }
+  }
+
+  .blocks {
+    [class*='language-'] {
+      @apply mt-0;
+
+      &:not(.active) {
+        @apply hidden;
+      }
+    }
+  }
+}

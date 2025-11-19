@@ -49,6 +49,17 @@ export default {
       'warning-block': '#56491e',
       'danger-block': '#561e21',
     },
+
+    borderWidth: ({ theme }) => ({
+      0: '0px',
+      DEFAULT: '1px',
+      0.5: theme('spacing')['0.5'],
+      1: theme('spacing.1'),
+      2: theme('spacing.2'),
+      3: theme('spacing.3'),
+      4: theme('spacing.4'),
+    }),
+
     container: {
       center: true,
       padding: {
@@ -60,6 +71,7 @@ export default {
         '2xl': '16rem',
       },
     },
+
     fontFamily: {
       sans: [
         'Inter',
@@ -74,6 +86,7 @@ export default {
         'monospace',
       ],
     },
+
     zIndex: {
       'body-background-before': '-2',
       'body-background-after': '-1',
@@ -82,6 +95,7 @@ export default {
       'code-copy': '2',
       'navigation-bar': '3',
     },
+
     extend: {
       transitionDuration: {
         DEFAULT: '300ms',

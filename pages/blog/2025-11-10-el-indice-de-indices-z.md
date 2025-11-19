@@ -27,57 +27,38 @@ nombre semántico que indica a qué componente pertenece y se le asigna automát
 De esta forma, en lugar de tener valores dispersos como `z-index: 50;`, `z-index: 100;` o `z-index: 9999;`, el orden de
 las capas se controla desde un solo sitio.
 
-El primer ejemplo lo mostraré usando **Tailwind**, que es lo que utilizo habitualmente:
+A continuación tres ejemplos con distintos stacks. Una versión simplificada usando **CSS nativo** en la que hay que
+definir los valores de forma manual, pero los mantenemos centralizados en un mismo lugar. Y una versión automática tanto
+en Sass como en Tailwind, en la que solo hay que indicar el orden de los componentes en una lista y sus valores los
+define una función.
 
-```js
-// tailwind.config.js
-export default {
-  theme: {
-    zIndex: generateZIndexes(
-      [],
-      [
-        'action-bar',
-        'nav-bar-backdrop',
-        'nav-bar',
-        'auth-menu-backdrop',
-        'auth-menu-dropdown',
-        'gallery-detail-header',
-        'gallery-selection-action-bar',
-        'modal-backdrop',
-        'modal-container',
-        'cookie-jar',
-        'gallery-selection-modal-bar',
-      ],
-    ),
-  },
+::: code-group
+
+```css [CSS nativo]
+/* z-index.css */
+:root {
+  --z-auto: auto;
+  --z-action-bar: 1;
+  --z-nav-bar-backdrop: 2;
+  --z-nav-bar: 3;
+  --z-auth-menu-backdrop: 4;
+  --z-auth-menu-dropdown: 5;
+  --z-gallery-detail-header: 6;
+  --z-gallery-selection-action-bar: 7;
+  --z-modal-backdrop: 8;
+  --z-modal-container: 9;
+  --z-cookie-jar: 10;
+  --z-gallery-selection-modal-bar: 11;
 }
 
-function generateZIndexes(negative, positive) {
-  const result = { auto: 'auto' }
-
-  negative.forEach((component, i) => {
-    result[component] = (-1 - i).toString()
-  })
-
-  positive.forEach((component, i) => {
-    result[component] = (i + 1).toString()
-  })
-
-  return result
-}
-```
-
-```scss
-// uso en cualquier componente
+/* uso en cualquier componente */
 .action-bar {
-  @apply z-action-bar;
+  z-index: var(--z-action-bar);
 }
 ```
 
-La misma idea puede trasladarse fácilmente a **Sass**
-
-```scss
-// z-index.scss
+```scss [Sass]
+/* z-index.scss */
 $z-index-map: ();
 
 @function generate-z-indexes($negative, $positive) {
@@ -128,38 +109,57 @@ $z-index-map: generate-z-indexes(
 @function z($name) {
   @return map-get($z-index-map, $name);
 }
-```
 
-```scss
-// uso en cualquier componente
+/* uso en cualquier componente */
 .action-bar {
   z-index: z(action-bar);
 }
 ```
 
-Y la versión simplificada en **CSS nativo**, que requeriría que indicásemos los valores manualmente:
-
-```css
-:root {
-  --z-auto: auto;
-  --z-action-bar: 1;
-  --z-nav-bar-backdrop: 2;
-  --z-nav-bar: 3;
-  --z-auth-menu-backdrop: 4;
-  --z-auth-menu-dropdown: 5;
-  --z-gallery-detail-header: 6;
-  --z-gallery-selection-action-bar: 7;
-  --z-modal-backdrop: 8;
-  --z-modal-container: 9;
-  --z-cookie-jar: 10;
-  --z-gallery-selection-modal-bar: 11;
+```js [Tailwind]
+/* tailwind.config.js */
+export default {
+  theme: {
+    zIndex: generateZIndexes(
+      [],
+      [
+        'action-bar',
+        'nav-bar-backdrop',
+        'nav-bar',
+        'auth-menu-backdrop',
+        'auth-menu-dropdown',
+        'gallery-detail-header',
+        'gallery-selection-action-bar',
+        'modal-backdrop',
+        'modal-container',
+        'cookie-jar',
+        'gallery-selection-modal-bar',
+      ],
+    ),
+  },
 }
 
-// uso en cualquier componente
+function generateZIndexes(negative, positive) {
+  const result = { auto: 'auto' }
+
+  negative.forEach((component, i) => {
+    result[component] = (-1 - i).toString()
+  })
+
+  positive.forEach((component, i) => {
+    result[component] = (i + 1).toString()
+  })
+
+  return result
+}
+
+/* uso en cualquier componente */
 .action-bar {
-  z-index: var(--z-action-bar);
+  @apply z-action-bar;
 }
 ```
+
+:::
 
 Cada clave corresponde al nombre del componente (por ejemplo, `modal-backdrop` o `nav-bar`), y su valor se genera de
 forma secuencial.
