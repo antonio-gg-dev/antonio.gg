@@ -80,7 +80,7 @@ export default defineComponent({
   $p: &;
 
   &__background {
-    @apply fixed inset-x-0 top-0 z-navbar bg-black/50 backdrop-blur-sm;
+    @apply fixed inset-x-0 top-0 z-navbar bg-bg/50 backdrop-blur-sm;
 
     @media print {
       @apply hidden;
@@ -126,7 +126,7 @@ export default defineComponent({
   }
 
   &__menu-mobile-background {
-    @apply ml-auto h-screen w-fit cursor-auto bg-black/75;
+    @apply ml-auto h-screen w-fit cursor-auto bg-bg/75;
     animation: fade-menu-container 0.3s ease-in-out;
 
     @keyframes fade-menu-container {
