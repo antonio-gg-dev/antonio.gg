@@ -9,11 +9,11 @@ cover_alt: Imagen de portada del artículo "Por qué usar Inline SVGs" muestra u
   como img junto a la versión SVG inline recoloreada por partes.
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 ## Menos peticiones y mejor rendimiento
 
@@ -100,3 +100,9 @@ colores directamente desde CSS sin tocar el propio archivo.
 Usar SVG en línea reduce peticiones, mejora el tiempo de renderizado y ofrece un control total sobre la personalización.
 Además, se adapta perfectamente a frameworks modernos creando un componente por icono. Es una mejora sencilla con
 impacto real en rendimiento y en coherencia visual.
+
+<script lang="ts" setup>
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+</script>

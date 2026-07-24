@@ -11,14 +11,14 @@ cover_alt: Imagen de portada del artículo "El índice de índices (Z)". Muestra
   apilamiento en una página.
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
 Con el tiempo, he llegado a la conclusión de que la única forma fiable de evitarlo es tener un **índice centralizado de
 z-index**, una referencia única que indique de forma explícita qué elementos deben aparecer sobre otros.
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 ## La idea: un índice de capas
 
@@ -197,3 +197,9 @@ con interfaces ricas o múltiples capas superpuestas.
 
 Ya sea con Tailwind, Sass o CSS nativo, la clave está en mantener un orden global y documentado que todos los
 desarrolladores entiendan y respeten.
+
+<script lang="ts" setup>
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+</script>

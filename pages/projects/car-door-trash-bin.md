@@ -9,11 +9,11 @@ cover_alt: Primer plano de un pequeño cubo de basura negro impreso en 3D, coloc
   mantenerla en su sitio
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 Ninguna solución práctica que no colgara, se tambalease o invadiera espacio útil. La mayoría de opciones que encontré
 en tiendas eran de tela, poco estéticas o difíciles de adaptar a distintos coches. Así que decidí diseñar la mía.
@@ -69,5 +69,8 @@ dar pie a una solución útil, replicable y compartida. Y sobre todo, de cómo c
 impacto mucho mayor del que imaginas.
 
 <script lang="ts" setup>
+import { useData } from 'vitepress'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
+
+const { frontmatter } = useData()
 </script>

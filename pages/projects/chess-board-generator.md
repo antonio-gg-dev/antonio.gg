@@ -9,11 +9,11 @@ cover_alt: 'Tablero de ajedrez rectangular, formado por casillas alternas en dos
   Generator.'
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 A veces la necesidad más simple merece la solución más simple. Quería un tablero para jugar con piezas impresas en 3D,
 y me apetecía experimentar combinando impresión en papel con impresión 3D. Además, era la excusa perfecta para practicar
@@ -34,5 +34,8 @@ experimentar con código vanilla, manipulando el DOM y estilos sin dependencias 
 suficiente.
 
 <script lang="ts" setup>
+import { useData } from 'vitepress'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
+
+const { frontmatter } = useData()
 </script>

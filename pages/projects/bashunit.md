@@ -10,11 +10,11 @@ cover_alt: Imagen de portada de bashunit constituida por su logo y escrito a su 
   ojos
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 El proyecto **bashunit** nació de la mano de [Chema][x-chema] con el objetivo de testar unos scripts de Bash que
 había creado de manera sencilla. El equipo de TypedDevs rápidamente reconoció el potencial de la herramienta y se
@@ -51,5 +51,8 @@ mejora continua del framework.
 [x-manu]: https://x.com/evrtrabajo
 
 <script lang="ts" setup>
+import { useData } from 'vitepress'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
+
+const { frontmatter } = useData()
 </script>

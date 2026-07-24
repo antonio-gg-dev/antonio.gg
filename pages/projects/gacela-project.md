@@ -9,11 +9,11 @@ cover_alt: Imagen de portada de Gacela Project constituida por su logo y escrito
   esta están resaltados en un color azulado oscuro, las letras Gacela están en el mismo color
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 Gacela Project es un framework PHP para proyectos modulares, fue creado por [Chema][x-chema] y [Jesus][x-jesus].
 Inspirado en Spryker, Gacela une robustez y claridad, facilitando el desarrollo de aplicaciones backend. Su enfoque
@@ -48,5 +48,8 @@ reforzó la robustez de nuestros tests.
 [chico-framework]: https://github.com/antonio-gg-dev/chico-framework
 
 <script lang="ts" setup>
+import { useData } from 'vitepress'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
+
+const { frontmatter } = useData()
 </script>

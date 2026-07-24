@@ -27,6 +27,34 @@ To contribute to the project, follow these steps to set it up locally:
 
 Check the `package.json` for other interesting scripts prepared for use.
 
+### VitePress page data
+
+Previously visited routes remain mounted in the page through `RouteHistory`. VitePress' global `$frontmatter` property
+always points to the current route, so using it in a page could make an older route display the title, description, or
+image of a newer one.
+
+Do not access frontmatter through the global property:
+
+```vue
+{{ $frontmatter.title }}
+```
+
+Instead, obtain it from the page's isolated VitePress context:
+
+```vue
+<script lang="ts" setup>
+import { useData } from 'vitepress'
+
+const { frontmatter } = useData()
+</script>
+
+<template>
+  {{ frontmatter.title }}
+</template>
+```
+
+The YAML frontmatter block does not need to change; this convention only affects how its values are consumed in Vue.
+
 ## Reporting Bugs or Suggesting Improvements
 
 If you wish to report a bug or suggest an improvement, please open a new issue or submit a pull request describing your

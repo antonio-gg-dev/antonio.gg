@@ -8,11 +8,11 @@ cover_alt: Imagen de portada de Huezzle en la que se ve un puzzle resuelto de to
   con el texto Huezzle en negro sobre fondo blanco situado en la esquina superior izquierda
 ---
 
-# {{ $frontmatter.title }}
+# {{ frontmatter.title }}
 
-{{ $frontmatter.description }}
+{{ frontmatter.description }}
 
-<img :src="$frontmatter.cover_url" :alt="$frontmatter.cover_alt">
+<img :src="frontmatter.cover_url" :alt="frontmatter.cover_alt">
 
 Huezzle representa un hito personal en mi carrera como desarrollador: es el primer juego que he publicado.
 Este juego de puzzles diarios me ha permitido explorar y superar varios retos técnicos y de diseño, especialmente en el
@@ -45,5 +45,8 @@ habilidades técnicas con mi creatividad, enfrentándome a retos únicos y apren
 resultado y emocionado por ver cómo los jugadores de todo el mundo disfrutan y se desafían con mi juego.
 
 <script lang="ts" setup>
+import { useData } from 'vitepress'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
+
+const { frontmatter } = useData()
 </script>
