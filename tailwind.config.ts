@@ -34,6 +34,12 @@ export default {
       transparent: 'transparent',
       background: '#2E3436',
       foreground: '#EEEEEC',
+      crt: {
+        aberration: {
+          left: 'rgb(from currentcolor r 0 0)',
+          right: 'rgb(from currentcolor 0 g b)',
+        },
+      },
       neutral: {
         DEFAULT: '#555753',
         emphasis: '#D3D7CF',
