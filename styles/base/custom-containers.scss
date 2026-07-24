@@ -2,39 +2,39 @@
   @apply my-8 px-6 py-4 backdrop-blur-sm;
 
   &.info {
-    @apply bg-info-bg/25;
+    @apply bg-info/25;
 
     @media print {
-      @apply bg-info-bg/10;
+      @apply bg-info/10;
     }
   }
 
   &.tip {
-    @apply bg-success-bg/25;
+    @apply bg-success/25;
 
     @media print {
-      @apply bg-success-bg/10;
+      @apply bg-success/10;
     }
   }
 
   &.warning {
-    @apply bg-warning-bg/25;
+    @apply bg-warning/25;
 
     @media print {
-      @apply bg-warning-bg/10;
+      @apply bg-warning/10;
     }
   }
 
   &.danger {
-    @apply bg-danger-bg/25;
+    @apply bg-danger/25;
 
     @media print {
-      @apply bg-danger-bg/10;
+      @apply bg-danger/10;
     }
   }
 
   &.details {
-    @apply bg-neutral-bg/25;
+    @apply bg-neutral/25;
 
     @media print {
       @apply hidden;

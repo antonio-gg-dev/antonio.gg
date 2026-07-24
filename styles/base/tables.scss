@@ -4,37 +4,37 @@ table {
 
 thead {
   tr {
-    @apply bg-bg/25 backdrop-blur-sm;
+    @apply bg-background/25 backdrop-blur-sm;
 
     @media print {
-      @apply bg-bg/10;
+      @apply bg-background/10;
     }
   }
 }
 
 tr {
-  @apply bg-primary-bg/10 backdrop-blur-sm transition-colors;
+  @apply bg-primary/10 backdrop-blur-sm transition-colors;
 
   @media print {
-    @apply bg-bg/5;
+    @apply bg-background/5;
   }
 
   &:nth-of-type(2) {
-    @apply bg-bg/25;
+    @apply bg-background/25;
 
     @media print {
-      @apply bg-bg/10;
+      @apply bg-background/10;
     }
   }
 
   tbody &:hover {
-    @apply bg-primary-bg/25;
+    @apply bg-primary-emphasis/25;
 
     @media print {
-      @apply bg-bg/5;
+      @apply bg-background/5;
 
       &:nth-of-type(2) {
-        @apply bg-bg/10;
+        @apply bg-background/10;
       }
     }
   }

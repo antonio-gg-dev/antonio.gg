@@ -32,35 +32,35 @@ export default {
 
     colors: {
       transparent: 'transparent',
-      bg: '#2E3436',
-      fg: '#EEEEEC',
+      background: '#2E3436',
+      foreground: '#EEEEEC',
       neutral: {
-        bg: '#555753',
-        fg: '#D3D7CF',
+        DEFAULT: '#555753',
+        emphasis: '#D3D7CF',
       },
       danger: {
-        bg: '#CC0000',
-        fg: '#EF2929',
+        DEFAULT: '#CC0000',
+        emphasis: '#EF2929',
       },
       success: {
-        bg: '#4E9A06',
-        fg: '#8AE234',
+        DEFAULT: '#4E9A06',
+        emphasis: '#8AE234',
       },
       warning: {
-        bg: '#C4A000',
-        fg: '#FCE94F',
+        DEFAULT: '#C4A000',
+        emphasis: '#FCE94F',
       },
       primary: {
-        bg: '#3465A4',
-        fg: '#729FCF',
+        DEFAULT: '#3465A4',
+        emphasis: '#729FCF',
       },
       accent: {
-        bg: '#75507B',
-        fg: '#AD7FA8',
+        DEFAULT: '#75507B',
+        emphasis: '#AD7FA8',
       },
       info: {
-        bg: '#06989A',
-        fg: '#34E2E2',
+        DEFAULT: '#06989A',
+        emphasis: '#34E2E2',
       },
     },
 

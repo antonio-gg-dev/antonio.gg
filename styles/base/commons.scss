@@ -1,9 +1,9 @@
 html {
-  @apply font-default text-fg;
+  @apply font-default text-foreground;
   font-size: 20px;
 
   @media print {
-    @apply text-bg;
+    @apply text-background;
     font-size: 14px;
   }
 }
@@ -17,11 +17,11 @@ img {
 }
 
 blockquote {
-  @apply my-8 border-primary-fg/25 bg-bg/25 py-2 pl-4 pr-6 backdrop-blur-sm;
+  @apply my-8 border-primary-emphasis/25 bg-background/25 py-2 pl-4 pr-6 backdrop-blur-sm;
   border-left-width: theme('spacing.2');
 
   @media print {
-    @apply border-bg/10 bg-bg/5;
+    @apply border-background/10 bg-background/5;
   }
 
   > p:first-of-type {
@@ -34,21 +34,13 @@ blockquote {
 }
 
 a {
-  @apply font-medium text-primary-fg transition-all;
+  @apply font-medium text-primary transition-all;
   font-variation-settings: 'slnt' 0;
-
-  @media print {
-    @apply text-primary-bg;
-  }
 
   &:focus,
   &:hover {
-    @apply text-accent-fg;
+    @apply text-primary-emphasis;
     font-variation-settings: 'slnt' -10;
-
-    @media print {
-      @apply text-accent-bg;
-    }
   }
 
   &[target='_blank'] {
@@ -70,9 +62,9 @@ a {
 }
 
 hr {
-  @apply my-8 border-none bg-fg/25 pt-1;
+  @apply my-8 border-none bg-foreground/25 pt-1;
 
   @media print {
-    @apply bg-bg/10;
+    @apply bg-background/10;
   }
 }
