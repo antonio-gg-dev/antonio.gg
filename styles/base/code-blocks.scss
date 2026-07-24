@@ -7,10 +7,10 @@ pre {
 
 // NOTE: regular <code> not inside <pre>
 :not(pre) > code {
-  @apply whitespace-nowrap bg-black/50 px-1;
+  @apply whitespace-nowrap bg-bg/50 px-1;
 
   @media print {
-    @apply bg-black/20;
+    @apply bg-bg/20;
   }
 }
 
@@ -23,7 +23,7 @@ pre {
   }
 
   .copy {
-    @apply absolute right-2 top-2 z-code-copy h-8 w-8 bg-primary-500/50 bg-center bg-no-repeat opacity-0 transition-all;
+    @apply absolute right-2 top-2 z-code-copy h-8 w-8 bg-primary-bg/50 bg-center bg-no-repeat opacity-0 transition-all;
     background-image: url('/images/code-copy.svg');
     background-size: theme('width.4') theme('height.4');
 
@@ -33,7 +33,7 @@ pre {
 
     &:hover,
     &:focus {
-      @apply bg-primary-500/75;
+      @apply bg-primary-bg/75;
     }
   }
 
@@ -53,14 +53,14 @@ pre {
 }
 
 .vp-code {
-  @apply block overflow-auto bg-black/25 px-6 py-4 backdrop-blur-sm;
+  @apply block overflow-auto bg-bg/25 px-6 py-4 backdrop-blur-sm;
 
   * {
     color: var(--shiki-dark);
   }
 
   @media print {
-    @apply block bg-black/5 px-6 py-4;
+    @apply block bg-bg/5 px-6 py-4;
 
     * {
       color: var(--shiki-light);
@@ -70,7 +70,7 @@ pre {
 
 .vp-code-group {
   .tabs {
-    @apply flex border-b-1 border-white/25  bg-black/25 backdrop-blur-sm;
+    @apply flex border-b-1 border-fg/25 bg-bg/25 backdrop-blur-sm;
 
     label {
       @apply block cursor-pointer px-6 py-2 transition-all;
@@ -78,7 +78,7 @@ pre {
 
       &:hover,
       &:focus {
-        @apply bg-white/10;
+        @apply bg-fg/10;
       }
     }
 
@@ -86,7 +86,7 @@ pre {
       @apply hidden;
 
       &:checked + label {
-        box-shadow: 0 0.25rem 0 0 theme('colors.primary.500');
+        box-shadow: 0 0.25rem 0 0 theme('colors.primary.fg');
       }
     }
   }

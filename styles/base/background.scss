@@ -1,5 +1,5 @@
 body {
-  @apply overflow-auto overflow-x-hidden bg-top pt-10;
+  @apply overflow-auto overflow-x-hidden bg-bg bg-top pt-10;
   --rotation: 0deg;
 
   @media print {
@@ -11,10 +11,10 @@ body {
     translate: 50% 50%;
     animation: bg-rotate 60s linear infinite;
     background: conic-gradient(
-      theme('colors.background.first'),
-      theme('colors.background.second'),
-      theme('colors.background.third'),
-      theme('colors.background.first')
+      theme('colors.warning.bg'),
+      theme('colors.danger.bg'),
+      theme('colors.accent.bg'),
+      theme('colors.warning.bg')
     );
     content: '';
 
@@ -26,7 +26,7 @@ body {
   &::after {
     @apply fixed inset-0 z-body-background-after block h-screen w-screen bg-top;
     background-image: url('/images/background.png'),
-      radial-gradient(circle, theme('colors.black/0'), theme('colors.black/0.5'));
+      radial-gradient(circle, theme('colors.bg/0'), theme('colors.bg/0.5'));
     background-size:
       60rem 30rem,
       100% 100%;

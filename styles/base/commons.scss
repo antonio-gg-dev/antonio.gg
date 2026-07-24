@@ -1,9 +1,9 @@
 html {
-  @apply font-default text-white;
+  @apply font-default text-fg;
   font-size: 20px;
 
   @media print {
-    @apply text-black;
+    @apply text-bg;
     font-size: 14px;
   }
 }
@@ -17,11 +17,11 @@ img {
 }
 
 blockquote {
-  @apply my-8 border-primary-500/25 bg-black/25 py-2 pl-4 pr-6 backdrop-blur-sm;
+  @apply my-8 border-primary-fg/25 bg-bg/25 py-2 pl-4 pr-6 backdrop-blur-sm;
   border-left-width: theme('spacing.2');
 
   @media print {
-    @apply border-black/10 bg-black/5;
+    @apply border-bg/10 bg-bg/5;
   }
 
   > p:first-of-type {
@@ -34,20 +34,20 @@ blockquote {
 }
 
 a {
-  @apply font-medium text-primary-300 transition-all;
+  @apply font-medium text-primary-fg transition-all;
   font-variation-settings: 'slnt' 0;
 
   @media print {
-    @apply text-primary-500;
+    @apply text-primary-bg;
   }
 
   &:focus,
   &:hover {
-    @apply text-primary-200;
+    @apply text-accent-fg;
     font-variation-settings: 'slnt' -10;
 
     @media print {
-      @apply text-primary-400;
+      @apply text-accent-bg;
     }
   }
 
@@ -70,9 +70,9 @@ a {
 }
 
 hr {
-  @apply my-8 border-none bg-white/25 pt-1;
+  @apply my-8 border-none bg-fg/25 pt-1;
 
   @media print {
-    @apply bg-black/10;
+    @apply bg-bg/10;
   }
 }

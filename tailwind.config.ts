@@ -32,46 +32,36 @@ export default {
 
     colors: {
       transparent: 'transparent',
-      black: '#000000',
-      white: '#ffffff',
+      bg: '#2E3436',
+      fg: '#EEEEEC',
+      neutral: {
+        bg: '#555753',
+        fg: '#D3D7CF',
+      },
+      danger: {
+        bg: '#CC0000',
+        fg: '#EF2929',
+      },
+      success: {
+        bg: '#4E9A06',
+        fg: '#8AE234',
+      },
+      warning: {
+        bg: '#C4A000',
+        fg: '#FCE94F',
+      },
       primary: {
-        50: '#f9efee',
-        100: '#edcfcc',
-        200: '#e1b0a9',
-        300: '#d59087',
-        400: '#c87065',
-        500: '#bc5043',
-        600: '#9a4237',
-        700: '#78332a',
-        800: '#56251e',
-        900: '#331612',
-        950: '#060706',
-        v1: {
-          50: '#eeeff9',
-          100: '#cccfed',
-          200: '#a9b0e1',
-          300: '#8790d5',
-          400: '#6570c8',
-          500: '#4350bc',
-          600: '#37429a',
-          700: '#2a3378',
-          800: '#1e2556',
-          900: '#121633',
-          950: '#060711',
-        },
+        bg: '#3465A4',
+        fg: '#729FCF',
       },
-      background: {
-        first: '#7d5219',
-        second: '#7d2e19',
-        third: '#7d1947',
-        v1: {
-          first: '#1e4756',
-          second: '#1e2556',
-          third: '#3d1e56',
-        },
+      accent: {
+        bg: '#75507B',
+        fg: '#AD7FA8',
       },
-      'warning-block': '#56491e',
-      'danger-block': '#561e21',
+      info: {
+        bg: '#06989A',
+        fg: '#34E2E2',
+      },
     },
 
     borderWidth: ({ theme }) => ({
