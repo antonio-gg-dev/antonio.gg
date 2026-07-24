@@ -1,3 +1,10 @@
+code,
+kbd,
+samp,
+pre {
+  @apply font-code;
+}
+
 // NOTE: regular <code> not inside <pre>
 :not(pre) > code {
   @apply whitespace-nowrap bg-black/50 px-1;

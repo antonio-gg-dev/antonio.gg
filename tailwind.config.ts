@@ -16,16 +16,16 @@ export default {
     },
 
     fontFamily: {
-      sans: [
-        'Inter',
+      default: [
+        'Pixel Code',
         'sans-serif',
       ],
-      serif: [
-        'Aleo',
+      heading: [
+        'Pixel Code',
         'serif',
       ],
-      mono: [
-        'Source Code Pro',
+      code: [
+        'Pixel Code',
         'monospace',
       ],
     },
