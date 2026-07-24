@@ -1,40 +1,40 @@
 .custom-block {
-  @apply my-8 px-6 py-4 backdrop-blur-sm;
+  @apply my-8 border-l-2 bg-neutral px-6 py-4;
 
   &.info {
-    @apply bg-info/25;
+    @apply border-info;
 
     @media print {
-      @apply bg-info/10;
+      @apply bg-neutral-emphasis;
     }
   }
 
   &.tip {
-    @apply bg-success/25;
+    @apply border-success;
 
     @media print {
-      @apply bg-success/10;
+      @apply bg-neutral-emphasis;
     }
   }
 
   &.warning {
-    @apply bg-warning/25;
+    @apply border-warning;
 
     @media print {
-      @apply bg-warning/10;
+      @apply bg-neutral-emphasis;
     }
   }
 
   &.danger {
-    @apply bg-danger/25;
+    @apply border-danger;
 
     @media print {
-      @apply bg-danger/10;
+      @apply bg-neutral-emphasis;
     }
   }
 
   &.details {
-    @apply bg-neutral/25;
+    @apply border-neutral-emphasis;
 
     @media print {
       @apply hidden;

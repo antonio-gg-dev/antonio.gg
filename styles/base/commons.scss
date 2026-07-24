@@ -17,11 +17,11 @@ img {
 }
 
 blockquote {
-  @apply my-8 border-primary-emphasis/25 bg-background/25 py-2 pl-4 pr-6 backdrop-blur-sm;
+  @apply my-8 border-primary-emphasis/25 bg-neutral py-2 pl-4 pr-6;
   border-left-width: theme('spacing.2');
 
   @media print {
-    @apply border-background/10 bg-background/5;
+    @apply border-background/10 bg-neutral-emphasis;
   }
 
   > p:first-of-type {
@@ -62,9 +62,9 @@ a {
 }
 
 hr {
-  @apply my-8 border-none bg-foreground/25 pt-1;
+  @apply my-8 border-none bg-neutral pt-1;
 
   @media print {
-    @apply bg-background/10;
+    @apply bg-neutral;
   }
 }
