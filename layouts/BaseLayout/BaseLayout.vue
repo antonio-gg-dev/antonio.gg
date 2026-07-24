@@ -6,20 +6,19 @@
       @close="closeMenu"
     />
 
-    <Content />
+    <RouteHistory />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import NavBar from '@/components/NavBar/NavBar.vue'
-import { Content } from 'vitepress'
+import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
 
 export default defineComponent({
   components: {
-    // eslint-disable-next-line vue/no-reserved-component-names
-    Content,
     NavBar,
+    RouteHistory,
   },
 
   data() {
