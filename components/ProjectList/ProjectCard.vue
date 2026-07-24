@@ -34,11 +34,11 @@ export default defineComponent({
 <style lang="scss">
 .project-card {
   &__card {
-    @apply bg-bg/25 text-fg backdrop-blur-sm transition-colors;
+    @apply bg-background/25 text-foreground backdrop-blur-sm transition-colors;
 
     &:hover,
     &:focus {
-      @apply bg-bg/50;
+      @apply bg-background/50;
       font-variation-settings: 'slnt' 0;
     }
   }

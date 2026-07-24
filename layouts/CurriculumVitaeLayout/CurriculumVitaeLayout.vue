@@ -152,10 +152,10 @@ export default defineComponent({})
     }
 
     li {
-      @apply bg-bg/50 px-1;
+      @apply bg-background/50 px-1;
 
       @media print {
-        @apply bg-bg/5;
+        @apply bg-background/5;
       }
 
       &::before {
