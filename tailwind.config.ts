@@ -87,10 +87,7 @@ export default {
     },
 
     zIndex: generateZIndexes(
-      [
-        'body-background-after',
-        'body-background-before',
-      ],
+      [],
       [
         'code-lang',
         'code-copy',

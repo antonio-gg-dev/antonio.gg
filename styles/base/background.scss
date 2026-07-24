@@ -1,52 +1,11 @@
 body {
-  @apply overflow-auto overflow-x-hidden bg-background bg-top pt-10;
-  --rotation: 0deg;
+  @apply overflow-auto overflow-x-hidden bg-background pt-10;
 
   @media print {
     @apply bg-none p-0;
   }
 
-  &::before {
-    @apply fixed bottom-1/2 right-1/2 z-body-background-before block h-[200vmax] w-[200vmax] blur-3xl;
-    translate: 50% 50%;
-    animation: bg-rotate 60s linear infinite;
-    background: conic-gradient(
-      theme('colors.warning.DEFAULT'),
-      theme('colors.danger.DEFAULT'),
-      theme('colors.accent.DEFAULT'),
-      theme('colors.warning.DEFAULT')
-    );
-    content: '';
-
-    @media print {
-      @apply hidden;
-    }
-  }
-
-  &::after {
-    @apply fixed inset-0 z-body-background-after block h-screen w-screen bg-top;
-    background-image: url('/images/background.png'),
-      radial-gradient(circle, theme('colors.background/0'), theme('colors.background/0.5'));
-    background-size:
-      60rem 30rem,
-      100% 100%;
-    content: '';
-
-    @media print {
-      @apply hidden;
-    }
-  }
-
   &.lock {
     @apply overflow-y-hidden;
-  }
-}
-
-@keyframes bg-rotate {
-  0% {
-    transform: rotate(var(--rotation));
-  }
-  100% {
-    transform: rotate(calc(360deg + var(--rotation)));
   }
 }
