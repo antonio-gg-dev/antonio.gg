@@ -13,7 +13,6 @@ html {
   }
 
   @media print {
-    @apply text-background;
     animation: none;
     font-size: 14px;
     text-shadow: none;

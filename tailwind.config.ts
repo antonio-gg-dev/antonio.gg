@@ -33,6 +33,7 @@ export default {
 
     colors: {
       transparent: 'transparent',
+      bezel: '#000000',
       background: '#2E3436',
       foreground: '#EEEEEC',
       crt: {
