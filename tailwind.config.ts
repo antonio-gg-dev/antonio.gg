@@ -5,6 +5,7 @@ export default {
   content: [
     './pages/**/*.md',
     './components/**/*.vue',
+    './components/**/*.stories.ts',
   ],
   theme: {
     screens: {
