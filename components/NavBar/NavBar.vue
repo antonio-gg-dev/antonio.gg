@@ -17,12 +17,12 @@
 
       <button
         class="navbar__open-menu"
+        aria-label="Abrir menú"
         @click="$emit('open')"
       >
-        <img
+        <MenuIcon
           class="navbar__icon"
-          src="/images/menu.svg"
-          alt="Abrir menú"
+          aria-hidden="true"
         />
       </button>
 
@@ -56,10 +56,14 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
+import MenuIcon from '@/components/Icons/MenuIcon.vue'
 import NavBarMenu from '@/components/NavBar/NavBarMenu.vue'
 
 export default defineComponent({
-  components: { NavBarMenu },
+  components: {
+    MenuIcon,
+    NavBarMenu,
+  },
 
   props: {
     open: {
@@ -158,7 +162,7 @@ export default defineComponent({
   }
 
   &__icon {
-    @apply m-0 block h-6 w-6 object-contain object-center;
+    @apply m-0 block h-6 text-foreground;
   }
 }
 </style>

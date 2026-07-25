@@ -2,12 +2,12 @@
   <div class="navbar-menu__menu-items">
     <button
       class="navbar-menu__close-menu"
+      aria-label="Cerrar menú"
       @click="$emit('close')"
     >
-      <img
+      <CloseIcon
         class="navbar-menu__icon"
-        src="/images/close.svg"
-        alt="Abrir menú"
+        aria-hidden="true"
       />
     </button>
 
@@ -50,9 +50,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import CompactSocialLinks from '@/components/CompactSocialLinks/CompactSocialLinks.vue'
+import CloseIcon from '@/components/Icons/CloseIcon.vue'
 
 export default defineComponent({
-  components: { CompactSocialLinks },
+  components: {
+    CloseIcon,
+    CompactSocialLinks,
+  },
 
   emits: { close: () => true },
 })
@@ -73,7 +77,7 @@ export default defineComponent({
   }
 
   &__icon {
-    @apply m-0 block h-6 w-6 object-contain object-center;
+    @apply m-0 block h-6 text-foreground;
   }
 
   &__link {
