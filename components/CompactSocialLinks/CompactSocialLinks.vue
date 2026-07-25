@@ -6,11 +6,11 @@
       :href="`https://www.linkedin.com/in/${linkedInHandle}/`"
       target="_blank"
       title="LinkedIn"
+      aria-label="LinkedIn"
     >
-      <img
+      <LinkedInIcon
         class="compact-social-links__icon"
-        src="/images/linkedin.svg"
-        alt="LinkedIn"
+        aria-hidden="true"
       />
     </a>
 
@@ -20,11 +20,11 @@
       :href="`https://x.com/${xHandle}`"
       target="_blank"
       title="X"
+      aria-label="X"
     >
-      <img
+      <XIcon
         class="compact-social-links__icon"
-        src="/images/x.svg"
-        alt="X"
+        aria-hidden="true"
       />
     </a>
 
@@ -34,11 +34,11 @@
       :href="`https://github.com/${gitHubHandle}`"
       target="_blank"
       title="GitHub"
+      aria-label="GitHub"
     >
-      <img
+      <GitHubIcon
         class="compact-social-links__icon"
-        src="/images/github.svg"
-        alt="GitHub"
+        aria-hidden="true"
       />
     </a>
 
@@ -48,11 +48,11 @@
       :href="`https://www.printables.com/@${printablesHandle}`"
       target="_blank"
       title="Printables"
+      aria-label="Printables"
     >
-      <img
+      <PrintablesIcon
         class="compact-social-links__icon"
-        src="/images/printables.svg"
-        alt="Printables"
+        aria-hidden="true"
       />
     </a>
   </div>
@@ -60,8 +60,19 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
+import GitHubIcon from '@/components/Icons/GitHubIcon.vue'
+import LinkedInIcon from '@/components/Icons/LinkedInIcon.vue'
+import PrintablesIcon from '@/components/Icons/PrintablesIcon.vue'
+import XIcon from '@/components/Icons/XIcon.vue'
 
 export default defineComponent({
+  components: {
+    GitHubIcon,
+    LinkedInIcon,
+    PrintablesIcon,
+    XIcon,
+  },
+
   props: {
     /** Handle (last part of a custom URL) of a LinkedIn account */
     linkedInHandle: {
@@ -101,17 +112,13 @@ export default defineComponent({
 
   &__link {
     @apply p-2;
-
-    &::after {
-      display: none !important;
-    }
   }
 
   &__icon {
-    @apply m-0 block h-4 w-4 object-contain object-center align-text-top opacity-75 transition-opacity;
+    @apply m-0 block h-4 align-text-top text-foreground;
 
     #{$p}__link:hover & {
-      @apply opacity-100;
+      @apply text-primary-emphasis;
     }
   }
 }

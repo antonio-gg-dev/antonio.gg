@@ -1,4 +1,5 @@
 import SocialLinks from './SocialLinks.vue'
+import LinkIcon from '@/components/Icons/LinkIcon.vue'
 import { type Meta, type StoryObj } from '@storybook/vue3'
 
 export default {
@@ -67,5 +68,13 @@ export const OnlyCustomHuezzle: StoryObj<typeof SocialLinks> = {
     customLink: 'https://huezzle.antonio.gg/',
     customImage: 'https://huezzle.antonio.gg/img/icons/favicon.svg',
     customLabel: 'Huezzle',
+  },
+}
+
+export const OnlyCustomIcon: StoryObj<typeof SocialLinks> = {
+  args: {
+    customLink: 'https://antonio-gg-dev.github.io/chess-board-generator/',
+    customIcon: LinkIcon,
+    customLabel: 'Probar',
   },
 }
