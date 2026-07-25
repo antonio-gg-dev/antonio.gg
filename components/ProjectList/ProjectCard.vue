@@ -34,7 +34,7 @@ export default defineComponent({
 <style lang="scss">
 .project-card {
   &__card {
-    @apply bg-neutral text-foreground transition-colors;
+    @apply bg-neutral text-foreground;
 
     &:hover,
     &:focus {

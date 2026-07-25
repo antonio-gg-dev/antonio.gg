@@ -13,7 +13,7 @@ thead {
 }
 
 tr {
-  @apply bg-background transition-colors;
+  @apply bg-background;
 
   @media print {
     @apply bg-transparent;

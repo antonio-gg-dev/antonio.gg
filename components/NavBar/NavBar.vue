@@ -100,7 +100,7 @@ export default defineComponent({
   }
 
   &__image {
-    @apply m-0 h-8 rounded-full transition-opacity;
+    @apply m-0 h-8 rounded-full;
 
     #{$p}__home-link:hover & {
       @apply opacity-75;
@@ -150,7 +150,7 @@ export default defineComponent({
   }
 
   &__open-menu {
-    @apply ml-auto h-10 opacity-75 transition-opacity;
+    @apply ml-auto h-10 opacity-75;
 
     &:hover {
       @apply opacity-100;

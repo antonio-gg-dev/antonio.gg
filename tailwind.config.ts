@@ -102,12 +102,6 @@ export default {
         'menu',
       ],
     ),
-
-    extend: {
-      transitionDuration: {
-        DEFAULT: '300ms',
-      },
-    },
   },
   plugins: [],
 } satisfies Config

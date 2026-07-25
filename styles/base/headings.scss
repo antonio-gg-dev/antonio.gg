@@ -4,7 +4,7 @@ h3,
 h4,
 h5,
 h6 {
-  @apply -mb-4 mt-8 font-heading font-bold transition-colors;
+  @apply -mb-4 mt-8 font-heading font-bold;
 
   &:focus-visible {
     @apply outline-none;

@@ -65,7 +65,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .navbar-menu {
   &__close-menu {
-    @apply ml-auto h-10 opacity-75 transition-opacity;
+    @apply ml-auto h-10 opacity-75;
 
     &:hover {
       @apply opacity-100;
