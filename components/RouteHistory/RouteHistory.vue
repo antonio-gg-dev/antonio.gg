@@ -331,10 +331,23 @@ function scrollToArchivedAnchor(container: HTMLElement | null, entryId: string, 
 }
 
 function scrollToElement(element: HTMLElement): void {
+  const scrollContainer = document.querySelector<HTMLElement>('.layout__surface')
   const navigationHeight = document.querySelector<HTMLElement>('.navbar__background')?.offsetHeight ?? 0
-  const top = window.scrollY + element.getBoundingClientRect().top - navigationHeight
 
-  window.scrollTo(0, top)
+  if (scrollContainer === null) {
+    const top = window.scrollY + element.getBoundingClientRect().top - navigationHeight
+    window.scrollTo(0, top)
+
+    return
+  }
+
+  const top =
+    scrollContainer.scrollTop +
+    element.getBoundingClientRect().top -
+    scrollContainer.getBoundingClientRect().top -
+    navigationHeight
+
+  scrollContainer.scrollTo(0, top)
 }
 
 function findEntryElement(container: HTMLElement | null, entryId: number): HTMLElement | null {

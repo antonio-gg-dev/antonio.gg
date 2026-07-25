@@ -1,11 +1,11 @@
 body {
-  @apply overflow-auto overflow-x-hidden bg-background pt-10;
+  @apply overflow-hidden bg-bezel;
 
   @media print {
     @apply bg-none p-0;
   }
 
-  &.lock {
+  &.lock .layout__surface {
     @apply overflow-y-hidden;
   }
 }

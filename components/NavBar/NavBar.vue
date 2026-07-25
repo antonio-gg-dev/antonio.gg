@@ -109,6 +109,7 @@ export default defineComponent({
 
   &__backdrop {
     @apply fixed inset-0 z-menu hidden cursor-pointer;
+    filter: url('#crt-displacement');
 
     &--open {
       @apply block;
@@ -116,6 +117,7 @@ export default defineComponent({
 
     @screen md {
       @apply static block h-auto w-full flex-grow;
+      filter: none;
     }
   }
 
