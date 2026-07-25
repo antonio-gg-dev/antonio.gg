@@ -43,8 +43,5 @@ export default defineComponent({
 
 <style lang="scss">
 .layout {
-  &__container {
-    @apply container;
-  }
 }
 </style>

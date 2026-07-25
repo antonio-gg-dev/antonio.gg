@@ -92,7 +92,7 @@ export default defineComponent({
   }
 
   &__container {
-    @apply container flex items-center gap-4;
+    @apply flex items-center gap-4;
   }
 
   &__home-link {

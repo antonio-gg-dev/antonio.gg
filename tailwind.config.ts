@@ -81,18 +81,6 @@ export default {
       4: theme('spacing.4'),
     }),
 
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: '2rem',
-        sm: '2rem',
-        md: '2rem',
-        lg: '4rem',
-        xl: '8rem',
-        '2xl': '16rem',
-      },
-    },
-
     zIndex: generateZIndexes(
       [],
       [
