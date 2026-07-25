@@ -19,13 +19,11 @@ pre {
   @apply relative my-8;
 
   .lang {
-    @apply absolute right-2 top-2 z-code-lang text-xs opacity-100 transition-opacity;
+    @apply absolute right-2 top-2 z-code-lang text-xs opacity-100;
   }
 
   .copy {
-    @apply absolute right-2 top-2 z-code-copy h-8 w-8 bg-primary bg-center bg-no-repeat opacity-0 transition-all;
-    background-image: url('/images/code-copy.svg');
-    background-size: theme('width.4') theme('height.4');
+    @apply absolute right-2 top-2 z-code-copy flex h-8 w-8 items-center justify-center bg-primary opacity-0;
 
     @media print {
       @apply hidden;
@@ -52,6 +50,10 @@ pre {
   }
 }
 
+.code-copy-icon {
+  @apply pointer-events-none h-4 w-4 text-foreground;
+}
+
 .vp-code {
   @apply block overflow-auto bg-neutral px-6 py-4;
 
@@ -73,7 +75,7 @@ pre {
     @apply flex border-b-1 border-foreground/25 bg-neutral;
 
     label {
-      @apply block cursor-pointer px-6 py-2 transition-all;
+      @apply block cursor-pointer px-6 py-2;
       box-shadow: 0 0.25rem 0 0 transparent;
 
       &:hover,

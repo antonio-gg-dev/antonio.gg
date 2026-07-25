@@ -55,6 +55,41 @@ export default defineConfig({
   markdown: {
     // TODO: enable lineNumbers: true,
 
+    config(md) {
+      const renderFence = md.renderer.rules.fence
+
+      if (renderFence !== undefined) {
+        md.renderer.rules.fence = (...args) =>
+          renderFence(...args).replace(
+            /<button title="([^"]*)" class="copy"><\/button>/,
+            '<button title="$1" aria-label="$1" class="copy"><ClipboardCopyIcon class="code-copy-icon" aria-hidden="true" /></button>',
+          )
+      }
+
+      const renderLinkClose = md.renderer.rules.link_close
+
+      md.renderer.rules.link_close = (...args) => {
+        const [
+          tokens,
+          index,
+          options,
+          ,
+          renderer,
+        ] = args
+        const linkOpen = tokens
+          .slice(0, index)
+          .reverse()
+          .find((token) => token.type === 'link_open')
+        const closingTag = renderLinkClose?.(...args) ?? renderer.renderToken(tokens, index, options)
+
+        if (linkOpen?.attrGet('target') !== '_blank') {
+          return closingTag
+        }
+
+        return `<ExternalLinkIcon class="external-link-icon" aria-hidden="true" />${closingTag}`
+      }
+    },
+
     container: {
       tipLabel: 'Consejo',
       warningLabel: 'Advertencia',

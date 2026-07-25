@@ -79,7 +79,7 @@ blockquote {
 }
 
 a {
-  @apply font-medium text-primary transition-all;
+  @apply font-medium text-primary;
   font-variation-settings: 'slnt' 0;
 
   &:focus,
@@ -89,20 +89,20 @@ a {
   }
 
   &[target='_blank'] {
-    &::after {
-      @apply ml-1 inline-block h-2 w-2 bg-center bg-no-repeat opacity-75 transition-opacity;
-      background-image: url('/images/external-link.svg');
-      content: '';
-
-      @media print {
-        @apply hidden;
-      }
-
-      &:focus,
-      &:hover {
+    &:focus,
+    &:hover {
+      .external-link-icon {
         @apply opacity-100;
       }
     }
+  }
+}
+
+.external-link-icon {
+  @apply ml-1 inline-block h-2 w-2 text-foreground opacity-75;
+
+  @media print {
+    @apply hidden;
   }
 }
 
