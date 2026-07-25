@@ -24,7 +24,7 @@ y márgenes. La mecánica es sencilla: eliges tus colores, ajustas el borde si q
 
 <SocialLinks
   custom-link="https://antonio-gg-dev.github.io/chess-board-generator/"
-  custom-image="/images/link.svg"
+  :custom-icon="LinkIcon"
   custom-label="Probar"
   git-hub-handle="https://github.com/antonio-gg-dev/chess-board-generator"
 />
@@ -35,6 +35,7 @@ suficiente.
 
 <script lang="ts" setup>
 import { useData } from 'vitepress'
+import LinkIcon from '@/components/Icons/LinkIcon.vue'
 import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
 
 const { frontmatter } = useData()
