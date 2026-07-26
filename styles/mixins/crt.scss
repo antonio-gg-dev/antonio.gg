@@ -1,0 +1,148 @@
+@mixin text {
+  animation: crt-text-glow 4s linear infinite;
+  text-shadow:
+    -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
+    0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
+    0 0 0.1rem currentcolor,
+    0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  @media print {
+    animation: none;
+    text-shadow: none;
+  }
+}
+
+@mixin icon {
+  filter: drop-shadow(-0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent))
+    drop-shadow(0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent))
+    drop-shadow(0 0 0.1rem currentcolor) drop-shadow(0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent));
+  animation: crt-icon-glow 4s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  @media print {
+    filter: none;
+    animation: none;
+  }
+}
+
+@mixin shadow($color) {
+  --crt-shadow-color: #{$color};
+
+  animation: crt-shadow-glow 4s linear infinite;
+  box-shadow:
+    -0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 60%, transparent),
+    0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 60%, transparent),
+    0 0 0.1rem var(--crt-shadow-color),
+    0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+
+  @media print {
+    animation: none;
+    box-shadow: none;
+  }
+}
+
+@mixin keyframes {
+  @keyframes crt-text-glow {
+    0%,
+    19%,
+    21%,
+    62%,
+    64%,
+    100% {
+      text-shadow:
+        -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
+        0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
+        0 0 0.1rem currentcolor,
+        0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
+    }
+
+    20%,
+    63% {
+      text-shadow:
+        -0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 40%, transparent),
+        0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 40%, transparent),
+        0 0 0.08rem currentcolor,
+        0 0 0.22rem color-mix(in srgb, currentcolor 35%, transparent);
+    }
+
+    20.5%,
+    63.5% {
+      text-shadow:
+        -0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 80%, transparent),
+        0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 80%, transparent),
+        0 0 0.12rem currentcolor,
+        0 0 0.36rem color-mix(in srgb, currentcolor 60%, transparent);
+    }
+  }
+
+  @keyframes crt-icon-glow {
+    0%,
+    19%,
+    21%,
+    62%,
+    64%,
+    100% {
+      filter: drop-shadow(-0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent))
+        drop-shadow(0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent))
+        drop-shadow(0 0 0.1rem currentcolor) drop-shadow(0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent));
+    }
+
+    20%,
+    63% {
+      filter: drop-shadow(-0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 40%, transparent))
+        drop-shadow(0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 40%, transparent))
+        drop-shadow(0 0 0.08rem currentcolor) drop-shadow(0 0 0.22rem color-mix(in srgb, currentcolor 35%, transparent));
+    }
+
+    20.5%,
+    63.5% {
+      filter: drop-shadow(-0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 80%, transparent))
+        drop-shadow(0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 80%, transparent))
+        drop-shadow(0 0 0.12rem currentcolor) drop-shadow(0 0 0.36rem color-mix(in srgb, currentcolor 60%, transparent));
+    }
+  }
+
+  @keyframes crt-shadow-glow {
+    0%,
+    19%,
+    21%,
+    62%,
+    64%,
+    100% {
+      box-shadow:
+        -0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 60%, transparent),
+        0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 60%, transparent),
+        0 0 0.1rem var(--crt-shadow-color),
+        0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+    }
+
+    20%,
+    63% {
+      box-shadow:
+        -0.05rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 40%, transparent),
+        0.05rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 40%, transparent),
+        0 0 0.08rem var(--crt-shadow-color),
+        0 0 0.22rem color-mix(in srgb, var(--crt-shadow-color) 35%, transparent);
+    }
+
+    20.5%,
+    63.5% {
+      box-shadow:
+        -0.1rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 80%, transparent),
+        0.1rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 80%, transparent),
+        0 0 0.12rem var(--crt-shadow-color),
+        0 0 0.36rem color-mix(in srgb, var(--crt-shadow-color) 60%, transparent);
+    }
+  }
+}

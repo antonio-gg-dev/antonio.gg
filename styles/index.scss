@@ -1,3 +1,5 @@
+@use 'mixins/crt';
+
 @tailwind base;
 
 @import 'fonts/pixel-code';
@@ -14,4 +16,4 @@
 
 @tailwind utilities;
 
-@import 'utilities/crt';
+@include crt.keyframes;

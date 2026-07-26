@@ -1,4 +1,7 @@
+@use '@/styles/mixins/crt';
+
 table {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply w-full;
 }
 

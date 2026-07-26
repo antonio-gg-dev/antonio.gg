@@ -1,4 +1,7 @@
+@use '@/styles/mixins/crt';
+
 .custom-block {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply my-8 border-l-2 bg-neutral px-6 py-4;
 
   &.info {

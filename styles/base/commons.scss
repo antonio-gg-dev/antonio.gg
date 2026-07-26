@@ -1,5 +1,8 @@
+@use '@/styles/mixins/crt';
+
 html {
-  @apply crt-text font-default text-foreground;
+  @include crt.text;
+  @apply font-default text-foreground;
   font-size: 20px;
 
   @media print {
@@ -12,10 +15,12 @@ p {
 }
 
 img {
+  @include crt.shadow(theme('colors.foreground'));
   @apply my-8;
 }
 
 blockquote {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply my-8 border-primary-emphasis/25 bg-neutral py-2 pl-4 pr-6;
   border-left-width: theme('spacing.2');
 
