@@ -49,11 +49,11 @@ export default defineComponent({
 <style lang="scss">
 .layout {
   &__viewport {
-    @apply fixed inset-0 overflow-hidden rounded-3xl bg-background p-4;
+    @apply container fixed inset-x-0 top-0 h-dvh overflow-hidden rounded-3xl bg-background;
     filter: url('#crt-displacement');
 
     &::after {
-      @apply pointer-events-none absolute inset-0 rounded-2xl;
+      @apply pointer-events-none absolute inset-0 rounded-3xl;
       animation: crt-screen-sweep 8s linear infinite;
       background-image: linear-gradient(to bottom, transparent, theme('colors.bezel/0.12') 50%, transparent),
         repeating-linear-gradient(
@@ -80,7 +80,7 @@ export default defineComponent({
   }
 
   &__surface {
-    @apply h-dvh overflow-y-auto overflow-x-hidden;
+    @apply h-full overflow-y-auto overflow-x-hidden;
   }
 
   &__filter {
@@ -89,7 +89,7 @@ export default defineComponent({
 
   @media print {
     &__viewport {
-      @apply static overflow-visible;
+      @apply static h-auto max-w-none overflow-visible;
       filter: none;
 
       &::after {
@@ -98,7 +98,7 @@ export default defineComponent({
     }
 
     &__surface {
-      @apply h-auto overflow-visible p-0;
+      @apply h-auto overflow-visible;
     }
 
     &__filter {
