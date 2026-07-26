@@ -51,6 +51,17 @@ export default defineComponent({
   &__viewport {
     @apply fixed inset-0 overflow-hidden rounded-3xl bg-background p-4;
     filter: url('#crt-displacement');
+
+    &::after {
+      @apply pointer-events-none absolute inset-0 rounded-2xl;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        theme('colors.bezel/0.20') 0 0.06rem,
+        transparent 0.12rem 0.18rem,
+        theme('colors.bezel/0.20') 0.24rem 0.24rem
+      );
+      content: '';
+    }
   }
 
   &__surface {
@@ -65,6 +76,10 @@ export default defineComponent({
     &__viewport {
       @apply static overflow-visible;
       filter: none;
+
+      &::after {
+        @apply hidden;
+      }
     }
 
     &__surface {
