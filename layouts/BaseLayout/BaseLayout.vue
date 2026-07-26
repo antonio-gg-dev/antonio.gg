@@ -54,13 +54,28 @@ export default defineComponent({
 
     &::after {
       @apply pointer-events-none absolute inset-0 rounded-2xl;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        theme('colors.bezel/0.20') 0 0.06rem,
-        transparent 0.12rem 0.18rem,
-        theme('colors.bezel/0.20') 0.24rem 0.24rem
-      );
+      animation: crt-screen-sweep 8s linear infinite;
+      background-image: linear-gradient(to bottom, transparent, theme('colors.bezel/0.12') 50%, transparent),
+        repeating-linear-gradient(
+          to bottom,
+          theme('colors.bezel/0.18') 0 0.06rem,
+          transparent 0.12rem 0.18rem,
+          theme('colors.bezel/0.18') 0.24rem
+        );
+      background-position:
+        0 -12dvh,
+        0 0;
+      background-size:
+        100% 12dvh,
+        100% 100%;
+      background-repeat: no-repeat, repeat;
       content: '';
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::after {
+        animation: none;
+      }
     }
   }
 
@@ -89,6 +104,21 @@ export default defineComponent({
     &__filter {
       @apply hidden;
     }
+  }
+}
+
+@keyframes crt-screen-sweep {
+  0% {
+    background-position:
+      0 -12dvh,
+      0 0;
+  }
+
+  18.75%,
+  100% {
+    background-position:
+      0 112dvh,
+      0 0;
   }
 }
 </style>
