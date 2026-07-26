@@ -1,54 +1,9 @@
 html {
-  @apply font-default text-foreground;
-  animation: crt-text-glow 4s linear infinite;
+  @apply crt-text font-default text-foreground;
   font-size: 20px;
-  text-shadow:
-    -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
-    0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
-    0 0 0.1rem currentcolor,
-    0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
 
   @media print {
-    animation: none;
     font-size: 14px;
-    text-shadow: none;
-  }
-}
-
-@keyframes crt-text-glow {
-  0%,
-  19%,
-  21%,
-  62%,
-  64%,
-  100% {
-    text-shadow:
-      -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
-      0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
-      0 0 0.1rem currentcolor,
-      0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
-  }
-
-  20%,
-  63% {
-    text-shadow:
-      -0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 40%, transparent),
-      0.05rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 40%, transparent),
-      0 0 0.08rem currentcolor,
-      0 0 0.22rem color-mix(in srgb, currentcolor 35%, transparent);
-  }
-
-  20.5%,
-  63.5% {
-    text-shadow:
-      -0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 80%, transparent),
-      0.1rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 80%, transparent),
-      0 0 0.12rem currentcolor,
-      0 0 0.36rem color-mix(in srgb, currentcolor 60%, transparent);
   }
 }
 
