@@ -41,22 +41,18 @@ a {
     @apply text-primary-emphasis;
     font-variation-settings: 'slnt' -10;
   }
-
-  &[target='_blank'] {
-    &:focus,
-    &:hover {
-      .external-link-icon {
-        @apply opacity-100;
-      }
-    }
-  }
 }
 
 .external-link-icon {
-  @apply ml-1 inline-block h-2 w-2 text-foreground opacity-75;
+  @apply ml-1 inline-block h-2 w-2 text-foreground;
 
   @media print {
     @apply hidden;
+  }
+
+  *:hover > &,
+  *:focus > & {
+    @apply text-primary-emphasis;
   }
 }
 
