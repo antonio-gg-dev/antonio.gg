@@ -1,6 +1,5 @@
 <template>
   <svg
-    class="crt-icon"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
@@ -16,3 +15,11 @@ import { defineComponent } from 'vue'
 
 export default defineComponent({})
 </script>
+
+<style lang="scss" scoped>
+@use '@/styles/mixins/crt';
+
+svg {
+  @include crt.icon;
+}
+</style>
