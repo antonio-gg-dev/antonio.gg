@@ -87,8 +87,6 @@ export default {
       [
         'code-lang',
         'code-copy',
-        'navbar',
-        'menu',
       ],
     ),
   },

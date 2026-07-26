@@ -4,8 +4,4 @@ body {
   @media print {
     @apply bg-none p-0;
   }
-
-  &.lock .layout__surface {
-    @apply overflow-y-hidden;
-  }
 }
