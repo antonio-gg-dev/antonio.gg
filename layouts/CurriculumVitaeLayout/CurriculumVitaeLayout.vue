@@ -69,6 +69,8 @@ export default defineComponent({})
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .curriculum-vitae-layout {
   &__mobile {
     @screen lg {
@@ -95,6 +97,7 @@ export default defineComponent({})
   }
 
   &__profile {
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
     @apply mx-auto w-52 justify-self-center rounded-full;
 
     @screen lg {

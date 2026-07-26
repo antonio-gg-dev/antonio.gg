@@ -18,6 +18,8 @@ export default defineComponent({})
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .home-layout {
   &__container {
     @apply grid content-center gap-8;
@@ -29,6 +31,7 @@ export default defineComponent({})
   }
 
   &__profile {
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
     @apply w-52 justify-self-center rounded-full;
 
     @screen lg {

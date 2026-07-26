@@ -32,12 +32,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .project-card {
   &__card {
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
     @apply bg-neutral text-foreground;
 
     &:hover,
     &:focus {
+      @include crt.shadow(theme('colors.background'));
       @apply bg-background;
       font-variation-settings: 'slnt' 0;
     }

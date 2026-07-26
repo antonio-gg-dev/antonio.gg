@@ -66,6 +66,8 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .markdown-wrapper {
   &__container {
     @apply -m-4 grid min-h-screen grid-rows-2;
@@ -80,6 +82,7 @@ export default defineComponent({
   }
 
   &__code {
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
     @apply overflow-x-scroll bg-neutral p-4;
 
     pre {

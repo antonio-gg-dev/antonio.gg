@@ -1,3 +1,5 @@
+@use '@/styles/mixins/crt';
+
 code,
 kbd,
 samp,
@@ -7,6 +9,7 @@ pre {
 
 // NOTE: regular <code> not inside <pre>
 :not(pre) > code {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply whitespace-nowrap bg-neutral px-1;
 
   @media print {
@@ -23,6 +26,7 @@ pre {
   }
 
   .copy {
+    @include crt.shadow(theme('colors.primary.DEFAULT'));
     @apply absolute right-2 top-2 z-code-copy flex h-8 w-8 items-center justify-center bg-primary opacity-0;
 
     @media print {
@@ -31,6 +35,7 @@ pre {
 
     &:hover,
     &:focus {
+      @include crt.shadow(theme('colors.primary.emphasis'));
       @apply bg-primary-emphasis;
     }
   }
@@ -55,6 +60,7 @@ pre {
 }
 
 .vp-code {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply block overflow-auto bg-neutral px-6 py-4;
 
   * {
@@ -71,6 +77,8 @@ pre {
 }
 
 .vp-code-group {
+  @include crt.shadow(theme('colors.neutral.DEFAULT'));
+
   .tabs {
     @apply flex border-b-1 border-foreground/25 bg-neutral;
 
@@ -100,6 +108,11 @@ pre {
       &:not(.active) {
         @apply hidden;
       }
+    }
+
+    .vp-code {
+      animation: none;
+      box-shadow: none;
     }
   }
 }
