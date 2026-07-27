@@ -16,7 +16,7 @@ p {
 
 img {
   @include crt.shadow(theme('colors.foreground'));
-  @apply my-8;
+  @apply mx-auto my-8;
 }
 
 blockquote {
