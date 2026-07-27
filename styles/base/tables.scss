@@ -2,7 +2,7 @@
 
 table {
   @include crt.shadow(theme('colors.neutral.DEFAULT'));
-  @apply w-full;
+  @apply my-8 w-full;
 }
 
 thead {
@@ -16,13 +16,13 @@ thead {
 }
 
 tr {
-  @apply bg-background;
+  @apply border-b-1 border-transparent bg-background;
 
   @media print {
     @apply bg-transparent;
   }
 
-  &:nth-of-type(2) {
+  &:nth-of-type(even) {
     @apply bg-neutral;
 
     @media print {
@@ -31,12 +31,12 @@ tr {
   }
 
   tbody &:hover {
-    @apply bg-primary;
+    @apply border-primary;
 
     @media print {
       @apply bg-transparent;
 
-      &:nth-of-type(2) {
+      &:nth-of-type(even) {
         @apply bg-neutral-emphasis;
       }
     }
@@ -45,7 +45,7 @@ tr {
 
 td,
 th {
-  @apply px-3 py-2 text-left;
+  @apply px-3 pb-1 pt-2 text-left;
 
   &:first-of-type {
     @apply pl-6;

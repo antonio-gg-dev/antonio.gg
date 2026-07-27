@@ -8,6 +8,8 @@ export default createContentLoader<CommandDefinition[]>('./**/*.md', {
 
     pages.forEach((page) => {
       const pageCommands: unknown = page.frontmatter.command
+      const pageCommandDescription: unknown = page.frontmatter.command_description
+      const pageCommandPublic: unknown = page.frontmatter.command_public
 
       if (pageCommands === undefined) {
         return
@@ -17,7 +19,22 @@ export default createContentLoader<CommandDefinition[]>('./**/*.md', {
         throw new Error(`The "command" frontmatter in ${page.url} must be a non-empty array.`)
       }
 
-      pageCommands.forEach((pageCommand: unknown) => {
+      if (pageCommandPublic !== undefined && typeof pageCommandPublic !== 'boolean') {
+        throw new Error(`The "command_public" frontmatter in ${page.url} must be a boolean.`)
+      }
+
+      if (
+        pageCommandDescription !== undefined &&
+        (typeof pageCommandDescription !== 'string' || pageCommandDescription.trim() === '')
+      ) {
+        throw new Error(`The "command_description" frontmatter in ${page.url} must be a non-empty string.`)
+      }
+
+      if (pageCommandPublic === true && pageCommandDescription === undefined) {
+        throw new Error(`Public commands in ${page.url} must define "command_description" frontmatter.`)
+      }
+
+      pageCommands.forEach((pageCommand: unknown, index: number) => {
         if (typeof pageCommand !== 'string' || pageCommand.trim() === '') {
           throw new Error(`Every command in ${page.url} must be a non-empty string.`)
         }
@@ -34,6 +51,9 @@ export default createContentLoader<CommandDefinition[]>('./**/*.md', {
         commands.push({
           command,
           url: page.url,
+          description: typeof pageCommandDescription === 'string' ? pageCommandDescription.trim() : null,
+          isPrimary: index === 0,
+          isPublic: pageCommandPublic === true,
         })
       })
     })

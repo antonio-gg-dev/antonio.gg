@@ -1,6 +1,9 @@
 export interface CommandDefinition {
   command: string
   url: string
+  description: string | null
+  isPrimary: boolean
+  isPublic: boolean
 }
 
 export const commandNotFoundMessage = '404 Command Not Found'
