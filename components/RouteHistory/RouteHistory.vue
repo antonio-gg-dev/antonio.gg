@@ -3,11 +3,41 @@
     ref="container"
     class="route-history__container"
   >
-    <RouteHistoryEntry
-      v-for="(entry, index) in entries"
-      :key="entry.id"
-      :entry="entry"
-      :current="index === entries.length - 1"
+    <template
+      v-for="item in timeline"
+      :key="item.key"
+    >
+      <RouteHistoryEntry
+        v-if="item.type === 'route'"
+        :entry="item.entry"
+        :current="item.entry.id === currentEntryId"
+      />
+      <div
+        v-else-if="item.type === 'command'"
+        class="route-history__terminal-line"
+      >
+        <span class="route-history__prompt-label">
+          <span class="route-history__prompt-user">guest@antonio.gg</span>:<span class="route-history__prompt-path">{{
+            item.shellPath
+          }}</span
+          >$
+        </span>
+        <span class="route-history__terminal-command">{{ item.command }}</span>
+      </div>
+      <div
+        v-else
+        class="route-history__terminal-line route-history__terminal-error"
+        role="status"
+      >
+        {{ item.message }}
+      </div>
+    </template>
+    <CommandPrompt
+      ref="commandPrompt"
+      :commands="commands"
+      :path="currentPath"
+      @execute="executeCommand"
+      @typing="handleCommandTyping"
     />
   </div>
 </template>
@@ -15,10 +45,19 @@
 <script lang="ts">
 import { defineComponent, ref, shallowReactive, shallowRef } from 'vue'
 import { dataSymbol, type Router, type VitePressData } from 'vitepress'
+import {
+  commandNotFoundMessage,
+  formatShellPath,
+  normalizeCommand,
+  type CommandDefinition,
+} from '@/components/CommandPrompt/Command'
+import CommandPrompt from '@/components/CommandPrompt/CommandPrompt.vue'
+import { data as commands } from '@/pages/commands.data'
 import { getNavigationOrigin } from './NavigationOrigin'
 import RouteHistoryEntry from './RouteHistoryEntry.vue'
 import { routeHistoryRouterSymbol } from './RouteHistoryInjection'
 import type { RouteHistoryItem } from './RouteHistoryItem'
+import type { RouteHistoryTimelineItem } from './RouteHistoryTimelineItem'
 
 const idReferenceAttributes = [
   'aria-controls',
@@ -31,7 +70,10 @@ const idReferenceAttributes = [
 ]
 
 export default defineComponent({
-  components: { RouteHistoryEntry },
+  components: {
+    CommandPrompt,
+    RouteHistoryEntry,
+  },
 
   inject: {
     routeHistoryData: {
@@ -45,16 +87,34 @@ export default defineComponent({
   data() {
     const data = this.routeHistoryData as VitePressData
     const router = this.routeHistoryRouter as Router
+    const initialEntry = createEntry(router.route.path, router.route.component, data, 0)
 
     return {
-      entries: shallowReactive<RouteHistoryItem[]>([createEntry(router.route.path, router.route.component, data, 0)]),
+      commands: commands as CommandDefinition[],
+      entries: shallowReactive<RouteHistoryItem[]>([initialEntry]),
       nextEntryId: 1,
+      nextTimelineId: 1,
       previousAfterRouteChange: undefined as Router['onAfterRouteChange'],
       documentClickListener: null as ((event: MouseEvent) => void) | null,
+      timeline: shallowReactive<RouteHistoryTimelineItem[]>([
+        {
+          key: `route-${initialEntry.id}`,
+          type: 'route',
+          entry: initialEntry,
+        },
+      ]),
     }
   },
 
   computed: {
+    currentEntryId(): number {
+      return this.entries.at(-1)?.id ?? 0
+    },
+
+    currentPath(): string {
+      return this.entries.at(-1)?.path ?? this.vitePressRouter.route.path
+    },
+
     vitePressData(): VitePressData {
       return this.routeHistoryData as VitePressData
     },
@@ -114,9 +174,58 @@ export default defineComponent({
 
       const entry = createEntry(to, this.vitePressRouter.route.component, this.vitePressData, this.nextEntryId++)
       this.entries.push(entry)
+      this.timeline.push({
+        key: `route-${entry.id}`,
+        type: 'route',
+        entry,
+      })
 
       await this.$nextTick()
       scrollToEntry(this.getContainer(), entry)
+    },
+
+    executeCommand(rawCommand: string): void {
+      const command = rawCommand.trim()
+      const definition = this.commands.find(
+        (registeredCommand) => normalizeCommand(registeredCommand.command) === normalizeCommand(command),
+      )
+
+      this.timeline.push({
+        key: `terminal-${this.nextTimelineId++}`,
+        type: 'command',
+        command: rawCommand,
+        shellPath: formatShellPath(this.currentPath),
+      })
+
+      if (definition === undefined) {
+        this.timeline.push({
+          key: `terminal-${this.nextTimelineId++}`,
+          type: 'error',
+          message: commandNotFoundMessage,
+        })
+
+        void this.$nextTick(() => {
+          this.focusCommandPrompt()
+          this.scrollToCommandPrompt()
+        })
+
+        return
+      }
+
+      this.blurCommandPrompt()
+      this.vitePressRouter.go(definition.url).catch((error: unknown) => {
+        console.error(error)
+      })
+    },
+
+    blurCommandPrompt(): void {
+      const commandPrompt = this.$refs.commandPrompt as { blur?: () => void } | undefined
+      commandPrompt?.blur?.()
+    },
+
+    focusCommandPrompt(): void {
+      const commandPrompt = this.$refs.commandPrompt as { focus?: () => void } | undefined
+      commandPrompt?.focus?.()
     },
 
     handleDocumentClick(event: MouseEvent): void {
@@ -186,6 +295,12 @@ export default defineComponent({
       })
     },
 
+    handleCommandTyping(): void {
+      void this.$nextTick(() => {
+        this.scrollToCommandPrompt()
+      })
+    },
+
     updateCurrentHash(hash: string): void {
       const currentEntry = this.entries.at(-1)
 
@@ -212,6 +327,14 @@ export default defineComponent({
       const container = this.$refs.container
 
       return container instanceof HTMLElement ? container : null
+    },
+
+    scrollToCommandPrompt(): void {
+      const commandPrompt = this.$refs.commandPrompt as { $el?: unknown } | undefined
+
+      if (commandPrompt?.$el instanceof HTMLElement) {
+        scrollToElement(commandPrompt.$el)
+      }
     },
   },
 })
@@ -368,13 +491,80 @@ function decodeHash(hash: string): string {
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .route-history {
+  &__terminal-line {
+    @apply my-8 break-words;
+
+    @media print {
+      @apply hidden;
+    }
+  }
+
+  &__terminal-command {
+    @apply whitespace-pre-wrap;
+  }
+
+  &__terminal-error {
+    @apply text-danger-emphasis;
+  }
+
+  &__prompt-label {
+    @apply shrink-0;
+  }
+
+  &__prompt-user {
+    @apply text-success-emphasis;
+  }
+
+  &__prompt-path {
+    @apply text-primary-emphasis;
+  }
+
+  &__prompt-command {
+    @apply text-foreground;
+  }
+
+  &__prompt-draft {
+    @apply whitespace-pre-wrap;
+  }
+
+  &__prompt-cursor {
+    @include crt.shadow(theme('colors.foreground'));
+    @apply inline-block h-4 w-2.5 bg-foreground;
+    transform: translateY(0.1em);
+    animation:
+      route-history-cursor-blink 1s steps(1, end) infinite,
+      crt-shadow-glow 4s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  &__keyboard-bridge {
+    @apply pointer-events-none fixed bottom-0 right-0 h-px w-px opacity-0;
+  }
+
   &__entry {
     @media print {
       &:not(&--current) {
         @apply hidden;
       }
     }
+  }
+}
+
+@keyframes route-history-cursor-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
   }
 }
 </style>

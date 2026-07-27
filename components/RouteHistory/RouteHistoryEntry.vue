@@ -8,13 +8,20 @@
       :is="entry.component"
       v-if="entry.component"
     />
-    <template v-else>404 Page Not Found</template>
+    <div
+      v-else
+      class="route-history__terminal-line route-history__terminal-error"
+      role="status"
+    >
+      {{ commandNotFoundMessage }}
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { dataSymbol } from 'vitepress'
 import { defineComponent, type PropType } from 'vue'
+import { commandNotFoundMessage } from '@/components/CommandPrompt/Command'
 import type { RouteHistoryItem } from './RouteHistoryItem'
 
 export default defineComponent({
@@ -33,6 +40,12 @@ export default defineComponent({
       required: true,
       type: Boolean as PropType<boolean>,
     },
+  },
+
+  data() {
+    return {
+      commandNotFoundMessage,
+    }
   },
 })
 </script>
