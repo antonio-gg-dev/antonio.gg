@@ -1,6 +1,6 @@
 import type { RouteHistoryItem } from './RouteHistoryItem'
 
-export type RouteHistoryTimelineItem = RouteTimelineItem | CommandTimelineItem | ErrorTimelineItem
+export type RouteHistoryTimelineItem = RouteTimelineItem | CommandTimelineItem | HintTimelineItem | ErrorTimelineItem
 
 interface RouteTimelineItem {
   key: string
@@ -13,6 +13,11 @@ interface CommandTimelineItem {
   type: 'command'
   command: string
   shellPath: string
+}
+
+interface HintTimelineItem {
+  key: string
+  type: 'hint'
 }
 
 interface ErrorTimelineItem {

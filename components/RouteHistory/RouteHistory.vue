@@ -26,6 +26,19 @@
         <span class="route-history__terminal-command">{{ item.command }}</span>
       </div>
       <div
+        v-else-if="item.type === 'hint'"
+        class="route-history__terminal-line route-history__terminal-hint"
+        role="note"
+      >
+        Escribe
+        <a
+          class="route-history__terminal-hint-link"
+          href="/help"
+          ><code>help</code></a
+        >
+        para ver los comandos disponibles.
+      </div>
+      <div
         v-else
         class="route-history__terminal-line route-history__terminal-error"
         role="status"
@@ -102,6 +115,10 @@ export default defineComponent({
           key: `route-${initialEntry.id}`,
           type: 'route',
           entry: initialEntry,
+        },
+        {
+          key: 'hint-help',
+          type: 'hint',
         },
       ]),
     }
@@ -532,6 +549,19 @@ function decodeHash(hash: string): string {
 
   &__terminal-command {
     @apply whitespace-pre-wrap;
+  }
+
+  &__terminal-hint {
+    @apply text-info;
+  }
+
+  &__terminal-hint-link {
+    @apply text-foreground;
+
+    &:focus,
+    &:hover {
+      @apply text-primary-emphasis;
+    }
   }
 
   &__terminal-error {

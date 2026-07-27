@@ -7,7 +7,7 @@ command_description: Lista esta tabla con los comandos disponibles.
 # Ayuda
 
 ¡Hola! Mi portfolio está inspirado en una terminal de comandos. Para navegar, escribe cualquiera de los comandos de la
-lista y pulsa Enter.
+lista y pulsa `Enter`.
 
 También puedes utilizar los botones y enlaces que encuentres en cada página, pero el comando `help` es lo más parecido a
 un menú principal: muestra todas las secciones disponibles y el comando necesario para acceder a cada una de ellas.
