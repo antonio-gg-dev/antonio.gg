@@ -1,3 +1,7 @@
+---
+command: [projects]
+---
+
 # Proyectos
 
 <ProjectList

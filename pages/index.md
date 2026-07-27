@@ -1,5 +1,6 @@
 ---
 title: 'Desarrollador Full Stack'
+command: [home]
 ---
 
 <HomeLayout>

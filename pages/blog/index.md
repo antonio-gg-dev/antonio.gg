@@ -1,3 +1,7 @@
+---
+command: [blog]
+---
+
 # Blog
 
 <ProjectList
