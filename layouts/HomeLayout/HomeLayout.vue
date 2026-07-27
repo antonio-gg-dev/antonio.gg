@@ -23,7 +23,6 @@ export default defineComponent({})
 .home-layout {
   &__container {
     @apply grid content-center gap-8;
-    min-height: calc(100vh - theme('spacing.10'));
 
     @screen lg {
       grid-template-columns: auto 1fr;
