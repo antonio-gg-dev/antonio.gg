@@ -1,9 +1,27 @@
-export interface CommandDefinition {
+interface CommandMetadata {
   command: string
-  url: string
   description: string | null
   isPrimary: boolean
   isPublic: boolean
+}
+
+export interface NavigationCommandDefinition extends CommandMetadata {
+  type: 'navigation'
+  url: string
+}
+
+export interface ClearCommandDefinition extends CommandMetadata {
+  type: 'clear'
+}
+
+export type CommandDefinition = NavigationCommandDefinition | ClearCommandDefinition
+
+export const clearCommandDefinition: ClearCommandDefinition = {
+  type: 'clear',
+  command: 'clear',
+  description: 'Limpia la salida del terminal.',
+  isPrimary: true,
+  isPublic: true,
 }
 
 export const commandNotFoundMessage = '404 Command Not Found'

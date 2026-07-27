@@ -2,6 +2,7 @@
   <div
     ref="container"
     class="route-history__container"
+    @route-history-command="handleRouteHistoryCommand"
   >
     <template
       v-for="item in timeline"
@@ -212,9 +213,30 @@ export default defineComponent({
         return
       }
 
+      if (definition.type === 'clear') {
+        this.clearHistory()
+
+        return
+      }
+
       this.blurCommandPrompt()
       this.vitePressRouter.go(definition.url).catch((error: unknown) => {
         console.error(error)
+      })
+    },
+
+    clearHistory(): void {
+      const currentEntry = this.entries.at(-1)
+
+      this.timeline.splice(0)
+
+      if (currentEntry !== undefined) {
+        this.entries.splice(0, this.entries.length, currentEntry)
+      }
+
+      void this.$nextTick(() => {
+        this.focusCommandPrompt()
+        this.scrollToCommandPrompt()
       })
     },
 
@@ -293,6 +315,12 @@ export default defineComponent({
       this.vitePressRouter.go(`${targetUrl.pathname}${targetUrl.search}`).catch((error: unknown) => {
         console.error(error)
       })
+    },
+
+    handleRouteHistoryCommand(event: Event): void {
+      if (event instanceof CustomEvent && typeof event.detail === 'string') {
+        this.executeCommand(event.detail)
+      }
     },
 
     handleCommandTyping(): void {

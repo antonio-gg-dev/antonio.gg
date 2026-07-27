@@ -1,10 +1,15 @@
 import { createContentLoader } from 'vitepress'
-import { normalizeCommand, type CommandDefinition } from '../components/CommandPrompt/Command'
+import { clearCommandDefinition, normalizeCommand, type CommandDefinition } from '../components/CommandPrompt/Command'
 
 export default createContentLoader<CommandDefinition[]>('./**/*.md', {
   transform(pages) {
-    const commands: CommandDefinition[] = []
-    const registeredCommands = new Map<string, string>()
+    const commands: CommandDefinition[] = [clearCommandDefinition]
+    const registeredCommands = new Map<string, string>([
+      [
+        normalizeCommand(clearCommandDefinition.command),
+        'the built-in clear command',
+      ],
+    ])
 
     pages.forEach((page) => {
       const pageCommands: unknown = page.frontmatter.command
@@ -49,6 +54,7 @@ export default createContentLoader<CommandDefinition[]>('./**/*.md', {
 
         registeredCommands.set(normalizedCommand, page.url)
         commands.push({
+          type: 'navigation',
           command,
           url: page.url,
           description: typeof pageCommandDescription === 'string' ? pageCommandDescription.trim() : null,
