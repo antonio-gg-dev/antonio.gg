@@ -1,7 +1,7 @@
 ---
 command: [projects]
 command_public: true
-command_description: Muestra un listado con los proyectos en los que he participado.
+command_description: Lista los proyectos en los que he participado.
 ---
 
 # Proyectos

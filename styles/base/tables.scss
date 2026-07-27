@@ -45,7 +45,7 @@ tr {
 
 td,
 th {
-  @apply px-3 pb-1 pt-2 text-left;
+  @apply px-3 py-2 text-left;
 
   &:first-of-type {
     @apply pl-6;

@@ -1,7 +1,7 @@
 ---
 command: [blog]
 command_public: true
-command_description: Muestra un listado con las publicaciones disponibles en mi blog.
+command_description: Lista las publicaciones disponibles en mi blog.
 ---
 
 # Blog
