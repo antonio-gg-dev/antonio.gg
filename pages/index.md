@@ -1,6 +1,8 @@
 ---
 title: 'Desarrollador Full Stack'
 command: [home]
+command_public: true
+command_description: Muestra la página principal de mi portfolio.
 ---
 
 <HomeLayout>

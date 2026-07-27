@@ -1,6 +1,7 @@
 ---
 title: Curriculum Vitae
 command: [cv, 'cv --lang=en']
+command_public: false
 ---
 
 <CurriculumVitaeLayout>
