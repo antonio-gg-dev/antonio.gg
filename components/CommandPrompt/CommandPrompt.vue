@@ -1,7 +1,7 @@
 <template>
   <form
     class="route-history__terminal-line"
-    @pointerdown="handlePromptPointerdown"
+    @click="focus"
     @submit.prevent="submitCommand"
   >
     <span
@@ -233,14 +233,6 @@ export default defineComponent({
       this.active = true
       this.setDraft(`${this.draft}${event.key}`)
       this.requestScroll()
-    },
-
-    handlePromptPointerdown(event: PointerEvent): void {
-      if (event.pointerType !== 'touch') {
-        return
-      }
-
-      this.focusKeyboardBridge()
     },
 
     requestScroll(): void {
