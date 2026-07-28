@@ -1,6 +1,7 @@
 <template>
   <form
     class="route-history__terminal-line"
+    @pointerdown="handlePromptPointerdown"
     @submit.prevent="submitCommand"
   >
     <span
@@ -68,7 +69,6 @@ export default defineComponent({
       active: false,
       draft: '',
       windowKeydownListener: null as ((event: KeyboardEvent) => void) | null,
-      windowPointerdownListener: null as ((event: PointerEvent) => void) | null,
     }
   },
 
@@ -82,21 +82,13 @@ export default defineComponent({
     this.windowKeydownListener = (event: KeyboardEvent) => {
       this.handleWindowKeydown(event)
     }
-    this.windowPointerdownListener = (event: PointerEvent) => {
-      this.handleWindowPointerdown(event)
-    }
 
     window.addEventListener('keydown', this.windowKeydownListener)
-    window.addEventListener('pointerdown', this.windowPointerdownListener)
   },
 
   beforeUnmount() {
     if (this.windowKeydownListener !== null) {
       window.removeEventListener('keydown', this.windowKeydownListener)
-    }
-
-    if (this.windowPointerdownListener !== null) {
-      window.removeEventListener('pointerdown', this.windowPointerdownListener)
     }
   },
 
@@ -243,8 +235,8 @@ export default defineComponent({
       this.requestScroll()
     },
 
-    handleWindowPointerdown(event: PointerEvent): void {
-      if (event.pointerType !== 'touch' || isInteractiveTarget(event.target)) {
+    handlePromptPointerdown(event: PointerEvent): void {
+      if (event.pointerType !== 'touch') {
         return
       }
 
