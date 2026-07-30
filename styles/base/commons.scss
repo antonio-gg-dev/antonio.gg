@@ -39,12 +39,10 @@ blockquote {
 
 a {
   @apply font-medium text-primary;
-  font-variation-settings: 'slnt' 0;
 
   &:focus,
   &:hover {
     @apply text-primary-emphasis;
-    font-variation-settings: 'slnt' -10;
   }
 }
 

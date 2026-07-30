@@ -43,7 +43,6 @@ export default defineComponent({
     &:focus {
       @include crt.shadow(theme('colors.background'));
       @apply bg-background;
-      font-variation-settings: 'slnt' 0;
     }
   }
 
