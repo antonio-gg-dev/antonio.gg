@@ -1,6 +1,9 @@
 <template>
   <a
-    class="blog-card__card"
+    :class="{
+      'blog-card__card': true,
+      'blog-card__card--compact': compact,
+    }"
     :href="post.url"
   >
     <span class="blog-card__file-name">{{ post.fileName }}</span>
@@ -20,11 +23,15 @@
       <span>{{ createdAtDay }}</span>
     </time>
     <img
+      v-if="!compact"
       class="blog-card__cover"
       :src="post.coverUrl"
       :alt="post.coverAlt"
     />
-    <div class="blog-card__content">
+    <div
+      v-if="!compact"
+      class="blog-card__content"
+    >
       <h2 class="blog-card__title">
         {{ post.title }}
       </h2>
@@ -59,6 +66,10 @@ export default defineComponent({
     post: {
       required: true,
       type: Object as PropType<Post>,
+    },
+    compact: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -137,6 +148,17 @@ export default defineComponent({
 
     @screen 2xl {
       grid-template-columns: 5fr 4fr 7fr 44fr;
+    }
+
+    &--compact {
+      @apply py-0;
+      grid-template-areas:
+        'file-name  file-name   file-name'
+        'author     word-count  date';
+
+      @screen lg {
+        grid-template-areas: 'author  word-count  date  file-name';
+      }
     }
 
     &:hover,

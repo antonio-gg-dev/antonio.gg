@@ -46,3 +46,25 @@ export const PorQueUsarInlineSvgs: StoryObj<typeof BlogCard> = {
     },
   },
 }
+
+export const Compact: StoryObj<typeof BlogCard> = {
+  args: {
+    compact: true,
+    post: {
+      url: '#re-aprendiendo-oop',
+      fileName: 're-aprendiendo-oop.md',
+      title: 'Re-aprendiendo OOP',
+      description: 'TODO',
+      createdAt: '2025-10-28',
+      author: 'Varios',
+      wordCount: 336,
+      tags: [
+        'diseño',
+        'oop',
+        'software',
+      ],
+      coverUrl: '/images/blog/2025-10-28-re-aprendiendo-oop.png',
+      coverAlt: 'Imagen de portada de Re-aprendiendo OOP',
+    },
+  },
+}

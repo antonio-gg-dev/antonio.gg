@@ -6,6 +6,7 @@
       v-for="post of posts"
       :key="post.url"
       :post="post"
+      :compact="compact"
     />
 
     <RandomHint
@@ -41,6 +42,10 @@ export default defineComponent({
     posts: {
       required: true,
       type: Array as PropType<Post[]>,
+    },
+    compact: {
+      type: Boolean,
+      default: false,
     },
   },
 })
