@@ -67,7 +67,10 @@ export default defineComponent({
   data() {
     return {
       active: false,
+      commandHistory: [] as string[],
       draft: '',
+      historyDraft: '',
+      historyIndex: null as number | null,
       windowKeydownListener: null as ((event: KeyboardEvent) => void) | null,
     }
   },
@@ -100,6 +103,7 @@ export default defineComponent({
 
     cancelCommand(): void {
       this.active = false
+      this.resetHistoryNavigation()
       this.setDraft('')
       this.getKeyboardBridge()?.blur()
     },
@@ -116,6 +120,7 @@ export default defineComponent({
       )
 
       if (matchingCommands.length === 1) {
+        this.resetHistoryNavigation()
         this.setDraft(matchingCommands[0].command)
         this.requestScroll()
 
@@ -125,6 +130,7 @@ export default defineComponent({
       const commonPrefix = findCommonPrefix(matchingCommands.map((definition) => normalizeCommand(definition.command)))
 
       if (commonPrefix.length > normalizedDraft.length) {
+        this.resetHistoryNavigation()
         this.setDraft(commonPrefix)
         this.requestScroll()
       }
@@ -159,6 +165,7 @@ export default defineComponent({
       }
 
       this.active = true
+      this.resetHistoryNavigation()
       this.draft = event.target.value
       event.target.setSelectionRange(event.target.value.length, event.target.value.length)
       this.requestScroll()
@@ -166,6 +173,13 @@ export default defineComponent({
 
     handleKeyboardBridgeKeydown(event: KeyboardEvent): void {
       if (event.isComposing || hasCommandShortcut(event)) {
+        return
+      }
+
+      if (isHistoryKey(event.key)) {
+        event.preventDefault()
+        this.navigateHistory(event.key)
+
         return
       }
 
@@ -199,6 +213,13 @@ export default defineComponent({
         return
       }
 
+      if (isHistoryKey(event.key)) {
+        event.preventDefault()
+        this.navigateHistory(event.key)
+
+        return
+      }
+
       if (event.key === 'Enter' && this.active) {
         event.preventDefault()
         this.submitCommand()
@@ -208,6 +229,7 @@ export default defineComponent({
 
       if (event.key === 'Backspace' && this.active) {
         event.preventDefault()
+        this.resetHistoryNavigation()
         this.setDraft(removeLastCharacter(this.draft))
         this.requestScroll()
 
@@ -240,12 +262,62 @@ export default defineComponent({
 
       event.preventDefault()
       this.active = true
+      this.resetHistoryNavigation()
       this.setDraft(`${this.draft}${event.key}`)
       this.requestScroll()
     },
 
+    navigateHistory(key: HistoryKey): void {
+      if (this.commandHistory.length === 0) {
+        return
+      }
+
+      const previousDraft = this.draft
+
+      if (key === 'ArrowUp') {
+        if (this.historyIndex === null) {
+          this.historyDraft = this.draft
+          this.historyIndex = this.commandHistory.length - 1
+        } else if (this.historyIndex > 0) {
+          this.historyIndex -= 1
+        }
+      } else if (this.historyIndex === null) {
+        return
+      } else if (this.historyIndex < this.commandHistory.length - 1) {
+        this.historyIndex += 1
+      } else {
+        const historyDraft = this.historyDraft
+
+        this.resetHistoryNavigation()
+        this.active = true
+        this.setDraft(historyDraft)
+
+        if (historyDraft !== previousDraft) {
+          this.requestScroll()
+        }
+
+        return
+      }
+
+      if (this.historyIndex === null) {
+        return
+      }
+
+      this.active = true
+      this.setDraft(this.commandHistory[this.historyIndex])
+
+      if (this.draft !== previousDraft) {
+        this.requestScroll()
+      }
+    },
+
     requestScroll(): void {
       this.$emit('typing')
+    },
+
+    resetHistoryNavigation(): void {
+      this.historyDraft = ''
+      this.historyIndex = null
     },
 
     setDraft(draft: string): void {
@@ -265,12 +337,17 @@ export default defineComponent({
       }
 
       const command = this.draft
+
+      this.commandHistory.push(command)
+      this.resetHistoryNavigation()
       this.active = false
       this.$emit('execute', command)
       this.setDraft('')
     },
   },
 })
+
+type HistoryKey = 'ArrowDown' | 'ArrowUp'
 
 function hasCommandShortcut(event: KeyboardEvent): boolean {
   const altGraph = event.getModifierState('AltGraph')
@@ -288,6 +365,10 @@ function findCommonPrefix(values: string[]): string {
   })
 
   return commonPrefix
+}
+
+function isHistoryKey(key: string): key is HistoryKey {
+  return key === 'ArrowDown' || key === 'ArrowUp'
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
