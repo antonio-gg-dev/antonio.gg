@@ -37,8 +37,16 @@ un menú principal: muestra todas las secciones disponibles y el comando necesar
   </tbody>
 </table>
 
+<RandomHint :hints="{ secret: 5 }">
+  <template #secret>
+    Existen comandos y modificadores secretos. Algunos aparecerán en los hints; otros tendrás que buscarlos en el código
+    fuente.
+  </template>
+</RandomHint>
+
 <script lang="ts" setup>
 import type { CommandDefinition } from '@/components/CommandPrompt/Command'
+import RandomHint from '@/components/RandomHint/RandomHint.vue'
 import { data as commands } from './commands.data'
 
 const publicCommands = commands.filter((command) => command.isPublic && command.isPrimary)
