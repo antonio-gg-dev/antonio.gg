@@ -293,7 +293,7 @@ export default defineComponent({
   $p: &;
 
   &__scrollbar {
-    @apply absolute inset-y-2 right-0 z-scrollbar w-2 touch-none bg-transparent;
+    @apply invisible absolute inset-y-2 right-0 z-scrollbar w-2 touch-none bg-transparent;
 
     @screen md {
       @apply inset-y-4 w-4;
@@ -317,6 +317,8 @@ export default defineComponent({
     }
 
     &--scrollable {
+      @apply visible;
+
       &:hover::before {
         @apply bg-neutral-emphasis;
         @include crt.shadow(theme('colors.neutral.emphasis'));
