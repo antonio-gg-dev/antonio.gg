@@ -118,6 +118,15 @@ export default defineComponent({
       if (matchingCommands.length === 1) {
         this.setDraft(matchingCommands[0].command)
         this.requestScroll()
+
+        return
+      }
+
+      const commonPrefix = findCommonPrefix(matchingCommands.map((definition) => normalizeCommand(definition.command)))
+
+      if (commonPrefix.length > normalizedDraft.length) {
+        this.setDraft(commonPrefix)
+        this.requestScroll()
       }
     },
 
@@ -267,6 +276,18 @@ function hasCommandShortcut(event: KeyboardEvent): boolean {
   const altGraph = event.getModifierState('AltGraph')
 
   return event.metaKey || (event.ctrlKey && !altGraph) || (event.altKey && !altGraph)
+}
+
+function findCommonPrefix(values: string[]): string {
+  let commonPrefix = values[0] ?? ''
+
+  values.slice(1).forEach((value) => {
+    while (!value.startsWith(commonPrefix)) {
+      commonPrefix = commonPrefix.slice(0, -1)
+    }
+  })
+
+  return commonPrefix
 }
 
 function isEditableTarget(target: EventTarget | null): boolean {
