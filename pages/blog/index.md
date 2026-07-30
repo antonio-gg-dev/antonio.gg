@@ -1,16 +1,17 @@
 ---
+title: Blog
 command: [blog]
 command_public: true
 command_description: Lista las publicaciones disponibles en mi blog.
 ---
 
-# Blog
+# Blog ls
 
-<ProjectList
-  :projects="posts"
+<BlogList
+  :posts="posts"
 />
 
 <script lang="ts" setup>
 import { data as posts } from './blog.data.ts'
-import ProjectList from '@/components/ProjectList/ProjectList.vue'
+import BlogList from '@/components/BlogList/BlogList.vue'
 </script>

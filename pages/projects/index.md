@@ -1,10 +1,11 @@
 ---
+title: Proyectos
 command: [projects]
 command_public: true
 command_description: Lista los proyectos en los que he participado.
 ---
 
-# Proyectos
+# Proyectos ls
 
 <ProjectList
   :projects="projects"
