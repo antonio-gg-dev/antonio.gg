@@ -1,8 +1,12 @@
 <template>
   <div class="layout__viewport">
-    <div class="layout__surface">
+    <div
+      id="layout-surface"
+      class="layout__surface"
+    >
       <RouteHistory />
     </div>
+    <Scrollbar target-id="layout-surface" />
   </div>
 
   <svg
@@ -38,10 +42,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
+import Scrollbar from '@/components/Scrollbar/Scrollbar.vue'
 
 export default defineComponent({
   components: {
     RouteHistory,
+    Scrollbar,
   },
 })
 </script>
@@ -81,6 +87,11 @@ export default defineComponent({
 
   &__surface {
     @apply h-full overflow-y-auto overflow-x-hidden;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   &__filter {

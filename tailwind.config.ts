@@ -97,6 +97,7 @@ export default {
     zIndex: generateZIndexes(
       [],
       [
+        'scrollbar',
         'code-lang',
         'code-copy',
       ],
