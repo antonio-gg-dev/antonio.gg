@@ -1,10 +1,20 @@
 <template>
-  <div class="blog-list__container">
+  <div class="blog-list">
+    <p>total {{ posts.length }} {{ articleCountLabel }}</p>
+
     <BlogCard
       v-for="post of posts"
       :key="post.url"
       :post="post"
     />
+
+    <p
+      class="blog-list__hint"
+      role="note"
+    >
+      Para leer un artículo, escribe
+      <code class="blog-list__hint-command">blog open nombre-del-artículo.md</code>.
+    </p>
   </div>
 </template>
 
@@ -22,17 +32,23 @@ export default defineComponent({
       type: Array as PropType<Post[]>,
     },
   },
+
+  computed: {
+    articleCountLabel(): string {
+      return this.posts.length === 1 ? 'artículo' : 'artículos'
+    },
+  },
 })
 </script>
 
 <style lang="scss">
 .blog-list {
-  &__container {
-    @apply my-8 grid gap-8;
+  &__hint {
+    @apply text-info;
+  }
 
-    @screen sm {
-      grid-template-columns: repeat(auto-fit, minmax(theme('spacing.80'), 1fr));
-    }
+  &__hint-command {
+    @apply text-foreground;
   }
 }
 </style>
