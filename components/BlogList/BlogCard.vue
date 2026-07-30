@@ -112,11 +112,32 @@ export default defineComponent({
   $p: &;
 
   &__card {
-    @apply -ml-4 grid items-baseline gap-x-4 gap-y-2 px-4 py-2 text-foreground no-underline;
-    grid-template-columns: 5fr 4fr 7fr 44fr;
+    @apply -ml-2 grid items-baseline gap-x-4 gap-y-2 p-2 text-foreground no-underline;
+    grid-template-columns: 5fr 4fr 7fr;
     grid-template-areas:
-      'author  word-count  date   file-name'
-      'cover   cover       cover  content';
+      'file-name  file-name   file-name'
+      'author     word-count  date'
+      'cover      cover       cover'
+      'content    content     content';
+
+    @screen md {
+      @apply -ml-4 px-4;
+    }
+
+    @screen lg {
+      grid-template-columns: 5fr 4fr 7fr 24fr;
+      grid-template-areas:
+        'author  word-count  date   file-name'
+        'cover   cover       cover  content';
+    }
+
+    @screen xl {
+      grid-template-columns: 5fr 4fr 7fr 34fr;
+    }
+
+    @screen 2xl {
+      grid-template-columns: 5fr 4fr 7fr 44fr;
+    }
 
     &:hover,
     &:focus {
