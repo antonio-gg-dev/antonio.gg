@@ -1,5 +1,8 @@
 ---
 title: Re-aprendiendo OOP
+command: ['blog open re-aprendiendo-oop.md']
+author: Varios
+tags: [diseño, oop, software]
 description: 'Esta charla nació de una conversación con un café de por medio. Hablando de nuestros años de estudio,
   recordé que a mí la Programación Orientada a Objetos me costó de aprender. No tardamos en darnos cuenta de que es algo
   que nos pasó a todos. De ahí surgió la idea de explicar la OOP de otra forma: con contexto histórico, entendiendo el

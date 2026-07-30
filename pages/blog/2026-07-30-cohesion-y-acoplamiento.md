@@ -1,5 +1,8 @@
 ---
 title: Cohesión y acoplamiento
+command: ['blog open cohesion-y-acoplamiento.md']
+author: Antonio
+tags: [arquitectura, oop, software]
 description: Imagina que tenemos una aplicación desarrollada con Laravel que permite registrar usuarios. La API recibe
   un nombre y un correo electrónico. El controlador valida la petición, crea un modelo de Eloquent y almacena el momento
   del registro como un Unix timestamp. Es poco código, se entiende rápidamente y cumple su objetivo...

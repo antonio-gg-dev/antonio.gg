@@ -1,5 +1,8 @@
 ---
 title: Por qué usar Inline SVGs
+command: ['blog open por-que-usar-inline-svgs.md']
+author: Antonio
+tags: [frontend, software, svg]
 description: Los iconos parecen un detalle menor, pero su formato influye mucho en el rendimiento y la flexibilidad de
   una interfaz. Usar SVGs en línea en lugar de etiquetas img abre la puerta a mejoras reales tanto en velocidad como en
   personalización.

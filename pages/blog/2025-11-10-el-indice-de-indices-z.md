@@ -1,5 +1,8 @@
 ---
 title: El índice de índices (Z)
+command: ['blog open el-indice-de-indices-z.md']
+author: Antonio
+tags: [css, frontend, software]
 description: 'El z-index es uno de esos detalles que rara vez se piensan al inicio de un proyecto, pero que con el
   tiempo puede convertirse en un caos. Cuando cada componente define su propio valor arbitrario, mantener un orden
   visual coherente entre capas se vuelve una tarea imposible: modales que quedan detrás de menús, tooltips invisibles,

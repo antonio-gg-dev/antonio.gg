@@ -1,6 +1,6 @@
 ---
 title: Blog
-command: [blog]
+command: [blog, 'blog --compact', 'blog -c']
 command_public: true
 command_description: Lista las publicaciones disponibles en mi blog.
 ---
