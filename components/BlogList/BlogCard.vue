@@ -40,7 +40,7 @@
           :key="tag"
           class="blog-card__tag"
         >
-          <code>{{ tag }}</code>
+          <HashTag :tag="tag" />
         </li>
       </ul>
     </div>
@@ -50,8 +50,11 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import { type Post } from '@/pages/blog/blog.data'
+import HashTag from '@/components/HashTag/HashTag.vue'
 
 export default defineComponent({
+  components: { HashTag },
+
   props: {
     post: {
       required: true,
