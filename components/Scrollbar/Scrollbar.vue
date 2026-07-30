@@ -293,25 +293,49 @@ export default defineComponent({
   $p: &;
 
   &__scrollbar {
-    @apply absolute inset-y-8 right-0 z-scrollbar w-8 touch-none bg-transparent;
+    @apply absolute inset-y-2 right-0 z-scrollbar w-2 touch-none bg-transparent;
+
+    @screen md {
+      @apply inset-y-4 w-4;
+    }
+
+    @screen xl {
+      @apply inset-y-8 w-8;
+    }
 
     &::before {
-      @apply absolute inset-x-2 inset-y-0 border-0.5 border-neutral bg-transparent content-[''];
+      @apply absolute inset-0 bg-neutral content-[''];
       @include crt.shadow(theme('colors.neutral.DEFAULT'));
+
+      @screen md {
+        @apply border-0.5 border-neutral bg-transparent;
+      }
+
+      @screen xl {
+        @apply inset-x-2;
+      }
     }
 
     &--scrollable {
       &:hover::before {
-        @apply border-neutral-emphasis;
+        @apply bg-neutral-emphasis;
         @include crt.shadow(theme('colors.neutral.emphasis'));
+
+        @screen md {
+          @apply border-neutral-emphasis bg-transparent;
+        }
       }
 
       &:focus-visible {
         @apply outline-none;
 
         &::before {
-          @apply border-neutral-emphasis;
+          @apply bg-neutral-emphasis;
           @include crt.shadow(theme('colors.neutral.emphasis'));
+
+          @screen md {
+            @apply border-neutral-emphasis bg-transparent;
+          }
         }
       }
     }
@@ -329,12 +353,31 @@ export default defineComponent({
     @apply absolute inset-x-0 top-0 min-h-8 will-change-transform;
 
     &::before {
-      @apply absolute inset-x-3 inset-y-1 bg-neutral-emphasis content-[''];
+      @apply absolute inset-0 bg-neutral-emphasis content-[''];
       @include crt.shadow(theme('colors.neutral.emphasis'));
+
+      @screen md {
+        @apply inset-1;
+      }
+
+      @screen xl {
+        @apply inset-x-3;
+      }
     }
 
     &--scrollable {
-      &:hover::before {
+      #{$p}__scrollbar:hover &::before {
+        @apply bg-primary-emphasis;
+        @include crt.shadow(theme('colors.primary.emphasis'));
+
+        @screen md {
+          @apply bg-neutral-emphasis;
+          @include crt.shadow(theme('colors.neutral.emphasis'));
+        }
+      }
+
+      &:hover::before,
+      #{$p}__scrollbar:hover &:hover::before {
         @apply bg-primary-emphasis;
         @include crt.shadow(theme('colors.primary.emphasis'));
       }
@@ -345,7 +388,8 @@ export default defineComponent({
       }
     }
 
-    &--dragging::before {
+    &--dragging::before,
+    #{$p}__scrollbar:hover &--dragging::before {
       @apply bg-primary-emphasis;
       @include crt.shadow(theme('colors.primary.emphasis'));
     }

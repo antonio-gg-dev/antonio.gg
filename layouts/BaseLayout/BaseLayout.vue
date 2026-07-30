@@ -59,7 +59,7 @@ export default defineComponent({
     filter: url('#crt-displacement');
 
     &::after {
-      @apply pointer-events-none absolute inset-0 rounded-3xl;
+      @apply pointer-events-none absolute inset-0 z-crt-overlay rounded-3xl;
       animation: crt-screen-sweep 8s linear infinite;
       background-image: linear-gradient(to bottom, transparent, theme('colors.bezel/0.12') 50%, transparent),
         repeating-linear-gradient(

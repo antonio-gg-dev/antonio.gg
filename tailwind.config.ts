@@ -100,6 +100,7 @@ export default {
         'scrollbar',
         'code-lang',
         'code-copy',
+        'crt-overlay',
       ],
     ),
   },
