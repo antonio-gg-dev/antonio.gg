@@ -55,7 +55,7 @@ export default defineComponent({
 <style lang="scss">
 .layout {
   &__viewport {
-    @apply container fixed inset-x-0 top-0 h-dvh overflow-hidden rounded-3xl bg-background;
+    @apply container fixed inset-x-0 top-0 h-dvh overflow-hidden rounded-3xl bg-background px-0;
     filter: url('#crt-displacement');
 
     &::after {
@@ -86,8 +86,16 @@ export default defineComponent({
   }
 
   &__surface {
-    @apply h-full overflow-y-auto overflow-x-hidden;
+    @apply h-full overflow-y-auto overflow-x-hidden px-2;
     scrollbar-width: none;
+
+    @screen md {
+      @apply px-4;
+    }
+
+    @screen xl {
+      @apply px-8;
+    }
 
     &::-webkit-scrollbar {
       display: none;
