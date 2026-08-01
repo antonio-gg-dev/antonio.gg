@@ -1,5 +1,8 @@
 ---
 title: Papelera para puerta del coche
+command: ['projects open car-door-trash-bin.3d']
+author: Antonio
+tags: [3d-print, accesorio, coche]
 description: Todo empezó con una molestia cotidiana, los pequeños residuos que se acumulan en el coche. Envoltorios,
   tickets, papeles...
 created_at: 2022-02-15

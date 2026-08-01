@@ -1,5 +1,8 @@
 ---
 title: bashunit
+command: ['projects open bashunit.src']
+author: TypedDevs
+tags: [bash, software, testing]
 description: Framework de testing para scripts de Bash sencillo y eficiente, se centra en el developer experience con
   una sintaxis clara y un enfoque minimalista.
 created_at: 2023-09-04

@@ -1,5 +1,8 @@
 ---
 title: Gacela Project
+command: ['projects open gacela-project.src']
+author: Varios
+tags: [arquitectura, framework, php, software]
 description: Framework PHP que facilita el desarrollo de aplicaciones modulares, destacando por su claridad, facilidad
   de uso y mejora en la mantenibilidad del código.
 created_at: 2021-09-13

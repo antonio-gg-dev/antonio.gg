@@ -1,5 +1,8 @@
 ---
 title: Huezzle
+command: ['projects open huezzle.src']
+author: Antonio
+tags: [frontend, juego, puzzle, software, vue]
 description: Juego de puzzles diarios, reordena cromáticamente una cuadrícula de colores,
   cada día todo el mundo se enfrentará a un mismo reto que se generará proceduralmente.
 created_at: 2023-07-01

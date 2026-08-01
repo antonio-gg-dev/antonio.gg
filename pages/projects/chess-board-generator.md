@@ -1,5 +1,8 @@
 ---
 title: Chess Board Generator
+command: ['projects open chess-board-generator.src']
+author: Antonio
+tags: [3d-print, frontend, javascript, software, vanilla]
 description: Generador de tableros de ajedrez imprimibles, pensado para jugar con piezas también impresas en 3D, usando
   HTML, CSS y JS puro para mantenerlo simple y ligero.
 created_at: 2022-03-27
