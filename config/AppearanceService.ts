@@ -1,11 +1,10 @@
 import { shallowRef } from 'vue'
 import { Appearance, AppearanceEffect } from './Appearance'
-import { ColorScheme, Theme, ThemeColor, ThemeId, type PresetThemeId } from './Theme'
+import { Theme, ThemeColor, ThemeId, type PresetThemeId } from './Theme'
 import { Viewport } from './Viewport'
 
 interface StoredAppearance {
   theme: ThemeId
-  colorScheme?: ColorScheme
   bezel?: string
   background?: string
   foreground?: string
@@ -30,7 +29,7 @@ interface StoredAppearance {
   sweep: boolean
 }
 
-type StoredCustomTheme = Required<Pick<StoredAppearance, ThemeColor | 'colorScheme'>>
+type StoredCustomTheme = Required<Pick<StoredAppearance, ThemeColor>>
 
 class AppearanceService {
   private static readonly storageKey = 'antonio.gg.theme'
@@ -254,12 +253,11 @@ class AppearanceService {
       return null
     }
 
-    return Theme.custom(Theme.mambo(), value, value.colorScheme)
+    return Theme.custom(Theme.mambo(), value)
   }
 
   private toStoredCustomTheme(theme: Theme): StoredCustomTheme {
     return {
-      colorScheme: theme.colorScheme,
       bezel: theme.bezel,
       background: theme.background,
       foreground: theme.foreground,
@@ -282,10 +280,6 @@ class AppearanceService {
 
   private isStoredTheme(value: unknown): value is StoredCustomTheme {
     if (!this.isRecord(value)) {
-      return false
-    }
-
-    if (value.colorScheme !== ColorScheme.Dark && value.colorScheme !== ColorScheme.Light) {
       return false
     }
 

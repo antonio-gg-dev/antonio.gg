@@ -166,18 +166,17 @@ export class Theme {
     )
   }
 
-  public static custom(
-    source: Theme,
-    colors: Partial<Record<ThemeColor, string>> = {},
-    colorScheme: ColorScheme = source.colorScheme,
-  ): Theme {
+  public static custom(source: Theme, colors: Partial<Record<ThemeColor, string>> = {}): Theme {
+    const background = colors.background ?? source.background
+    const foreground = colors.foreground ?? source.foreground
+
     return new Theme(
       ThemeId.Custom,
       'Personalizado',
-      colorScheme,
+      Theme.detectColorScheme(background, foreground),
       colors.bezel ?? source.bezel,
-      colors.background ?? source.background,
-      colors.foreground ?? source.foreground,
+      background,
+      foreground,
       colors.neutral ?? source.neutral,
       colors.neutralEmphasis ?? source.neutralEmphasis,
       colors.danger ?? source.danger,
@@ -193,6 +192,46 @@ export class Theme {
       colors.info ?? source.info,
       colors.infoEmphasis ?? source.infoEmphasis,
     )
+  }
+
+  private static detectColorScheme(background: string, foreground: string): ColorScheme {
+    return Theme.relativeLuminance(background) > Theme.relativeLuminance(foreground)
+      ? ColorScheme.Light
+      : ColorScheme.Dark
+  }
+
+  /**
+   * @see https://www.w3.org/TR/WCAG22/#dfn-relative-luminance
+   */
+  private static relativeLuminance(color: string): number {
+    const EIGHT_BIT_CHANNEL_MAX = 255
+    const LINEAR_THRESHOLD = 0.04045
+    const LINEAR_DIVISOR = 12.92
+    const NONLINEAR_OFFSET = 0.055
+    const NONLINEAR_SCALE = 1.055
+    const NONLINEAR_EXPONENT = 2.4
+    const RED_WEIGHT = 0.2126
+    const GREEN_WEIGHT = 0.7152
+    const BLUE_WEIGHT = 0.0722
+    const [
+      red,
+      green,
+      blue,
+    ] = [
+      Number.parseInt(color.slice(1, 3), 16),
+      Number.parseInt(color.slice(3, 5), 16),
+      Number.parseInt(color.slice(5, 7), 16),
+    ].map((channel) => {
+      const normalized = channel / EIGHT_BIT_CHANNEL_MAX
+
+      if (normalized <= LINEAR_THRESHOLD) {
+        return normalized / LINEAR_DIVISOR
+      }
+
+      return ((normalized + NONLINEAR_OFFSET) / NONLINEAR_SCALE) ** NONLINEAR_EXPONENT
+    })
+
+    return RED_WEIGHT * red + GREEN_WEIGHT * green + BLUE_WEIGHT * blue
   }
 
   public toCssProperties(): Record<string, string> {
