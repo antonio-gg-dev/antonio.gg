@@ -2,9 +2,8 @@
   <label class="theme-select__field">
     <span class="theme-select__label">Tema</span>
     <select
+      v-model="activeThemeId"
       class="theme-select__select"
-      :value="activeThemeId"
-      @change="changeTheme"
     >
       <option
         v-for="theme in themes"
@@ -28,18 +27,14 @@ export default defineComponent({
       return Theme.all()
     },
 
-    activeThemeId(): ThemeId {
-      return themeService.state.activeTheme.id
-    },
-  },
+    activeThemeId: {
+      get(): ThemeId {
+        return themeService.state.activeTheme.id
+      },
 
-  methods: {
-    changeTheme(event: Event): void {
-      if (!(event.currentTarget instanceof HTMLSelectElement)) {
-        return
-      }
-
-      themeService.activate(this.themes[event.currentTarget.value as ThemeId])
+      set(themeId: ThemeId): void {
+        themeService.activate(this.themes[themeId])
+      },
     },
   },
 })
