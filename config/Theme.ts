@@ -1,4 +1,5 @@
 export enum ThemeId {
+  Chocula = 'chocula',
   Mambo = 'mambo',
   P1Phosphor = 'p1-phosphor',
   Solaris = 'solaris',
@@ -35,10 +36,36 @@ export class Theme {
 
   public static all(): Record<ThemeId, Theme> {
     return {
+      [ThemeId.Chocula]: Theme.chocula(),
       [ThemeId.Mambo]: Theme.mambo(),
       [ThemeId.P1Phosphor]: Theme.p1Phosphor(),
       [ThemeId.Solaris]: Theme.solaris(),
     }
+  }
+
+  public static chocula(): Theme {
+    return new Theme(
+      ThemeId.Chocula,
+      'Chocula',
+      ColorScheme.Dark,
+      '#000000',
+      '#282A36',
+      '#F8F8F2',
+      '#21222C',
+      '#6272A4',
+      '#FF5555',
+      '#FF6E6E',
+      '#50FA7B',
+      '#69FF94',
+      '#F1FA8C',
+      '#FFFFA5',
+      '#BD93F9',
+      '#D6ACFF',
+      '#FF79C6',
+      '#FF92DF',
+      '#8BE9FD',
+      '#A4FFFF',
+    )
   }
 
   public static mambo(): Theme {
