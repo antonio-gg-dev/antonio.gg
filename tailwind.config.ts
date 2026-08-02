@@ -1,6 +1,6 @@
 import { type Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
-import { Theme } from './config/Theme'
+import { Theme, ThemeId } from './config/Theme'
 import { Viewport } from './config/Viewport'
 
 export default {
@@ -134,12 +134,14 @@ function generateZIndexes(negative: string[], positive: string[]): Record<string
 }
 
 export function createThemeBaseStyles(): Record<string, Record<string, string>> {
-  const mambo = Theme.mambo()
-  const p1Phosphor = Theme.p1Phosphor()
-
-  return {
-    ':root': mambo.toCssProperties(),
-    [`[data-theme='${mambo.id}']`]: mambo.toCssProperties(),
-    [`[data-theme='${p1Phosphor.id}']`]: p1Phosphor.toCssProperties(),
+  const themes = Theme.all()
+  const styles: Record<string, Record<string, string>> = {
+    ':root': themes[ThemeId.Mambo].toCssProperties(),
   }
+
+  Object.values(themes).forEach((theme) => {
+    styles[`[data-theme='${theme.id}']`] = theme.toCssProperties()
+  })
+
+  return styles
 }

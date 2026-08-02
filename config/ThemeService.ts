@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { Theme, ThemeId } from './Theme'
+import { Theme, type ThemeId } from './Theme'
 
 interface ThemeState {
   activeTheme: Theme
@@ -65,13 +65,7 @@ class ThemeService {
   }
 
   private createTheme(id: string | null): Theme {
-    switch (id) {
-      case ThemeId.P1Phosphor:
-        return Theme.p1Phosphor()
-      case ThemeId.Mambo:
-      default:
-        return Theme.mambo()
-    }
+    return Theme.all()[id as ThemeId] ?? Theme.mambo()
   }
 }
 

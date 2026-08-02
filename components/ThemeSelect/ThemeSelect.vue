@@ -6,19 +6,28 @@
       :value="activeThemeId"
       @change="changeTheme"
     >
-      <option value="mambo">Mambo</option>
-      <option value="p1-phosphor">P1 Phosphor</option>
+      <option
+        v-for="theme in themes"
+        :key="theme.id"
+        :value="theme.id"
+      >
+        {{ theme.name }}
+      </option>
     </select>
   </label>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Theme, ThemeId } from '@/config/Theme'
+import { Theme, type ThemeId } from '@/config/Theme'
 import { themeService } from '@/config/ThemeService'
 
 export default defineComponent({
   computed: {
+    themes(): Record<ThemeId, Theme> {
+      return Theme.all()
+    },
+
     activeThemeId(): ThemeId {
       return themeService.state.activeTheme.id
     },
@@ -30,14 +39,7 @@ export default defineComponent({
         return
       }
 
-      switch (event.currentTarget.value) {
-        case ThemeId.P1Phosphor:
-          themeService.activate(Theme.p1Phosphor())
-          break
-        case ThemeId.Mambo:
-          themeService.activate(Theme.mambo())
-          break
-      }
+      themeService.activate(this.themes[event.currentTarget.value as ThemeId])
     },
   },
 })
