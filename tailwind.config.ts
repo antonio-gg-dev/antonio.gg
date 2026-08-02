@@ -1,4 +1,6 @@
 import { type Config } from 'tailwindcss'
+import plugin from 'tailwindcss/plugin'
+import { Theme } from './config/Theme'
 import { Viewport } from './config/Viewport'
 
 export default {
@@ -7,6 +9,7 @@ export default {
     './components/**/*.vue',
     './components/**/*.stories.ts',
   ],
+
   theme: {
     screens: {
       [Viewport.sm.name]: Viewport.sm.pixelWidth,
@@ -33,9 +36,9 @@ export default {
 
     colors: {
       transparent: 'transparent',
-      bezel: '#000000',
-      background: '#2E3436',
-      foreground: '#EEEEEC',
+      bezel: variableColor('bezel'),
+      background: variableColor('background'),
+      foreground: variableColor('foreground'),
       crt: {
         aberration: {
           left: 'rgb(from currentcolor r 0 0)',
@@ -43,32 +46,32 @@ export default {
         },
       },
       neutral: {
-        DEFAULT: '#555753',
-        emphasis: '#D3D7CF',
+        DEFAULT: variableColor('neutral'),
+        emphasis: variableColor('neutral-emphasis'),
       },
       danger: {
-        DEFAULT: '#CC0000',
-        emphasis: '#EF2929',
+        DEFAULT: variableColor('danger'),
+        emphasis: variableColor('danger-emphasis'),
       },
       success: {
-        DEFAULT: '#4E9A06',
-        emphasis: '#8AE234',
+        DEFAULT: variableColor('success'),
+        emphasis: variableColor('success-emphasis'),
       },
       warning: {
-        DEFAULT: '#C4A000',
-        emphasis: '#FCE94F',
+        DEFAULT: variableColor('warning'),
+        emphasis: variableColor('warning-emphasis'),
       },
       primary: {
-        DEFAULT: '#3465A4',
-        emphasis: '#729FCF',
+        DEFAULT: variableColor('primary'),
+        emphasis: variableColor('primary-emphasis'),
       },
       accent: {
-        DEFAULT: '#75507B',
-        emphasis: '#AD7FA8',
+        DEFAULT: variableColor('accent'),
+        emphasis: variableColor('accent-emphasis'),
       },
       info: {
-        DEFAULT: '#06989A',
-        emphasis: '#34E2E2',
+        DEFAULT: variableColor('info'),
+        emphasis: variableColor('info-emphasis'),
       },
     },
 
@@ -104,8 +107,17 @@ export default {
       ],
     ),
   },
-  plugins: [],
+
+  plugins: [
+    plugin(({ addBase }) => {
+      addBase(createThemeBaseStyles())
+    }),
+  ],
 } satisfies Config
+
+function variableColor(name: string): string {
+  return `rgb(from var(--color-${name}) r g b / <alpha-value>)`
+}
 
 function generateZIndexes(negative: string[], positive: string[]): Record<string, string> {
   const result: Record<string, string> = { auto: 'auto' }
@@ -119,4 +131,15 @@ function generateZIndexes(negative: string[], positive: string[]): Record<string
   })
 
   return result
+}
+
+export function createThemeBaseStyles(): Record<string, Record<string, string>> {
+  const mambo = Theme.mambo()
+  const p1Phosphor = Theme.p1Phosphor()
+
+  return {
+    ':root': mambo.toCssProperties(),
+    [`[data-theme='${mambo.id}']`]: mambo.toCssProperties(),
+    [`[data-theme='${p1Phosphor.id}']`]: p1Phosphor.toCssProperties(),
+  }
 }
