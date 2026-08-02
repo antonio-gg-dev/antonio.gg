@@ -1,13 +1,14 @@
 @mixin text {
-  animation: crt-text-glow 4s linear infinite;
-  text-shadow:
-    -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
-    0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
-    0 0 0.1rem currentcolor,
-    0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
+  html:not([data-effect-aberration='false']) & {
+    text-shadow:
+      -0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent),
+      0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent),
+      0 0 0.1rem currentcolor,
+      0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent);
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+  html[data-effect-flicker='true'] & {
+    animation: crt-text-glow 4s linear infinite;
   }
 
   @media print {
@@ -17,13 +18,14 @@
 }
 
 @mixin icon {
-  filter: drop-shadow(-0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent))
-    drop-shadow(0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent))
-    drop-shadow(0 0 0.1rem currentcolor) drop-shadow(0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent));
-  animation: crt-icon-glow 4s linear infinite;
+  html:not([data-effect-aberration='false']) & {
+    filter: drop-shadow(-0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.left') 60%, transparent))
+      drop-shadow(0.075rem 0 0 color-mix(in srgb, theme('colors.crt.aberration.right') 60%, transparent))
+      drop-shadow(0 0 0.1rem currentcolor) drop-shadow(0 0 0.3rem color-mix(in srgb, currentcolor 50%, transparent));
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+  html[data-effect-flicker='true'] & {
+    animation: crt-icon-glow 4s linear infinite;
   }
 
   @media print {
@@ -33,17 +35,18 @@
 }
 
 @mixin shadow($color) {
-  --crt-shadow-color: #{$color};
+  html:not([data-effect-aberration='false']) & {
+    --crt-shadow-color: #{$color};
 
-  animation: crt-shadow-glow 4s linear infinite;
-  box-shadow:
-    -0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 60%, transparent),
-    0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 60%, transparent),
-    0 0 0.1rem var(--crt-shadow-color),
-    0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+    box-shadow:
+      -0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 60%, transparent),
+      0.075rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 60%, transparent),
+      0 0 0.1rem var(--crt-shadow-color),
+      0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+  }
 
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
+  html[data-effect-flicker='true'] & {
+    animation: crt-shadow-glow 4s linear infinite;
   }
 
   @media print {

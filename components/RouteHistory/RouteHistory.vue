@@ -592,12 +592,16 @@ function decodeHash(hash: string): string {
     @include crt.shadow(theme('colors.foreground'));
     @apply inline-block h-4 w-2.5 bg-foreground;
     transform: translateY(0.1em);
-    animation:
-      route-history-cursor-blink 1s steps(1, end) infinite,
-      crt-shadow-glow 4s linear infinite;
+    animation: route-history-cursor-blink 1s steps(1, end) infinite;
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;
+    }
+
+    html[data-effect-flicker='true'] & {
+      animation:
+        route-history-cursor-blink 1s steps(1, end) infinite,
+        crt-shadow-glow 4s linear infinite;
     }
   }
 

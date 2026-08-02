@@ -1,13 +1,16 @@
 @use '@/styles/mixins/crt';
 
 html {
-  @include crt.text;
   @apply font-default text-foreground;
   font-size: 20px;
 
   @media print {
     font-size: 14px;
   }
+}
+
+body {
+  @include crt.text;
 }
 
 p {
