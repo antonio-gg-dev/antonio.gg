@@ -111,6 +111,26 @@ export default defineComponent({
         @apply rounded-none;
       }
     }
+
+    html:not([data-effect-curvature]) & {
+      @apply rounded-none;
+      filter: none;
+
+      &::before,
+      &::after {
+        @apply rounded-none;
+      }
+
+      @screen lg {
+        @apply rounded-3xl;
+        filter: url('#crt-displacement');
+
+        &::before,
+        &::after {
+          @apply rounded-3xl;
+        }
+      }
+    }
   }
 
   &__surface {

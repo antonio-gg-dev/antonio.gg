@@ -1,6 +1,7 @@
 import { shallowRef } from 'vue'
 import { Appearance, AppearanceEffect } from './Appearance'
 import { Theme, type ThemeId } from './Theme'
+import { Viewport } from './Viewport'
 
 interface StoredAppearance {
   theme: ThemeId
@@ -14,6 +15,7 @@ interface StoredAppearance {
 class AppearanceService {
   private static readonly storageKey = 'antonio.gg.theme'
   private static readonly reducedMotionQuery = '(prefers-reduced-motion: reduce)'
+  private static readonly curvatureQuery = `(min-width: ${Viewport.lg.pixelWidth})`
 
   private readonly appearanceState = shallowRef<Appearance>(new Appearance(Theme.mambo(), true, true, true, true, true))
 
@@ -141,8 +143,9 @@ class AppearanceService {
 
   private createFallbackAppearance(): Appearance {
     const animationsActive = !window.matchMedia(AppearanceService.reducedMotionQuery).matches
+    const curvatureActive = window.matchMedia(AppearanceService.curvatureQuery).matches
 
-    return new Appearance(Theme.mambo(), true, animationsActive, true, true, animationsActive)
+    return new Appearance(Theme.mambo(), true, animationsActive, curvatureActive, true, animationsActive)
   }
 
   private createTheme(id: string): Theme | null {
