@@ -1,5 +1,6 @@
 <template>
   <button
+    v-if="visible"
     class="scroll-to-bottom-button"
     type="button"
     aria-label="Scroll to bottom"
@@ -25,15 +26,69 @@ export default defineComponent({
     },
   },
 
+  data() {
+    return {
+      resizeObserver: null as ResizeObserver | null,
+      scrollListener: null as (() => void) | null,
+      target: null as HTMLElement | null,
+      visible: false,
+    }
+  },
+
+  mounted() {
+    this.target = document.getElementById(this.targetId)
+
+    if (this.target === null) {
+      return
+    }
+
+    this.scrollListener = () => {
+      this.updateVisibility()
+    }
+    this.target.addEventListener('scroll', this.scrollListener, { passive: true })
+
+    this.resizeObserver = new ResizeObserver(() => {
+      this.updateVisibility()
+    })
+
+    this.resizeObserver.observe(this.target)
+
+    const content = this.target.firstElementChild
+
+    if (content instanceof HTMLElement) {
+      this.resizeObserver.observe(content)
+    }
+
+    this.updateVisibility()
+  },
+
+  beforeUnmount() {
+    if (this.target !== null && this.scrollListener !== null) {
+      this.target.removeEventListener('scroll', this.scrollListener)
+    }
+
+    this.resizeObserver?.disconnect()
+  },
+
   methods: {
     scrollToBottom(): void {
-      const target = document.getElementById(this.targetId)
-
-      if (target === null) {
+      if (this.target === null) {
         return
       }
 
-      target.scrollTop = target.scrollHeight
+      this.target.scrollTop = this.target.scrollHeight
+      this.updateVisibility()
+    },
+
+    updateVisibility(): void {
+      if (this.target === null) {
+        this.visible = false
+
+        return
+      }
+
+      const maximumScrollTop = Math.max(this.target.scrollHeight - this.target.clientHeight, 0)
+      this.visible = maximumScrollTop > 0 && this.target.scrollTop < maximumScrollTop - 1
     },
   },
 })
