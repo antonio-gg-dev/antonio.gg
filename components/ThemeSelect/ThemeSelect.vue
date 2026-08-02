@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { Theme, type ThemeId } from '@/config/Theme'
-import { themeService } from '@/config/ThemeService'
+import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({
   computed: {
@@ -29,11 +29,11 @@ export default defineComponent({
 
     activeThemeId: {
       get(): ThemeId {
-        return themeService.state.activeTheme.id
+        return appearanceService.appearance.theme.id
       },
 
       set(themeId: ThemeId): void {
-        themeService.activate(this.themes[themeId])
+        appearanceService.activateTheme(this.themes[themeId])
       },
     },
   },

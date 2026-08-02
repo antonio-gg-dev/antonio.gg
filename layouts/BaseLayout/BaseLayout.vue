@@ -45,7 +45,7 @@ import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
 import ScrollToBottomButton from '@/components/ScrollToBottomButton/ScrollToBottomButton.vue'
 import Scrollbar from '@/components/Scrollbar/Scrollbar.vue'
-import { themeService } from '@/config/ThemeService'
+import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({
   components: {
@@ -55,11 +55,11 @@ export default defineComponent({
   },
 
   mounted() {
-    themeService.start()
+    appearanceService.start()
   },
 
   beforeUnmount() {
-    themeService.stop()
+    appearanceService.stop()
   },
 })
 </script>
@@ -70,29 +70,45 @@ export default defineComponent({
     @apply container fixed inset-x-0 top-0 h-dvh overflow-hidden rounded-3xl bg-background px-0;
     filter: url('#crt-displacement');
 
+    &::before,
     &::after {
       @apply pointer-events-none absolute inset-0 z-crt-overlay rounded-3xl;
-      animation: crt-screen-sweep 8s linear infinite;
-      background-image: linear-gradient(to bottom, transparent, theme('colors.bezel/0.12') 50%, transparent),
-        repeating-linear-gradient(
-          to bottom,
-          theme('colors.bezel/0.18') 0 0.06rem,
-          transparent 0.12rem 0.18rem,
-          theme('colors.bezel/0.18') 0.24rem
-        );
-      background-position:
-        0 -12dvh,
-        0 0;
-      background-size:
-        100% 12dvh,
-        100% 100%;
-      background-repeat: no-repeat, repeat;
       content: '';
     }
 
-    @media (prefers-reduced-motion: reduce) {
+    &::before {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        theme('colors.bezel/0.18') 0 0.06rem,
+        transparent 0.12rem 0.18rem,
+        theme('colors.bezel/0.18') 0.24rem
+      );
+
+      html[data-effect-scanlines='false'] & {
+        @apply hidden;
+      }
+    }
+
+    &::after {
+      @apply hidden;
+      background-image: linear-gradient(to bottom, transparent, theme('colors.bezel/0.12') 50%, transparent);
+      background-position: 0 -12dvh;
+      background-size: 100% 12dvh;
+      background-repeat: no-repeat;
+
+      html[data-effect-sweep='true'] & {
+        @apply block;
+        animation: crt-screen-sweep 8s linear infinite;
+      }
+    }
+
+    html[data-effect-curvature='false'] & {
+      @apply rounded-none;
+      filter: none;
+
+      &::before,
       &::after {
-        animation: none;
+        @apply rounded-none;
       }
     }
   }
@@ -123,6 +139,7 @@ export default defineComponent({
       @apply static h-auto max-w-none overflow-visible;
       filter: none;
 
+      &::before,
       &::after {
         @apply hidden;
       }
@@ -140,16 +157,12 @@ export default defineComponent({
 
 @keyframes crt-screen-sweep {
   0% {
-    background-position:
-      0 -12dvh,
-      0 0;
+    background-position: 0 -12dvh;
   }
 
   18.75%,
   100% {
-    background-position:
-      0 112dvh,
-      0 0;
+    background-position: 0 112dvh;
   }
 }
 </style>
