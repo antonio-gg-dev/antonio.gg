@@ -43,11 +43,20 @@
 import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
 import Scrollbar from '@/components/Scrollbar/Scrollbar.vue'
+import { themeService } from '@/config/ThemeService'
 
 export default defineComponent({
   components: {
     RouteHistory,
     Scrollbar,
+  },
+
+  mounted() {
+    themeService.start()
+  },
+
+  beforeUnmount() {
+    themeService.stop()
   },
 })
 </script>
