@@ -8,6 +8,11 @@
         class="appearance-effects__checkbox"
         type="checkbox"
       />
+      <CheckBoxIcon
+        :active="curvature"
+        aria-hidden="true"
+        class="appearance-effects__icon"
+      />
       <span>Distorsión de barril</span>
     </label>
 
@@ -16,6 +21,11 @@
         v-model="scanlines"
         class="appearance-effects__checkbox"
         type="checkbox"
+      />
+      <CheckBoxIcon
+        :active="scanlines"
+        aria-hidden="true"
+        class="appearance-effects__icon"
       />
       <span>Líneas de exploración</span>
     </label>
@@ -27,6 +37,11 @@
         type="checkbox"
         :disabled="!appearance.scanlines"
       />
+      <CheckBoxIcon
+        :active="sweep"
+        aria-hidden="true"
+        class="appearance-effects__icon"
+      />
       <span>Barrido luminoso</span>
     </label>
 
@@ -35,6 +50,11 @@
         v-model="aberration"
         class="appearance-effects__checkbox"
         type="checkbox"
+      />
+      <CheckBoxIcon
+        :active="aberration"
+        aria-hidden="true"
+        class="appearance-effects__icon"
       />
       <span>Aberración cromática</span>
     </label>
@@ -46,6 +66,11 @@
         type="checkbox"
         :disabled="!appearance.aberration"
       />
+      <CheckBoxIcon
+        :active="flicker"
+        aria-hidden="true"
+        class="appearance-effects__icon"
+      />
       <span>Parpadeo de la aberración</span>
     </label>
   </fieldset>
@@ -53,10 +78,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import CheckBoxIcon from '@/components/Icons/CheckBoxIcon.vue'
 import { type Appearance, AppearanceEffect } from '@/config/Appearance'
 import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({
+  components: {
+    CheckBoxIcon,
+  },
+
   computed: {
     appearance(): Appearance {
       return appearanceService.appearance
@@ -117,6 +147,8 @@ export default defineComponent({
 
 <style lang="scss">
 .appearance-effects {
+  $p: &;
+
   @apply my-8 flex max-w-md flex-col gap-3;
 
   &__legend {
@@ -127,15 +159,29 @@ export default defineComponent({
     @apply flex cursor-pointer items-center gap-3;
 
     &:has(input:disabled) {
-      @apply cursor-not-allowed opacity-50;
+      @apply cursor-not-allowed text-neutral;
     }
   }
 
   &__checkbox {
-    @apply h-5 w-5 cursor-pointer accent-primary-emphasis;
+    @apply sr-only;
+  }
 
-    &:disabled {
-      @apply cursor-not-allowed;
+  &__icon {
+    @apply h-5 shrink-0;
+
+    --check: #{theme('colors.foreground')};
+
+    #{$p}__field:not(:has(input:disabled)):hover & {
+      @apply text-primary-emphasis;
+    }
+
+    #{$p}__field:has(input:disabled) & {
+      --check: #{theme('colors.neutral.DEFAULT')};
+    }
+
+    #{$p}__checkbox:focus-visible + & {
+      @apply outline outline-2 outline-offset-2 outline-primary-emphasis;
     }
   }
 }
