@@ -1,10 +1,28 @@
 import { shallowRef } from 'vue'
 import { Appearance, AppearanceEffect } from './Appearance'
-import { Theme, type ThemeId } from './Theme'
+import { ColorScheme, Theme, ThemeColor, ThemeId, type PresetThemeId } from './Theme'
 import { Viewport } from './Viewport'
 
 interface StoredAppearance {
   theme: ThemeId
+  colorScheme?: ColorScheme
+  bezel?: string
+  background?: string
+  foreground?: string
+  neutral?: string
+  neutralEmphasis?: string
+  danger?: string
+  dangerEmphasis?: string
+  success?: string
+  successEmphasis?: string
+  warning?: string
+  warningEmphasis?: string
+  primary?: string
+  primaryEmphasis?: string
+  accent?: string
+  accentEmphasis?: string
+  info?: string
+  infoEmphasis?: string
   aberration: boolean
   flicker: boolean
   curvature: boolean
@@ -12,12 +30,16 @@ interface StoredAppearance {
   sweep: boolean
 }
 
+type StoredCustomTheme = Required<Pick<StoredAppearance, ThemeColor | 'colorScheme'>>
+
 class AppearanceService {
   private static readonly storageKey = 'antonio.gg.theme'
   private static readonly reducedMotionQuery = '(prefers-reduced-motion: reduce)'
   private static readonly curvatureQuery = `(min-width: ${Viewport.lg.pixelWidth})`
 
-  private readonly appearanceState = shallowRef<Appearance>(new Appearance(Theme.mambo(), true, true, true, true, true))
+  private readonly appearanceState = shallowRef<Appearance>(
+    new Appearance(Theme.mambo(), null, true, true, true, true, true),
+  )
 
   private started = false
 
@@ -57,6 +79,16 @@ class AppearanceService {
     this.persist()
   }
 
+  activateThemeColor(color: ThemeColor, value: string): void {
+    const customTheme = Theme.custom(this.appearance.theme, { [color]: value })
+
+    this.replace({
+      theme: customTheme,
+      customTheme,
+    })
+    this.persist()
+  }
+
   activateEffect(effect: AppearanceEffect, active: boolean): void {
     this.replace({ [effect]: active })
     this.persist()
@@ -65,6 +97,7 @@ class AppearanceService {
   private apply(appearance: Appearance): void {
     this.appearanceState.value = appearance
     document.documentElement.dataset.theme = appearance.theme.id
+    this.applyThemeProperties(appearance.theme)
     document.documentElement.dataset.effectAberration = appearance.aberration.toString()
     document.documentElement.dataset.effectFlicker = (appearance.aberration && appearance.flicker).toString()
     document.documentElement.dataset.effectCurvature = appearance.curvature.toString()
@@ -78,6 +111,7 @@ class AppearanceService {
     this.apply(
       new Appearance(
         changes.theme ?? current.theme,
+        changes.customTheme === undefined ? current.customTheme : changes.customTheme,
         changes.aberration ?? current.aberration,
         changes.flicker ?? current.flicker,
         changes.curvature ?? current.curvature,
@@ -103,6 +137,7 @@ class AppearanceService {
     if (legacyTheme !== null) {
       return new Appearance(
         legacyTheme,
+        null,
         fallback.aberration,
         fallback.flicker,
         fallback.curvature,
@@ -128,8 +163,15 @@ class AppearanceService {
         return defaultValue
       }
 
+      const customTheme = this.createCustomTheme(stored)
+      const theme =
+        typeof stored.theme === 'string'
+          ? this.createTheme(stored.theme, customTheme) ?? fallback.theme
+          : fallback.theme
+
       return new Appearance(
-        typeof stored.theme === 'string' ? this.createTheme(stored.theme) ?? fallback.theme : fallback.theme,
+        theme,
+        customTheme,
         readEffect(AppearanceEffect.Aberration, fallback.aberration),
         readEffect(AppearanceEffect.Flicker, fallback.flicker),
         readEffect(AppearanceEffect.Curvature, fallback.curvature),
@@ -145,11 +187,15 @@ class AppearanceService {
     const animationsActive = !window.matchMedia(AppearanceService.reducedMotionQuery).matches
     const curvatureActive = window.matchMedia(AppearanceService.curvatureQuery).matches
 
-    return new Appearance(Theme.mambo(), true, animationsActive, curvatureActive, true, animationsActive)
+    return new Appearance(Theme.mambo(), null, true, animationsActive, curvatureActive, true, animationsActive)
   }
 
-  private createTheme(id: string): Theme | null {
-    return Theme.all()[id as ThemeId] ?? null
+  private createTheme(id: string, customTheme: Theme | null = null): Theme | null {
+    if (id === ThemeId.Custom) {
+      return customTheme
+    }
+
+    return Theme.all()[id as PresetThemeId] ?? null
   }
 
   private readStoredAppearance(): string | null {
@@ -171,6 +217,10 @@ class AppearanceService {
       sweep: appearance.sweep,
     }
 
+    if (appearance.customTheme !== null) {
+      Object.assign(stored, this.toStoredCustomTheme(appearance.customTheme))
+    }
+
     try {
       window.localStorage.setItem(AppearanceService.storageKey, JSON.stringify(stored))
     } catch {
@@ -180,6 +230,70 @@ class AppearanceService {
 
   private isRecord(value: unknown): value is Record<string, unknown> {
     return typeof value === 'object' && value !== null && !Array.isArray(value)
+  }
+
+  private applyThemeProperties(theme: Theme): void {
+    const rootStyle = document.documentElement.style
+
+    Object.entries(theme.toCssProperties()).forEach(
+      ([
+        property,
+        value,
+      ]) => {
+        if (theme.id === ThemeId.Custom) {
+          rootStyle.setProperty(property, value)
+        } else {
+          rootStyle.removeProperty(property)
+        }
+      },
+    )
+  }
+
+  private createCustomTheme(value: unknown): Theme | null {
+    if (!this.isStoredTheme(value)) {
+      return null
+    }
+
+    return Theme.custom(Theme.mambo(), value, value.colorScheme)
+  }
+
+  private toStoredCustomTheme(theme: Theme): StoredCustomTheme {
+    return {
+      colorScheme: theme.colorScheme,
+      bezel: theme.bezel,
+      background: theme.background,
+      foreground: theme.foreground,
+      neutral: theme.neutral,
+      neutralEmphasis: theme.neutralEmphasis,
+      danger: theme.danger,
+      dangerEmphasis: theme.dangerEmphasis,
+      success: theme.success,
+      successEmphasis: theme.successEmphasis,
+      warning: theme.warning,
+      warningEmphasis: theme.warningEmphasis,
+      primary: theme.primary,
+      primaryEmphasis: theme.primaryEmphasis,
+      accent: theme.accent,
+      accentEmphasis: theme.accentEmphasis,
+      info: theme.info,
+      infoEmphasis: theme.infoEmphasis,
+    }
+  }
+
+  private isStoredTheme(value: unknown): value is StoredCustomTheme {
+    if (!this.isRecord(value)) {
+      return false
+    }
+
+    if (value.colorScheme !== ColorScheme.Dark && value.colorScheme !== ColorScheme.Light) {
+      return false
+    }
+
+    return Object.values(ThemeColor).every((color) => this.isColor(value[color]))
+  }
+
+  private isColor(value: unknown): value is string {
+    return typeof value === 'string' && /^#[\dA-Fa-f]{6}$/.test(value)
   }
 }
 

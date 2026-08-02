@@ -11,6 +11,7 @@ export enum AppearanceEffect {
 export class Appearance {
   constructor(
     public readonly theme: Theme,
+    public readonly customTheme: Theme | null,
     public readonly aberration: boolean,
     public readonly flicker: boolean,
     public readonly curvature: boolean,

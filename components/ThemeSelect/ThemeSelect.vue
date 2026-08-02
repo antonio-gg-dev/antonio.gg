@@ -18,22 +18,43 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { Theme, type ThemeId } from '@/config/Theme'
+import { type Appearance } from '@/config/Appearance'
+import { Theme, ThemeId } from '@/config/Theme'
 import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({
   computed: {
-    themes(): Record<ThemeId, Theme> {
-      return Theme.all()
+    appearance(): Appearance {
+      return appearanceService.appearance
+    },
+
+    themes(): Theme[] {
+      const themes = Theme.all()
+
+      if (this.appearance.customTheme === null) {
+        return Object.values(themes)
+      }
+
+      return [
+        themes[ThemeId.Chocula],
+        themes[ThemeId.Mambo],
+        themes[ThemeId.P1Phosphor],
+        this.appearance.customTheme,
+        themes[ThemeId.Solaris],
+      ]
     },
 
     activeThemeId: {
       get(): ThemeId {
-        return appearanceService.appearance.theme.id
+        return this.appearance.theme.id
       },
 
       set(themeId: ThemeId): void {
-        appearanceService.activateTheme(this.themes[themeId])
+        const theme = this.themes.find((availableTheme) => availableTheme.id === themeId)
+
+        if (theme !== undefined) {
+          appearanceService.activateTheme(theme)
+        }
       },
     },
   },
@@ -50,7 +71,7 @@ export default defineComponent({
 
   &__select {
     @include crt.shadow(theme('colors.neutral.emphasis'));
-    @apply cursor-pointer border-1 border-neutral-emphasis bg-neutral px-4 py-2 text-foreground;
+    @apply cursor-pointer border-0.5 border-neutral-emphasis bg-neutral px-4 py-2 text-foreground;
 
     &:hover,
     &:focus {

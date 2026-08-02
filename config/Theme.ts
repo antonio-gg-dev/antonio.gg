@@ -2,7 +2,30 @@ export enum ThemeId {
   Chocula = 'chocula',
   Mambo = 'mambo',
   P1Phosphor = 'p1-phosphor',
+  Custom = 'custom',
   Solaris = 'solaris',
+}
+
+export type PresetThemeId = Exclude<ThemeId, ThemeId.Custom>
+
+export enum ThemeColor {
+  Bezel = 'bezel',
+  Background = 'background',
+  Foreground = 'foreground',
+  Neutral = 'neutral',
+  NeutralEmphasis = 'neutralEmphasis',
+  Danger = 'danger',
+  DangerEmphasis = 'dangerEmphasis',
+  Success = 'success',
+  SuccessEmphasis = 'successEmphasis',
+  Warning = 'warning',
+  WarningEmphasis = 'warningEmphasis',
+  Primary = 'primary',
+  PrimaryEmphasis = 'primaryEmphasis',
+  Accent = 'accent',
+  AccentEmphasis = 'accentEmphasis',
+  Info = 'info',
+  InfoEmphasis = 'infoEmphasis',
 }
 
 export enum ColorScheme {
@@ -34,7 +57,7 @@ export class Theme {
     public readonly infoEmphasis: string,
   ) {}
 
-  public static all(): Record<ThemeId, Theme> {
+  public static all(): Record<PresetThemeId, Theme> {
     return {
       [ThemeId.Chocula]: Theme.chocula(),
       [ThemeId.Mambo]: Theme.mambo(),
@@ -140,6 +163,35 @@ export class Theme {
       '#D33682',
       '#1D7E7B',
       '#2AA198',
+    )
+  }
+
+  public static custom(
+    source: Theme,
+    colors: Partial<Record<ThemeColor, string>> = {},
+    colorScheme: ColorScheme = source.colorScheme,
+  ): Theme {
+    return new Theme(
+      ThemeId.Custom,
+      'Personalizado',
+      colorScheme,
+      colors.bezel ?? source.bezel,
+      colors.background ?? source.background,
+      colors.foreground ?? source.foreground,
+      colors.neutral ?? source.neutral,
+      colors.neutralEmphasis ?? source.neutralEmphasis,
+      colors.danger ?? source.danger,
+      colors.dangerEmphasis ?? source.dangerEmphasis,
+      colors.success ?? source.success,
+      colors.successEmphasis ?? source.successEmphasis,
+      colors.warning ?? source.warning,
+      colors.warningEmphasis ?? source.warningEmphasis,
+      colors.primary ?? source.primary,
+      colors.primaryEmphasis ?? source.primaryEmphasis,
+      colors.accent ?? source.accent,
+      colors.accentEmphasis ?? source.accentEmphasis,
+      colors.info ?? source.info,
+      colors.infoEmphasis ?? source.infoEmphasis,
     )
   }
 
