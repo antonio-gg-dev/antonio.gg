@@ -7,6 +7,7 @@
       <RouteHistory />
     </div>
     <Scrollbar target-id="layout-surface" />
+    <ScrollToBottomButton target-id="layout-surface" />
   </div>
 
   <svg
@@ -42,12 +43,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
+import ScrollToBottomButton from '@/components/ScrollToBottomButton/ScrollToBottomButton.vue'
 import Scrollbar from '@/components/Scrollbar/Scrollbar.vue'
 import { themeService } from '@/config/ThemeService'
 
 export default defineComponent({
   components: {
     RouteHistory,
+    ScrollToBottomButton,
     Scrollbar,
   },
 
@@ -95,7 +98,7 @@ export default defineComponent({
   }
 
   &__surface {
-    @apply h-full overflow-y-auto overflow-x-hidden px-2;
+    @apply h-full overflow-y-auto overflow-x-hidden scroll-auto px-2;
     scrollbar-width: none;
 
     @screen md {

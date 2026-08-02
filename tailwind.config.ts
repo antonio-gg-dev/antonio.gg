@@ -103,6 +103,7 @@ export default {
         'scrollbar',
         'code-lang',
         'code-copy',
+        'scroll-to-bottom',
         'crt-overlay',
       ],
     ),
