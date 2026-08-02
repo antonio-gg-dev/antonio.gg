@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress'
 import path from 'path'
+import { createShikiTheme } from '../config/ShikiTheme'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -54,6 +55,8 @@ export default defineConfig({
   // Markdown
   markdown: {
     // TODO: enable lineNumbers: true,
+
+    theme: createShikiTheme(),
 
     config(md) {
       const renderFence = md.renderer.rules.fence

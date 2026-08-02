@@ -17,6 +17,7 @@
 import { defineComponent, type PropType } from 'vue'
 import MarkdownIt from 'markdown-it'
 import { getHighlighter } from 'shikiji'
+import { createShikiTheme, shikiThemeName } from '@/config/ShikiTheme'
 
 export default defineComponent({
   props: {
@@ -46,7 +47,7 @@ export default defineComponent({
 
       return this.shikiji.codeToHtml(this.template, {
         lang: 'md',
-        theme: 'github-dark',
+        theme: shikiThemeName,
       })
     },
   },
@@ -54,7 +55,7 @@ export default defineComponent({
     this.markdownIt = new MarkdownIt()
 
     getHighlighter({
-      themes: ['github-dark'],
+      themes: [createShikiTheme()],
       langs: ['md'],
     })
       .then((shikiji) => {

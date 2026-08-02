@@ -63,16 +63,8 @@ pre {
   @include crt.shadow(theme('colors.neutral.DEFAULT'));
   @apply block overflow-auto bg-neutral px-6 py-4;
 
-  * {
-    color: var(--shiki-dark);
-  }
-
   @media print {
     @apply block bg-neutral-emphasis px-6 py-4;
-
-    * {
-      color: var(--shiki-light);
-    }
   }
 }
 
