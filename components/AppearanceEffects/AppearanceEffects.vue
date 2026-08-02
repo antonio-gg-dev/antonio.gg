@@ -149,14 +149,14 @@ export default defineComponent({
 .appearance-effects {
   $p: &;
 
-  @apply my-8 flex max-w-md flex-col gap-3;
+  @apply my-8 flex max-w-md flex-col gap-2;
 
   &__legend {
     @apply mb-2;
   }
 
   &__field {
-    @apply flex cursor-pointer items-center gap-3;
+    @apply flex cursor-pointer items-center gap-4;
 
     &:has(input:disabled) {
       @apply cursor-not-allowed text-neutral;

@@ -10,9 +10,12 @@ Elige la paleta de colores y los efectos visuales que quieres utilizar.
 
 <ThemeSelect />
 
+<ThemeColors />
+
 <AppearanceEffects />
 
 <script lang="ts" setup>
 import AppearanceEffects from '@/components/AppearanceEffects/AppearanceEffects.vue'
+import ThemeColors from '@/components/ThemeColors/ThemeColors.vue'
 import ThemeSelect from '@/components/ThemeSelect/ThemeSelect.vue'
 </script>
