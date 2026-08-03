@@ -156,7 +156,7 @@ export default defineComponent({
   }
 
   &__field {
-    @apply flex cursor-pointer items-center gap-4;
+    @apply relative flex cursor-pointer items-center gap-4;
 
     &:has(input:disabled) {
       @apply cursor-not-allowed text-neutral;
@@ -164,11 +164,11 @@ export default defineComponent({
   }
 
   &__checkbox {
-    @apply sr-only;
+    @apply h-5 w-5 shrink-0 cursor-pointer opacity-0;
   }
 
   &__icon {
-    @apply h-5 shrink-0;
+    @apply pointer-events-none absolute inset-y-0 left-0 my-auto h-5;
 
     --check: #{theme('colors.foreground')};
 
