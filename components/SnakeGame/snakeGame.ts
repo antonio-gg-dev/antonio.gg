@@ -364,7 +364,12 @@ export function useSnakeGame(): SnakeGameController {
 
   function exitGame(): void {
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: true })
-    window.history.back()
+
+    if (isInternalReferrer()) {
+      window.history.back()
+    } else {
+      window.location.assign('/')
+    }
   }
 
   function handleKeydown(event: KeyboardEvent): void {
@@ -469,6 +474,14 @@ function dispatchRouteHistoryEvent(detail: {
   visible?: boolean
 }): void {
   window.dispatchEvent(new CustomEvent('route-history', { detail }))
+}
+
+function isInternalReferrer(): boolean {
+  if (document.referrer === '') {
+    return false
+  }
+
+  return new URL(document.referrer).origin === window.location.origin
 }
 
 function createFood(snake: Cell[], food: Food[]): Food[] {
