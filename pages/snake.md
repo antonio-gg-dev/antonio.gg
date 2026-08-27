@@ -2,7 +2,7 @@
 title: Snake
 command: [snake]
 command_public: true
-command_description: Play the classic Snake game.
+command_description: Una versión retro del clásico snake Snake con combos y velocidad creciente.
 route_history_prompt: false
 ---
 
