@@ -19,6 +19,7 @@ const scoreLoss = 5
 const scoreInterval = 1000
 const scoreFeedbackDuration = 1000
 const directionBufferSize = 2
+const gameOverInputBlockDuration = 2000
 
 export enum Direction {
   Up = 'up',
@@ -51,6 +52,7 @@ export interface SnakeGame {
   maxScore: number
   combo: number
   comboFood?: FoodType
+  collisionGrace: boolean
   gameOver: boolean
 }
 
@@ -95,6 +97,7 @@ export function createGame(): SnakeGame {
     score: 0,
     maxScore: 0,
     combo: 0,
+    collisionGrace: false,
     gameOver: false,
   }
 }
@@ -134,7 +137,7 @@ export function move(game: SnakeGame): SnakeGame {
   }
 
   if (isWall(nextHead) || hasCollision(nextHead, nextSnake.slice(1))) {
-    return { ...game, gameOver: true }
+    return game.collisionGrace ? { ...game, gameOver: true } : { ...game, collisionGrace: true }
   }
 
   const ateStrawberry = eatenFood?.type === FoodType.Strawberry
@@ -158,6 +161,7 @@ export function move(game: SnakeGame): SnakeGame {
     maxScore: Math.max(game.maxScore, score),
     combo,
     comboFood,
+    collisionGrace: false,
   }
 }
 
@@ -173,6 +177,8 @@ export function useSnakeGame(): SnakeGameController {
   let heldDirection: Direction | undefined
   let heldTicks = 0
   let isAccelerating = false
+  let gameOverInputTimer: number | undefined
+  let isGameOverInputBlocked = false
 
   function loadHighScore(): void {
     const storedValue = window.localStorage.getItem(highScoreKey)
@@ -250,6 +256,7 @@ export function useSnakeGame(): SnakeGameController {
 
     if (game.value.gameOver) {
       phase.value = Phase.GameOver
+      blockGameOverInput()
       saveHighScore(game.value.score)
       stopTimer()
       stopScoreTimer()
@@ -294,7 +301,24 @@ export function useSnakeGame(): SnakeGameController {
     }
   }
 
+  function blockGameOverInput(): void {
+    isGameOverInputBlocked = true
+
+    if (gameOverInputTimer !== undefined) {
+      window.clearTimeout(gameOverInputTimer)
+    }
+
+    gameOverInputTimer = window.setTimeout(() => {
+      isGameOverInputBlocked = false
+      gameOverInputTimer = undefined
+    }, gameOverInputBlockDuration)
+  }
+
   function changeGameDirection(direction: Direction): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     if (phase.value === Phase.Title) {
       startGame()
       return
@@ -322,6 +346,10 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function startDirection(direction: Direction): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     if (phase.value !== Phase.Playing) {
       changeGameDirection(direction)
       return
@@ -349,6 +377,10 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function stopDirection(direction: Direction): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     if (heldDirection === direction) {
       heldDirection = undefined
       heldTicks = 0
@@ -357,6 +389,10 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function togglePause(): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     if (phase.value === Phase.Playing) {
       phase.value = Phase.Paused
       stopTimer()
@@ -371,10 +407,18 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function returnToMenu(): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     phase.value = Phase.Title
   }
 
   function exitGame(): void {
+    if (isGameOverInputBlocked) {
+      return
+    }
+
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: true })
 
     if (isInternalReferrer()) {
@@ -385,6 +429,11 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function handleKeydown(event: KeyboardEvent): void {
+    if (isGameOverInputBlocked) {
+      event.preventDefault()
+      return
+    }
+
     if (phase.value === Phase.Title) {
       if (event.key === 'Escape') {
         exitGame()
@@ -432,6 +481,11 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function handleKeyup(event: KeyboardEvent): void {
+    if (isGameOverInputBlocked) {
+      event.preventDefault()
+      return
+    }
+
     const directions: Record<string, Direction> = {
       ArrowUp: Direction.Up,
       w: Direction.Up,
@@ -464,6 +518,9 @@ export function useSnakeGame(): SnakeGameController {
     stopTimer()
     stopScoreTimer()
     clearScoreFeedback()
+    if (gameOverInputTimer !== undefined) {
+      window.clearTimeout(gameOverInputTimer)
+    }
   })
 
   return {
