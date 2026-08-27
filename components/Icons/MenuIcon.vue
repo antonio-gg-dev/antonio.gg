@@ -3,13 +3,26 @@
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
-    <path
+    <rect
       fill="currentColor"
-      d="m9,1H2v1h-1v20h1v1h7v-1h1V2h-1v-1Zm-1,2v18H3V3h5Z"
+      x="1"
+      y="11"
+      width="22"
+      height="2"
     />
-    <path
+    <rect
       fill="currentColor"
-      d="m22,2v-1h-7v1h-1v20h1v1h7v-1h1V2h-1Zm-1,1v18h-5V3h5Z"
+      x="1"
+      y="19"
+      width="22"
+      height="2"
+    />
+    <rect
+      fill="currentColor"
+      x="1"
+      y="3"
+      width="22"
+      height="2"
     />
   </svg>
 </template>

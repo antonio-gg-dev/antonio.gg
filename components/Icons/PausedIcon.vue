@@ -3,13 +3,13 @@
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
   >
-    <path
+    <polygon
       fill="currentColor"
-      d="m9,1H2v1h-1v20h1v1h7v-1h1V2h-1v-1Zm-1,2v18H3V3h5Z"
+      points="23 2 23 22 22 22 22 23 15 23 15 22 14 22 14 2 15 2 15 1 22 1 22 2 23 2"
     />
-    <path
+    <polygon
       fill="currentColor"
-      d="m22,2v-1h-7v1h-1v20h1v1h7v-1h1V2h-1Zm-1,1v18h-5V3h5Z"
+      points="9 2 10 2 10 22 9 22 9 23 2 23 2 22 1 22 1 2 2 2 2 1 9 1 9 2"
     />
   </svg>
 </template>
