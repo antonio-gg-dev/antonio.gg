@@ -15,7 +15,7 @@
         <span class="snake__score-current">
           <span
             class="snake__score-combo"
-            :class="comboFood !== undefined ? `snake__score-combo--${comboFood}` : 'snake__score-combo--neutral'"
+            :class="comboFood !== undefined ? `snake__score-combo--${comboFood}` : undefined"
             aria-hidden="true"
           ></span
           >&nbsp;
@@ -407,21 +407,33 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__score-combo {
-    @apply inline-block h-4 w-4;
-
-    &--neutral {
-      @apply bg-neutral;
-      @include crt.shadow(theme('colors.neutral.DEFAULT'));
-    }
+    @apply inline-block h-4 w-4 bg-neutral;
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
 
     &--lemon {
       @apply bg-warning;
       @include crt.shadow(theme('colors.warning.DEFAULT'));
+
+      [data-theme='p1-phosphor'] & {
+        background: repeating-linear-gradient(
+          to right,
+          var(--color-warning) 0 20%,
+          var(--color-warning-emphasis) 20% 40%
+        );
+      }
     }
 
     &--tomato {
       @apply bg-danger;
       @include crt.shadow(theme('colors.danger.DEFAULT'));
+
+      [data-theme='p1-phosphor'] & {
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--color-danger-emphasis) 0 20%,
+          var(--color-danger) 20% 40%
+        );
+      }
     }
 
     &--apple {
@@ -432,6 +444,10 @@ function sameCell(first: Cell, second: Cell): boolean {
     &--strawberry {
       @apply bg-foreground;
       @include crt.shadow(theme('colors.foreground'));
+
+      [data-theme='p1-phosphor'] & {
+        @apply bg-success-emphasis;
+      }
     }
   }
 
@@ -484,6 +500,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
     [data-theme='p1-phosphor'] & {
       @apply bg-foreground;
+      @include crt.shadow-no-aberration(theme('colors.foreground'));
     }
   }
 
@@ -519,10 +536,6 @@ function sameCell(first: Cell, second: Cell): boolean {
     &--apple {
       @apply bg-success;
       @include crt.shadow(theme('colors.success.DEFAULT'));
-
-      [data-theme='p1-phosphor'] & {
-        @apply bg-success;
-      }
     }
 
     &--strawberry {
