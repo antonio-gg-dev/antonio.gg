@@ -47,6 +47,7 @@
       </div>
     </template>
     <CommandPrompt
+      v-if="promptVisible"
       ref="commandPrompt"
       :commands="commands"
       :path="currentPath"
@@ -108,8 +109,10 @@ export default defineComponent({
       entries: shallowReactive<RouteHistoryItem[]>([initialEntry]),
       nextEntryId: 1,
       nextTimelineId: 1,
+      promptVisible: data.frontmatter.value.route_history_prompt !== false,
       previousAfterRouteChange: undefined as Router['onAfterRouteChange'],
       documentClickListener: null as ((event: MouseEvent) => void) | null,
+      routeHistoryListener: null as ((event: Event) => void) | null,
       timeline: shallowReactive<RouteHistoryTimelineItem[]>([
         {
           key: `route-${initialEntry.id}`,
@@ -140,6 +143,15 @@ export default defineComponent({
     vitePressRouter(): Router {
       return this.routeHistoryRouter as Router
     },
+  },
+
+  created() {
+    if (typeof window !== 'undefined') {
+      this.routeHistoryListener = (event: Event) => {
+        this.handleRouteHistoryEvent(event)
+      }
+      window.addEventListener('route-history', this.routeHistoryListener)
+    }
   },
 
   mounted() {
@@ -179,6 +191,9 @@ export default defineComponent({
 
     if (this.documentClickListener !== null) {
       window.removeEventListener('click', this.documentClickListener)
+    }
+    if (this.routeHistoryListener !== null) {
+      window.removeEventListener('route-history', this.routeHistoryListener)
     }
   },
 
@@ -242,12 +257,19 @@ export default defineComponent({
       })
     },
 
-    clearHistory(): void {
+    clearHistory(preserveCurrentRoute = false): void {
       const currentEntry = this.entries.at(-1)
 
       this.timeline.splice(0)
 
-      if (currentEntry !== undefined) {
+      if (preserveCurrentRoute && currentEntry !== undefined) {
+        this.entries.splice(0, this.entries.length, currentEntry)
+        this.timeline.push({
+          key: `route-${currentEntry.id}`,
+          type: 'route',
+          entry: currentEntry,
+        })
+      } else if (currentEntry !== undefined) {
         this.entries.splice(0, this.entries.length, currentEntry)
       }
 
@@ -344,6 +366,20 @@ export default defineComponent({
       void this.$nextTick(() => {
         this.scrollToCommandPrompt()
       })
+    },
+
+    handleRouteHistoryEvent(event: Event): void {
+      if (!(event instanceof CustomEvent) || typeof event.detail !== 'object' || event.detail === null) {
+        return
+      }
+
+      const detail = event.detail as { action?: string; preserveCurrentRoute?: boolean; visible?: boolean }
+
+      if (detail.action === 'clear') {
+        this.clearHistory(detail.preserveCurrentRoute === true)
+      } else if (detail.action === 'set-prompt-visible' && typeof detail.visible === 'boolean') {
+        this.promptVisible = detail.visible
+      }
     },
 
     updateCurrentHash(hash: string): void {
