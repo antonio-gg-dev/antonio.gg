@@ -2,12 +2,16 @@ import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 export const boardSize = 20
 export const foodCount = 5
-const normalSpeed = 300
-const fastSpeed = 150
+const baseSpeed = 400
 const accelerationTicks = 2
 const baseFoodScore = 100
 const comboMultiplier = 1.1
 const scoreStep = 5
+const speedScoreUnit = 1000
+const speedScoreLimit = 50000
+const speedSteps = 32
+const speedStep = 10
+const minimumSpeed = 80
 const scoreLoss = 5
 const scoreInterval = 1000
 const scoreFeedbackDuration = 1000
@@ -40,6 +44,7 @@ export interface SnakeGame {
   food: Food[]
   direction: Direction
   score: number
+  maxScore: number
   combo: number
   comboFruit?: Fruit
   gameOver: boolean
@@ -82,6 +87,7 @@ export function createGame(): SnakeGame {
     food: createFood(snake, []),
     direction: Direction.Right,
     score: 0,
+    maxScore: 0,
     combo: 0,
     gameOver: false,
   }
@@ -126,6 +132,7 @@ export function move(game: SnakeGame): SnakeGame {
   }
 
   const combo = eatenFood === undefined ? game.combo : eatenFood.fruit === game.comboFruit ? game.combo + 1 : 1
+  const score = ateFood ? game.score + calculateFoodScore(combo) : game.score
 
   return {
     ...game,
@@ -136,7 +143,8 @@ export function move(game: SnakeGame): SnakeGame {
           game.food.filter((food) => !sameCell(nextHead, food)),
         )
       : game.food,
-    score: ateFood ? game.score + calculateFoodScore(combo) : game.score,
+    score,
+    maxScore: Math.max(game.maxScore, score),
     combo,
     comboFruit: eatenFood?.fruit ?? game.comboFruit,
   }
@@ -168,7 +176,10 @@ export function useSnakeGame(): SnakeGameController {
 
   function startTimer(): void {
     stopTimer()
-    interval = window.setTimeout(moveGame, isAccelerating ? fastSpeed : normalSpeed)
+    const speed = calculateSpeed(game.value.maxScore)
+    const effectiveSpeed = isAccelerating ? speed / 2 : speed
+
+    interval = window.setTimeout(moveGame, effectiveSpeed)
   }
 
   function moveGame(): void {
@@ -489,4 +500,13 @@ function sameCell(first: Cell, second: Cell): boolean {
 
 function calculateFoodScore(combo: number): number {
   return Math.round((baseFoodScore * Math.pow(comboMultiplier, combo - 1)) / scoreStep) * scoreStep
+}
+
+function calculateSpeed(maxScore: number): number {
+  const steps = Math.min(
+    speedSteps,
+    Math.floor((speedSteps * Math.log(1 + maxScore / speedScoreUnit)) / Math.log(1 + speedScoreLimit / speedScoreUnit)),
+  )
+
+  return Math.max(minimumSpeed, baseSpeed - steps * speedStep)
 }
