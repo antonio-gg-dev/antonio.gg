@@ -12,8 +12,16 @@
         ref="scoreElement"
         class="snake__score"
       >
-        <span>Score: {{ score }}</span>
-        <span>High Score: {{ highScore }}</span>
+        <span
+          ><span class="snake__score-label snake__score-label--short">S</span
+          ><span class="snake__score-label snake__score-label--long">Score</span>:
+          {{ score.toLocaleString('en-US') }}</span
+        >
+        <span
+          ><span class="snake__score-label snake__score-label--short">HS</span
+          ><span class="snake__score-label snake__score-label--long">High Score</span>:
+          {{ highScore.toLocaleString('en-US') }}</span
+        >
       </p>
 
       <div
@@ -21,6 +29,16 @@
         class="snake__title"
       >
         <h2>Snake</h2>
+        <p class="snake__instructions snake__instructions--keyboard">
+          Press <strong>any</strong> key to start<br />
+          Press <strong>Space</strong> to pause<br />
+          Press <strong>Esc</strong> to exit
+        </p>
+        <p class="snake__instructions snake__instructions--touch">
+          Press <strong>any</strong> button to start<br />
+          Press&nbsp;<PauseIcon aria-hidden="true" />&nbsp;to pause<br />
+          Press&nbsp;<CloseIcon aria-hidden="true" />&nbsp;to exit
+        </p>
       </div>
 
       <template v-else>
@@ -40,22 +58,47 @@
               top: `${(scoreFeedback.y + 0.5) * 5}%`,
             }"
           >
-            +{{ scoreFeedback.points }}
+            +{{ scoreFeedback.points.toLocaleString('en-US') }}
           </span>
           <div
-            v-if="phase === Phase.Paused || phase === Phase.GameOver"
+            v-if="phase === Phase.Paused"
             class="snake__overlay"
           >
-            <h2>{{ phase === Phase.Paused ? 'Paused' : 'Game Over' }}</h2>
-            <p>
-              {{ phase === Phase.Paused ? 'Press any key to continue' : 'Press any key to return' }}
+            <h2 class="snake__overlay-title snake__overlay-title--paused">Pause</h2>
+            <p class="snake__instructions snake__instructions--keyboard">Press <strong>any</strong> key to resume</p>
+            <p class="snake__instructions snake__instructions--touch">Press <strong>any</strong> button to resume</p>
+          </div>
+          <div
+            v-else-if="phase === Phase.GameOver"
+            class="snake__overlay"
+          >
+            <h2
+              class="snake__overlay-title snake__overlay-title--game-over"
+              :class="{ 'snake__overlay-title--high-score': score >= highScore }"
+            >
+              Game Over
+            </h2>
+            <p
+              v-if="score >= highScore"
+              class="snake__high-score"
+            >
+              New High Score: {{ score.toLocaleString('en-US') }}
+            </p>
+            <p class="snake__instructions snake__instructions--keyboard">
+              Press <strong>any</strong> key to return to main menu
+            </p>
+            <p class="snake__instructions snake__instructions--touch">
+              Press <strong>any</strong> button to return to main menu
             </p>
           </div>
         </div>
       </template>
     </div>
 
-    <div class="snake__controls">
+    <div
+      class="snake__controls"
+      @contextmenu.prevent
+    >
       <button
         class="snake__control snake__control--up"
         type="button"
@@ -102,23 +145,40 @@
       </button>
       <button
         class="snake__control snake__control--pause"
-        :class="{ 'snake__control--hidden': phase !== Phase.Playing }"
+        :class="{ 'snake__control--hidden': phase !== Phase.Playing && phase !== Phase.Paused }"
         type="button"
-        aria-label="Pause game"
-        :disabled="phase !== Phase.Playing"
+        :aria-label="phase === Phase.Paused ? 'Resume game' : 'Pause game'"
+        :disabled="phase !== Phase.Playing && phase !== Phase.Paused"
         @click="$emit('pause')"
       >
-        <PauseIcon aria-hidden="true" />
+        <PausedIcon
+          v-if="phase === Phase.Paused"
+          aria-hidden="true"
+        />
+        <PauseIcon
+          v-else
+          aria-hidden="true"
+        />
       </button>
       <button
         class="snake__control snake__control--exit"
-        :class="{ 'snake__control--hidden': phase !== Phase.Title && phase !== Phase.Paused }"
+        :class="{ 'snake__control--hidden': phase !== Phase.Title }"
         type="button"
         aria-label="Exit game"
-        :disabled="phase !== Phase.Title && phase !== Phase.Paused"
+        :disabled="phase !== Phase.Title"
         @click="$emit('exit')"
       >
         <CloseIcon aria-hidden="true" />
+      </button>
+      <button
+        class="snake__control snake__control--menu"
+        :class="{ 'snake__control--hidden': phase !== Phase.GameOver }"
+        type="button"
+        aria-label="Open menu"
+        :disabled="phase !== Phase.GameOver"
+        @click="$emit('menu')"
+      >
+        <MenuIcon aria-hidden="true" />
       </button>
     </div>
   </section>
@@ -127,7 +187,9 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import CloseIcon from '@/components/Icons/CloseIcon.vue'
+import MenuIcon from '@/components/Icons/MenuIcon.vue'
 import PauseIcon from '@/components/Icons/PauseIcon.vue'
+import PausedIcon from '@/components/Icons/PausedIcon.vue'
 import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
@@ -143,7 +205,9 @@ export default defineComponent({
     ArrowRightIcon,
     ArrowUpIcon,
     CloseIcon,
+    MenuIcon,
     PauseIcon,
+    PausedIcon,
   },
 
   props: {
@@ -177,6 +241,7 @@ export default defineComponent({
     'direction-start',
     'direction-end',
     'pause',
+    'menu',
     'exit',
   ],
 
@@ -282,15 +347,55 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__title {
-    @apply aspect-square w-full;
+    @apply flex aspect-square w-full flex-col items-center justify-center gap-2 p-2;
   }
 
   &__title h2 {
     @apply m-0 text-3xl text-success;
   }
 
+  &__instructions {
+    @apply m-0 text-center text-foreground;
+  }
+
+  &__instructions svg {
+    @apply mb-0.5 inline-block h-4;
+  }
+
+  &__high-score {
+    @apply m-0 text-lg font-bold text-foreground;
+  }
+
+  &__instructions--touch {
+    @apply hidden;
+
+    @media (pointer: coarse) {
+      @apply block;
+    }
+  }
+
+  &__instructions--keyboard {
+    @media (pointer: coarse) {
+      @apply hidden;
+    }
+  }
+
   &__score {
     @apply m-0 flex shrink-0 justify-between whitespace-nowrap bg-neutral pb-2;
+  }
+
+  &__score-label--long {
+    @apply hidden;
+
+    @screen sm {
+      @apply inline;
+    }
+  }
+
+  &__score-label--short {
+    @screen sm {
+      @apply hidden;
+    }
   }
 
   &__score-feedback {
@@ -337,7 +442,23 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__overlay {
-    @apply absolute inset-0 bg-background/90;
+    @apply absolute inset-0 flex flex-col items-center justify-center gap-2 bg-background/90;
+  }
+
+  &__overlay-title {
+    @apply m-0 text-3xl;
+
+    &--paused {
+      @apply text-primary;
+    }
+
+    &--game-over {
+      @apply text-danger;
+    }
+
+    &--high-score {
+      @apply text-success;
+    }
   }
 
   &__controls {
@@ -378,7 +499,8 @@ function sameCell(first: Cell, second: Cell): boolean {
     }
 
     &--pause,
-    &--exit {
+    &--exit,
+    &--menu {
       grid-area: pause;
     }
 

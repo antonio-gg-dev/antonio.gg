@@ -73,6 +73,7 @@ export interface SnakeGameController {
   startDirection: (direction: Direction) => void
   stopDirection: (direction: Direction) => void
   togglePause: () => void
+  returnToMenu: () => void
   exitGame: () => void
 }
 
@@ -288,7 +289,7 @@ export function useSnakeGame(): SnakeGameController {
     }
 
     if (phase.value === Phase.GameOver) {
-      phase.value = Phase.Title
+      returnToMenu()
       return
     }
 
@@ -357,6 +358,10 @@ export function useSnakeGame(): SnakeGameController {
     }
   }
 
+  function returnToMenu(): void {
+    phase.value = Phase.Title
+  }
+
   function exitGame(): void {
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: true })
     window.history.back()
@@ -373,16 +378,12 @@ export function useSnakeGame(): SnakeGameController {
     }
 
     if (phase.value === Phase.GameOver) {
-      phase.value = Phase.Title
+      returnToMenu()
       return
     }
 
     if (phase.value === Phase.Paused) {
-      if (event.key === 'Escape') {
-        exitGame()
-      } else {
-        togglePause()
-      }
+      togglePause()
       return
     }
 
@@ -453,6 +454,7 @@ export function useSnakeGame(): SnakeGameController {
     game,
     highScore,
     scoreFeedback,
+    returnToMenu,
     changeGameDirection,
     startDirection,
     stopDirection,

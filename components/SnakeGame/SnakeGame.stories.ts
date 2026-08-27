@@ -63,3 +63,12 @@ export const GameOver: Story = {
     score: 3,
   },
 }
+
+export const GameOverHighScore: Story = {
+  args: {
+    phase: Phase.GameOver,
+    ...game,
+    score: 151120,
+    highScore: 151120,
+  },
+}
