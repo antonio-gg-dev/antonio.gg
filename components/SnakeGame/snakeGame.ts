@@ -9,6 +9,7 @@ const initialHighScore = 1120
 const baseFoodScore = 100
 const comboMultiplier = 1.1
 const scoreStep = 5
+const strawberryProbability = 0.05
 const speedScoreUnit = 1000
 const speedScoreLimit = 50000
 const speedSteps = 32
@@ -26,10 +27,11 @@ export enum Direction {
   Left = 'left',
 }
 
-export enum Fruit {
+export enum FoodType {
   Lemon = 'lemon',
   Tomato = 'tomato',
   Apple = 'apple',
+  Strawberry = 'strawberry',
 }
 
 export interface Cell {
@@ -37,23 +39,23 @@ export interface Cell {
   y: number
 }
 
-export interface Food extends Cell {
-  fruit: Fruit
+export interface FoodCell extends Cell {
+  type: FoodType
 }
 
 export interface SnakeGame {
   snake: Cell[]
-  food: Food[]
+  food: FoodCell[]
   direction: Direction
   score: number
   maxScore: number
   combo: number
-  comboFruit?: Fruit
+  comboFood?: FoodType
   gameOver: boolean
 }
 
 export interface ScoreFeedback extends Cell {
-  fruit: Fruit
+  type: FoodType
   points: number
 }
 
@@ -135,22 +137,27 @@ export function move(game: SnakeGame): SnakeGame {
     return { ...game, gameOver: true }
   }
 
-  const combo = eatenFood === undefined ? game.combo : eatenFood.fruit === game.comboFruit ? game.combo + 1 : 1
+  const ateStrawberry = eatenFood?.type === FoodType.Strawberry
+  const combo =
+    eatenFood === undefined ? game.combo : ateStrawberry || eatenFood.type === game.comboFood ? game.combo + 1 : 1
+  const comboFood = ateStrawberry ? game.comboFood : eatenFood?.type ?? game.comboFood
   const score = ateFood ? game.score + calculateFoodScore(combo) : game.score
+  const nextFood = ateFood
+    ? createFood(
+        nextSnake,
+        game.food.filter((food) => !sameCell(nextHead, food)),
+        comboFood,
+      )
+    : game.food
 
   return {
     ...game,
     snake: nextSnake,
-    food: ateFood
-      ? createFood(
-          nextSnake,
-          game.food.filter((food) => !sameCell(nextHead, food)),
-        )
-      : game.food,
+    food: ateStrawberry && comboFood !== undefined ? nextFood.map((food) => recolorFood(food, comboFood)) : nextFood,
     score,
     maxScore: Math.max(game.maxScore, score),
     combo,
-    comboFruit: eatenFood?.fruit ?? game.comboFruit,
+    comboFood,
   }
 }
 
@@ -233,7 +240,12 @@ export function useSnakeGame(): SnakeGameController {
     const eatenFood = previousFood.find((food) => !game.value.food.some((currentFood) => sameCell(food, currentFood)))
 
     if (eatenFood !== undefined) {
-      showScoreFeedback(eatenFood, game.value.score - previousScore)
+      showScoreFeedback(
+        eatenFood.type === FoodType.Strawberry && game.value.comboFood !== undefined
+          ? { ...eatenFood, type: game.value.comboFood }
+          : eatenFood,
+        game.value.score - previousScore,
+      )
     }
 
     if (game.value.gameOver) {
@@ -267,9 +279,9 @@ export function useSnakeGame(): SnakeGameController {
     }
   }
 
-  function showScoreFeedback(food: Food, points: number): void {
+  function showScoreFeedback(food: FoodCell, points: number): void {
     clearScoreFeedback()
-    scoreFeedback.value = { x: food.x, y: food.y, fruit: food.fruit, points }
+    scoreFeedback.value = { x: food.x, y: food.y, type: food.type, points }
     scoreFeedbackTimer = window.setTimeout(clearScoreFeedback, scoreFeedbackDuration)
   }
 
@@ -484,7 +496,7 @@ function isInternalReferrer(): boolean {
   return new URL(document.referrer).origin === window.location.origin
 }
 
-function createFood(snake: Cell[], food: Food[]): Food[] {
+function createFood(snake: Cell[], food: FoodCell[], comboFood?: FoodType): FoodCell[] {
   const nextFood = [...food]
 
   while (nextFood.length < foodCount) {
@@ -494,17 +506,29 @@ function createFood(snake: Cell[], food: Food[]): Food[] {
       break
     }
 
-    nextFood.push({ ...availableCell, ...randomFruit() })
+    nextFood.push({ ...availableCell, ...randomFood(comboFood) })
   }
 
   return nextFood
 }
 
-function randomFruit(): Pick<Food, 'fruit'> {
-  const fruits = Object.values(Fruit)
-  const fruit = fruits[Math.floor(Math.random() * fruits.length)] ?? Fruit.Lemon
+function randomFood(comboFood?: FoodType): Pick<FoodCell, 'type'> {
+  if (comboFood !== undefined && Math.random() < strawberryProbability) {
+    return { type: FoodType.Strawberry }
+  }
 
-  return { fruit }
+  const foods = [
+    FoodType.Lemon,
+    FoodType.Tomato,
+    FoodType.Apple,
+  ]
+  const type = foods[Math.floor(Math.random() * foods.length)] ?? FoodType.Lemon
+
+  return { type }
+}
+
+function recolorFood(food: FoodCell, comboFood: FoodType): FoodCell {
+  return food.type === FoodType.Strawberry ? food : { ...food, type: comboFood }
 }
 
 function findAvailableFoodCell(snake: Cell[], food: Cell[]): Cell | undefined {

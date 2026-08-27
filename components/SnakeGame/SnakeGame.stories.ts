@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/vue3'
 import SnakeGame from './SnakeGame.vue'
-import { Fruit, Phase } from './snakeGame'
+import { FoodType, Phase } from './snakeGame'
 
 const game = {
   snake: [
@@ -11,11 +11,11 @@ const game = {
     { x: 6, y: 10 },
   ],
   food: [
-    { x: 14, y: 10, fruit: Fruit.Tomato },
-    { x: 3, y: 3, fruit: Fruit.Apple },
-    { x: 16, y: 4, fruit: Fruit.Lemon },
-    { x: 4, y: 16, fruit: Fruit.Tomato },
-    { x: 17, y: 17, fruit: Fruit.Apple },
+    { x: 14, y: 10, type: FoodType.Tomato },
+    { x: 3, y: 3, type: FoodType.Apple },
+    { x: 16, y: 4, type: FoodType.Lemon },
+    { x: 4, y: 16, type: FoodType.Tomato },
+    { x: 17, y: 17, type: FoodType.Apple },
   ],
   highScore: 151120,
 }
@@ -44,6 +44,21 @@ export const Playing: Story = {
   args: {
     phase: Phase.Playing,
     ...game,
+    score: 3,
+  },
+}
+
+export const PlayingWithStrawberry: Story = {
+  args: {
+    phase: Phase.Playing,
+    ...game,
+    food: [
+      { x: 14, y: 10, type: FoodType.Tomato },
+      { x: 3, y: 3, type: FoodType.Apple },
+      { x: 16, y: 4, type: FoodType.Lemon },
+      { x: 4, y: 16, type: FoodType.Tomato },
+      { x: 10, y: 4, type: FoodType.Strawberry },
+    ],
     score: 3,
   },
 }

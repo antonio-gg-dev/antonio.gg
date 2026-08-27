@@ -52,7 +52,7 @@
           <span
             v-if="scoreFeedback !== undefined"
             class="snake__score-feedback"
-            :class="`snake__score-feedback--${scoreFeedback.fruit}`"
+            :class="`snake__score-feedback--${scoreFeedback.type}`"
             :style="{
               left: `${(scoreFeedback.x + 0.5) * 5}%`,
               top: `${(scoreFeedback.y + 0.5) * 5}%`,
@@ -194,7 +194,7 @@ import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
 import ArrowUpIcon from '@/components/Icons/ArrowUpIcon.vue'
-import { boardSize, Direction, Phase, type Cell, type Food, type ScoreFeedback } from './snakeGame'
+import { boardSize, Direction, Phase, type Cell, type FoodCell, type ScoreFeedback } from './snakeGame'
 
 export default defineComponent({
   name: 'SnakeGame',
@@ -221,7 +221,7 @@ export default defineComponent({
     },
     food: {
       required: true,
-      type: Array as PropType<Food[]>,
+      type: Array as PropType<FoodCell[]>,
     },
     score: {
       required: true,
@@ -263,7 +263,7 @@ export default defineComponent({
 
         return {
           key: index,
-          className: isSnake ? 'snake__snake' : food !== undefined ? `snake__food snake__food--${food.fruit}` : '',
+          className: isSnake ? 'snake__snake' : food !== undefined ? `snake__food snake__food--${food.type}` : '',
         }
       })
     },
@@ -412,6 +412,10 @@ function sameCell(first: Cell, second: Cell): boolean {
     &--apple {
       @apply text-success;
     }
+
+    &--strawberry {
+      @apply text-foreground;
+    }
   }
 
   &__board {
@@ -438,6 +442,17 @@ function sameCell(first: Cell, second: Cell): boolean {
 
     &--apple {
       @apply bg-success;
+    }
+
+    &--strawberry {
+      @apply bg-foreground;
+      animation: snake-strawberry-blink 0.4s steps(1, end) infinite;
+
+      @keyframes snake-strawberry-blink {
+        50% {
+          @apply opacity-50;
+        }
+      }
     }
   }
 
