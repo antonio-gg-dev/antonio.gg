@@ -1,7 +1,8 @@
 <template>
   <section
     class="snake__container"
-    aria-label="Juego Snake"
+    aria-label="Snake game"
+    lang="en-us"
   >
     <div
       class="snake__screen"
@@ -11,7 +12,8 @@
         ref="scoreElement"
         class="snake__score"
       >
-        Puntuación: {{ score }}
+        <span>Score: {{ score }}</span>
+        <span>High Score: {{ highScore }}</span>
       </p>
 
       <div
@@ -44,11 +46,9 @@
             v-if="phase === Phase.Paused || phase === Phase.GameOver"
             class="snake__overlay"
           >
-            <h2>{{ phase === Phase.Paused ? 'Pausa' : 'Game Over' }}</h2>
+            <h2>{{ phase === Phase.Paused ? 'Paused' : 'Game Over' }}</h2>
             <p>
-              {{
-                phase === Phase.Paused ? 'Pulsa cualquier tecla para continuar' : 'Pulsa cualquier tecla para volver'
-              }}
+              {{ phase === Phase.Paused ? 'Press any key to continue' : 'Press any key to return' }}
             </p>
           </div>
         </div>
@@ -59,7 +59,7 @@
       <button
         class="snake__control snake__control--up"
         type="button"
-        aria-label="Mover arriba"
+        aria-label="Move up"
         @pointerdown.prevent="startDirection(Direction.Up)"
         @pointerup="stopDirection(Direction.Up)"
         @pointercancel="stopDirection(Direction.Up)"
@@ -70,7 +70,7 @@
       <button
         class="snake__control snake__control--left"
         type="button"
-        aria-label="Mover izquierda"
+        aria-label="Move left"
         @pointerdown.prevent="startDirection(Direction.Left)"
         @pointerup="stopDirection(Direction.Left)"
         @pointercancel="stopDirection(Direction.Left)"
@@ -81,7 +81,7 @@
       <button
         class="snake__control snake__control--down"
         type="button"
-        aria-label="Mover abajo"
+        aria-label="Move down"
         @pointerdown.prevent="startDirection(Direction.Down)"
         @pointerup="stopDirection(Direction.Down)"
         @pointercancel="stopDirection(Direction.Down)"
@@ -92,7 +92,7 @@
       <button
         class="snake__control snake__control--right"
         type="button"
-        aria-label="Mover derecha"
+        aria-label="Move right"
         @pointerdown.prevent="startDirection(Direction.Right)"
         @pointerup="stopDirection(Direction.Right)"
         @pointercancel="stopDirection(Direction.Right)"
@@ -104,7 +104,7 @@
         class="snake__control snake__control--pause"
         :class="{ 'snake__control--hidden': phase !== Phase.Playing }"
         type="button"
-        aria-label="Pausar juego"
+        aria-label="Pause game"
         :disabled="phase !== Phase.Playing"
         @click="$emit('pause')"
       >
@@ -114,7 +114,7 @@
         class="snake__control snake__control--exit"
         :class="{ 'snake__control--hidden': phase !== Phase.Title && phase !== Phase.Paused }"
         type="button"
-        aria-label="Salir del juego"
+        aria-label="Exit game"
         :disabled="phase !== Phase.Title && phase !== Phase.Paused"
         @click="$emit('exit')"
       >
@@ -160,6 +160,10 @@ export default defineComponent({
       type: Array as PropType<Food[]>,
     },
     score: {
+      required: true,
+      type: Number,
+    },
+    highScore: {
       required: true,
       type: Number,
     },
@@ -286,7 +290,7 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__score {
-    @apply m-0 shrink-0 whitespace-nowrap bg-neutral pb-2;
+    @apply m-0 flex shrink-0 justify-between whitespace-nowrap bg-neutral pb-2;
   }
 
   &__score-feedback {

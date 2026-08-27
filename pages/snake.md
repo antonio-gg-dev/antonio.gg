@@ -2,12 +2,13 @@
 title: Snake
 command: [snake]
 command_public: true
-command_description: Juega al clásico juego Snake.
+command_description: Play the classic Snake game.
 route_history_prompt: false
 ---
 
 <SnakeGame
 :food="game.food"
+:high-score="highScore"
 :phase="phase"
 :score="game.score"
 :score-feedback="scoreFeedback"
@@ -22,5 +23,5 @@ route_history_prompt: false
 import SnakeGame from '@/components/SnakeGame/SnakeGame.vue'
 import { useSnakeGame } from '@/components/SnakeGame/snakeGame.ts'
 
-const { exitGame, game, phase, scoreFeedback, startDirection, stopDirection, togglePause } = useSnakeGame()
+const { exitGame, game, highScore, phase, scoreFeedback, startDirection, stopDirection, togglePause } = useSnakeGame()
 </script>

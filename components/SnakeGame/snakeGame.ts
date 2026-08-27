@@ -4,6 +4,8 @@ export const boardSize = 20
 export const foodCount = 5
 const baseSpeed = 400
 const accelerationTicks = 2
+const highScoreKey = 'antonio.gg.snake'
+const initialHighScore = 1120
 const baseFoodScore = 100
 const comboMultiplier = 1.1
 const scoreStep = 5
@@ -65,6 +67,7 @@ export enum Phase {
 export interface SnakeGameController {
   phase: Ref<Phase>
   game: Ref<SnakeGame>
+  highScore: Ref<number>
   scoreFeedback: Ref<ScoreFeedback | undefined>
   changeGameDirection: (direction: Direction) => void
   startDirection: (direction: Direction) => void
@@ -153,6 +156,7 @@ export function move(game: SnakeGame): SnakeGame {
 export function useSnakeGame(): SnakeGameController {
   const phase = ref<Phase>(Phase.Title)
   const game = ref(createGame())
+  const highScore = ref(initialHighScore)
   const scoreFeedback = ref<ScoreFeedback>()
   let interval: number | undefined
   let scoreTimer: number | undefined
@@ -161,6 +165,30 @@ export function useSnakeGame(): SnakeGameController {
   let heldDirection: Direction | undefined
   let heldTicks = 0
   let isAccelerating = false
+
+  function loadHighScore(): void {
+    const storedValue = window.localStorage.getItem(highScoreKey)
+    let storedHighScore: unknown
+
+    try {
+      storedHighScore = storedValue === null ? undefined : JSON.parse(storedValue).highScore
+    } catch {
+      storedHighScore = undefined
+    }
+
+    if (typeof storedHighScore === 'number' && Number.isFinite(storedHighScore) && storedHighScore >= 0) {
+      highScore.value = storedHighScore
+    } else {
+      window.localStorage.setItem(highScoreKey, JSON.stringify({ highScore: highScore.value }))
+    }
+  }
+
+  function saveHighScore(score: number): void {
+    if (score > highScore.value) {
+      highScore.value = score
+      window.localStorage.setItem(highScoreKey, JSON.stringify({ highScore: highScore.value }))
+    }
+  }
 
   function startGame(): void {
     game.value = createGame()
@@ -209,6 +237,7 @@ export function useSnakeGame(): SnakeGameController {
 
     if (game.value.gameOver) {
       phase.value = Phase.GameOver
+      saveHighScore(game.value.score)
       stopTimer()
       stopScoreTimer()
     } else {
@@ -404,6 +433,7 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   onMounted(() => {
+    loadHighScore()
     dispatchRouteHistoryEvent({ action: 'clear', preserveCurrentRoute: true })
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: false })
     window.addEventListener('keydown', handleKeydown)
@@ -421,6 +451,7 @@ export function useSnakeGame(): SnakeGameController {
   return {
     phase,
     game,
+    highScore,
     scoreFeedback,
     changeGameDirection,
     startDirection,

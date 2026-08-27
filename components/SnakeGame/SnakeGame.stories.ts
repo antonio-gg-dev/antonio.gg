@@ -17,6 +17,7 @@ const game = {
     { x: 4, y: 16, fruit: Fruit.Tomato },
     { x: 17, y: 17, fruit: Fruit.Apple },
   ],
+  highScore: 151120,
 }
 
 const meta = {
