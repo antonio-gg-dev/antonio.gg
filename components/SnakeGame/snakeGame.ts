@@ -1,6 +1,7 @@
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 export const boardSize = 20
+export const foodCount = 5
 const normalSpeed = 175
 const fastSpeed = 100
 
@@ -18,7 +19,7 @@ export interface Cell {
 
 export interface SnakeGame {
   snake: Cell[]
-  food: Cell
+  food: Cell[]
   direction: Direction
   score: number
   gameOver: boolean
@@ -42,15 +43,17 @@ export interface SnakeGameController {
 }
 
 export function createGame(): SnakeGame {
+  const snake = [
+    { x: 10, y: 10 },
+    { x: 9, y: 10 },
+    { x: 8, y: 10 },
+    { x: 7, y: 10 },
+    { x: 6, y: 10 },
+  ]
+
   return {
-    snake: [
-      { x: 10, y: 10 },
-      { x: 9, y: 10 },
-      { x: 8, y: 10 },
-      { x: 7, y: 10 },
-      { x: 6, y: 10 },
-    ],
-    food: { x: 14, y: 10 },
+    snake,
+    food: createFood(snake, []),
     direction: Direction.Right,
     score: 0,
     gameOver: false,
@@ -80,7 +83,7 @@ export function move(game: SnakeGame): SnakeGame {
     x: head.x + (game.direction === Direction.Right ? 1 : game.direction === Direction.Left ? -1 : 0),
     y: head.y + (game.direction === Direction.Down ? 1 : game.direction === Direction.Up ? -1 : 0),
   }
-  const ateFood = sameCell(nextHead, game.food)
+  const ateFood = game.food.some((food) => sameCell(nextHead, food))
   const nextSnake = [
     nextHead,
     ...game.snake,
@@ -97,7 +100,12 @@ export function move(game: SnakeGame): SnakeGame {
   return {
     ...game,
     snake: nextSnake,
-    food: ateFood ? createFood(nextSnake) : game.food,
+    food: ateFood
+      ? createFood(
+          nextSnake,
+          game.food.filter((food) => !sameCell(nextHead, food)),
+        )
+      : game.food,
     score: ateFood ? game.score + 1 : game.score,
   }
 }
@@ -305,20 +313,36 @@ function dispatchRouteHistoryEvent(detail: {
   window.dispatchEvent(new CustomEvent('route-history', { detail }))
 }
 
-function createFood(snake: Cell[]): Cell {
+function createFood(snake: Cell[], food: Cell[]): Cell[] {
+  const nextFood = [...food]
+
+  while (nextFood.length < foodCount) {
+    const availableCell = findAvailableFoodCell(snake, nextFood)
+
+    if (availableCell === undefined) {
+      break
+    }
+
+    nextFood.push(availableCell)
+  }
+
+  return nextFood
+}
+
+function findAvailableFoodCell(snake: Cell[], food: Cell[]): Cell | undefined {
   const availableCells: Cell[] = []
 
   for (let y = 0; y < boardSize; y += 1) {
     for (let x = 0; x < boardSize; x += 1) {
       const cell = { x, y }
 
-      if (!snake.some((snakeCell) => sameCell(snakeCell, cell))) {
+      if (!snake.some((snakeCell) => sameCell(snakeCell, cell)) && !food.some((foodCell) => sameCell(foodCell, cell))) {
         availableCells.push(cell)
       }
     }
   }
 
-  return availableCells[Math.floor(Math.random() * availableCells.length)] ?? { x: 0, y: 0 }
+  return availableCells[Math.floor(Math.random() * availableCells.length)]
 }
 
 function hasCollision(cell: Cell, snake: Cell[]): boolean {

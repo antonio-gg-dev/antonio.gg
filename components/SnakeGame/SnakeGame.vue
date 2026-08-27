@@ -146,7 +146,7 @@ export default defineComponent({
     },
     food: {
       required: true,
-      type: Object as PropType<Cell>,
+      type: Array as PropType<Cell[]>,
     },
     score: {
       required: true,
@@ -175,7 +175,7 @@ export default defineComponent({
       return Array.from({ length: boardSize * boardSize }, (_, index) => {
         const cell = { x: index % boardSize, y: Math.floor(index / boardSize) }
         const isSnake = this.snake.some((snakeCell) => sameCell(snakeCell, cell))
-        const isFood = sameCell(this.food, cell)
+        const isFood = this.food.some((foodCell) => sameCell(foodCell, cell))
 
         return {
           key: index,
