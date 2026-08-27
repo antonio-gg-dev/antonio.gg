@@ -406,7 +406,7 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__score-combo {
-    @apply inline-block h-4 w-4 bg-neutral;
+    @apply inline-block h-4 w-4 bg-background;
     @include crt.shadow(theme('colors.neutral.DEFAULT'));
 
     &--lemon {
