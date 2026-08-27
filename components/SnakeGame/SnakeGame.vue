@@ -279,8 +279,7 @@ function sameCell(first: Cell, second: Cell): boolean {
     grid-template-columns: repeat(20, minmax(0, 1fr));
   }
 
-  &__snake,
-  &__food {
+  &__cell {
     @apply aspect-square;
   }
 

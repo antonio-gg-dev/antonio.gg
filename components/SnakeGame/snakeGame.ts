@@ -3,7 +3,10 @@ import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 export const boardSize = 20
 export const foodCount = 5
 const normalSpeed = 300
-const fastSpeed = 200
+const fastSpeed = 150
+const foodScore = 100
+const scoreLoss = 5
+const scoreInterval = 1000
 
 export enum Direction {
   Up = 'up',
@@ -116,7 +119,7 @@ export function move(game: SnakeGame): SnakeGame {
           game.food.filter((food) => !sameCell(nextHead, food)),
         )
       : game.food,
-    score: ateFood ? game.score + 1 : game.score,
+    score: ateFood ? game.score + foodScore : game.score,
   }
 }
 
@@ -124,12 +127,14 @@ export function useSnakeGame(): SnakeGameController {
   const phase = ref<Phase>(Phase.Title)
   const game = ref(createGame())
   let interval: number | undefined
+  let scoreTimer: number | undefined
   let heldDirection: Direction | undefined
 
   function startGame(): void {
     game.value = createGame()
     phase.value = Phase.Playing
     startTimer()
+    startScoreTimer()
   }
 
   function startTimer(speed = normalSpeed): void {
@@ -143,6 +148,7 @@ export function useSnakeGame(): SnakeGameController {
     if (game.value.gameOver) {
       phase.value = Phase.GameOver
       stopTimer()
+      stopScoreTimer()
     }
   }
 
@@ -150,6 +156,20 @@ export function useSnakeGame(): SnakeGameController {
     if (interval !== undefined) {
       window.clearInterval(interval)
       interval = undefined
+    }
+  }
+
+  function startScoreTimer(): void {
+    stopScoreTimer()
+    scoreTimer = window.setInterval(() => {
+      game.value.score = Math.max(0, game.value.score - scoreLoss)
+    }, scoreInterval)
+  }
+
+  function stopScoreTimer(): void {
+    if (scoreTimer !== undefined) {
+      window.clearInterval(scoreTimer)
+      scoreTimer = undefined
     }
   }
 
@@ -217,9 +237,11 @@ export function useSnakeGame(): SnakeGameController {
     if (phase.value === Phase.Playing) {
       phase.value = Phase.Paused
       stopTimer()
+      stopScoreTimer()
     } else if (phase.value === Phase.Paused) {
       phase.value = Phase.Playing
       startTimer()
+      startScoreTimer()
     }
   }
 
@@ -309,6 +331,7 @@ export function useSnakeGame(): SnakeGameController {
     window.removeEventListener('keydown', handleKeydown)
     window.removeEventListener('keyup', handleKeyup)
     stopTimer()
+    stopScoreTimer()
   })
 
   return {
