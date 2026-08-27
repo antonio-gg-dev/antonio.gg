@@ -12,20 +12,22 @@
         ref="scoreElement"
         class="snake__score"
       >
-        <span
-          ><span class="snake__score-label snake__score-label--short">S</span
-          ><span class="snake__score-label snake__score-label--long">Score</span>:
-          <strong
-            class="snake__score-current"
-            :class="comboFood !== undefined ? `snake__score-current--${comboFood}` : ''"
-            >{{ score.toLocaleString('en-US') }}</strong
+        <span class="snake__score-current">
+          <span
+            class="snake__score-combo"
+            :class="comboFood !== undefined ? `snake__score-combo--${comboFood}` : 'snake__score-combo--neutral'"
+            aria-hidden="true"
           ></span
-        >
-        <span
-          ><span class="snake__score-label snake__score-label--short">HS</span
-          ><span class="snake__score-label snake__score-label--long">High Score</span>:
-          {{ highScore.toLocaleString('en-US') }}</span
-        >
+          >&nbsp;
+          <span class="snake__score-label snake__score-label--short">S</span>
+          <span class="snake__score-label snake__score-label--long">Score</span>:
+          {{ score.toLocaleString('en-US') }}
+        </span>
+        <span>
+          <span class="snake__score-label snake__score-label--short">HS</span>
+          <span class="snake__score-label snake__score-label--long">High Score</span>:
+          {{ highScore.toLocaleString('en-US') }}
+        </span>
       </p>
 
       <div
@@ -401,20 +403,35 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__score-current {
+    @apply inline-flex items-center gap-1;
+  }
+
+  &__score-combo {
+    @apply inline-block h-4 w-4;
+
+    &--neutral {
+      @apply bg-neutral;
+      @include crt.shadow(theme('colors.neutral.DEFAULT'));
+    }
+
     &--lemon {
-      @apply text-warning;
+      @apply bg-warning;
+      @include crt.shadow(theme('colors.warning.DEFAULT'));
     }
 
     &--tomato {
-      @apply text-danger;
+      @apply bg-danger;
+      @include crt.shadow(theme('colors.danger.DEFAULT'));
     }
 
     &--apple {
-      @apply text-success;
+      @apply bg-success;
+      @include crt.shadow(theme('colors.success.DEFAULT'));
     }
 
     &--strawberry {
-      @apply text-foreground;
+      @apply bg-foreground;
+      @include crt.shadow(theme('colors.foreground'));
     }
   }
 

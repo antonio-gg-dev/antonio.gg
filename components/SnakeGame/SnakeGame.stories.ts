@@ -44,6 +44,7 @@ export const Playing: Story = {
   args: {
     phase: Phase.Playing,
     ...game,
+    comboFood: FoodType.Tomato,
     score: 3,
   },
 }
