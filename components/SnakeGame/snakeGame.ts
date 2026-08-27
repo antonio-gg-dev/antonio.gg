@@ -2,8 +2,8 @@ import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 export const boardSize = 20
 export const foodCount = 5
-const normalSpeed = 175
-const fastSpeed = 100
+const normalSpeed = 300
+const fastSpeed = 200
 
 export enum Direction {
   Up = 'up',
@@ -12,14 +12,24 @@ export enum Direction {
   Left = 'left',
 }
 
+export enum Fruit {
+  Lemon = 'lemon',
+  Tomato = 'tomato',
+  Apple = 'apple',
+}
+
 export interface Cell {
   x: number
   y: number
 }
 
+export interface Food extends Cell {
+  fruit: Fruit
+}
+
 export interface SnakeGame {
   snake: Cell[]
-  food: Cell[]
+  food: Food[]
   direction: Direction
   score: number
   gameOver: boolean
@@ -162,6 +172,7 @@ export function useSnakeGame(): SnakeGameController {
     const nextGame = changeDirection(game.value, direction)
 
     if (nextGame !== game.value) {
+      stopTimer()
       game.value = nextGame
       moveGame()
 
@@ -178,6 +189,12 @@ export function useSnakeGame(): SnakeGameController {
     }
 
     if (isOpposite(game.value.direction, direction)) {
+      return
+    }
+
+    if (game.value.direction === direction) {
+      heldDirection = direction
+      startTimer(fastSpeed)
       return
     }
 
@@ -313,7 +330,7 @@ function dispatchRouteHistoryEvent(detail: {
   window.dispatchEvent(new CustomEvent('route-history', { detail }))
 }
 
-function createFood(snake: Cell[], food: Cell[]): Cell[] {
+function createFood(snake: Cell[], food: Food[]): Food[] {
   const nextFood = [...food]
 
   while (nextFood.length < foodCount) {
@@ -323,10 +340,17 @@ function createFood(snake: Cell[], food: Cell[]): Cell[] {
       break
     }
 
-    nextFood.push(availableCell)
+    nextFood.push({ ...availableCell, ...randomFruit() })
   }
 
   return nextFood
+}
+
+function randomFruit(): Pick<Food, 'fruit'> {
+  const fruits = Object.values(Fruit)
+  const fruit = fruits[Math.floor(Math.random() * fruits.length)] ?? Fruit.Lemon
+
+  return { fruit }
 }
 
 function findAvailableFoodCell(snake: Cell[], food: Cell[]): Cell | undefined {

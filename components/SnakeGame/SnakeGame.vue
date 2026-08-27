@@ -121,7 +121,7 @@ import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
 import ArrowUpIcon from '@/components/Icons/ArrowUpIcon.vue'
-import { boardSize, Direction, Phase, type Cell } from './snakeGame'
+import { boardSize, Direction, Phase, type Cell, type Food } from './snakeGame'
 
 export default defineComponent({
   name: 'SnakeGame',
@@ -146,7 +146,7 @@ export default defineComponent({
     },
     food: {
       required: true,
-      type: Array as PropType<Cell[]>,
+      type: Array as PropType<Food[]>,
     },
     score: {
       required: true,
@@ -175,11 +175,11 @@ export default defineComponent({
       return Array.from({ length: boardSize * boardSize }, (_, index) => {
         const cell = { x: index % boardSize, y: Math.floor(index / boardSize) }
         const isSnake = this.snake.some((snakeCell) => sameCell(snakeCell, cell))
-        const isFood = this.food.some((foodCell) => sameCell(foodCell, cell))
+        const food = this.food.find((foodCell) => sameCell(foodCell, cell))
 
         return {
           key: index,
-          className: isSnake ? 'snake__cell--snake' : isFood ? 'snake__cell--food' : '',
+          className: isSnake ? 'snake__snake' : food !== undefined ? `snake__food snake__food--${food.fruit}` : '',
         }
       })
     },
@@ -279,15 +279,26 @@ function sameCell(first: Cell, second: Cell): boolean {
     grid-template-columns: repeat(20, minmax(0, 1fr));
   }
 
-  &__cell {
+  &__snake,
+  &__food {
     @apply aspect-square;
+  }
 
-    &--snake {
-      @apply bg-success;
+  &__snake {
+    @apply bg-accent;
+  }
+
+  &__food {
+    &--lemon {
+      @apply bg-warning;
     }
 
-    &--food {
+    &--tomato {
       @apply bg-danger;
+    }
+
+    &--apple {
+      @apply bg-success;
     }
   }
 
