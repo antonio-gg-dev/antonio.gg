@@ -9,6 +9,7 @@ route_history_prompt: false
 <SnakeGame
 :food="game.food"
 :high-score="highScore"
+:combo-food="game.comboFood"
 :phase="phase"
 :score="game.score"
 :score-feedback="scoreFeedback"

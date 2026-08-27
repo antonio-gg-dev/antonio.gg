@@ -15,7 +15,11 @@
         <span
           ><span class="snake__score-label snake__score-label--short">S</span
           ><span class="snake__score-label snake__score-label--long">Score</span>:
-          {{ score.toLocaleString('en-US') }}</span
+          <strong
+            class="snake__score-current"
+            :class="comboFood !== undefined ? `snake__score-current--${comboFood}` : ''"
+            >{{ score.toLocaleString('en-US') }}</strong
+          ></span
         >
         <span
           ><span class="snake__score-label snake__score-label--short">HS</span
@@ -194,7 +198,7 @@ import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
 import ArrowUpIcon from '@/components/Icons/ArrowUpIcon.vue'
-import { boardSize, Direction, Phase, type Cell, type FoodCell, type ScoreFeedback } from './snakeGame'
+import { boardSize, Direction, Phase, type Cell, type FoodCell, type FoodType, type ScoreFeedback } from './snakeGame'
 
 export default defineComponent({
   name: 'SnakeGame',
@@ -218,6 +222,10 @@ export default defineComponent({
     snake: {
       required: true,
       type: Array as PropType<Cell[]>,
+    },
+    comboFood: {
+      default: undefined,
+      type: String as PropType<FoodType | undefined>,
     },
     food: {
       required: true,
@@ -255,15 +263,17 @@ export default defineComponent({
   },
 
   computed: {
-    cells(): Array<{ key: number; className: string }> {
+    cells(): Array<{ key: number; className: string; isHead: boolean }> {
       return Array.from({ length: boardSize * boardSize }, (_, index) => {
         const cell = { x: index % boardSize, y: Math.floor(index / boardSize) }
         const isSnake = this.snake.some((snakeCell) => sameCell(snakeCell, cell))
+        const isHead = this.snake[0] !== undefined && sameCell(this.snake[0], cell)
         const food = this.food.find((foodCell) => sameCell(foodCell, cell))
 
         return {
           key: index,
           className: isSnake ? 'snake__snake' : food !== undefined ? `snake__food snake__food--${food.type}` : '',
+          isHead,
         }
       })
     },
@@ -390,6 +400,24 @@ function sameCell(first: Cell, second: Cell): boolean {
     @apply m-0 flex shrink-0 justify-between whitespace-nowrap bg-neutral pb-2;
   }
 
+  &__score-current {
+    &--lemon {
+      @apply text-warning;
+    }
+
+    &--tomato {
+      @apply text-danger;
+    }
+
+    &--apple {
+      @apply text-success;
+    }
+
+    &--strawberry {
+      @apply text-foreground;
+    }
+  }
+
   &__score-label--long {
     @apply hidden;
 
@@ -443,6 +471,8 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__food {
+    @apply m-1;
+
     &--lemon {
       @apply bg-warning;
       @include crt.shadow(theme('colors.warning.DEFAULT'));
