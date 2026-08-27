@@ -55,6 +55,25 @@
   }
 }
 
+@mixin shadow-no-aberration($color) {
+  html:not([data-effect-aberration='false']) & {
+    --crt-shadow-color: #{$color};
+
+    box-shadow:
+      0 0 0.1rem var(--crt-shadow-color),
+      0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+  }
+
+  html[data-effect-flicker='true'] & {
+    animation: crt-shadow-glow-no-aberration 4s linear infinite;
+  }
+
+  @media print {
+    animation: none;
+    box-shadow: none;
+  }
+}
+
 @mixin keyframes {
   @keyframes crt-text-glow {
     0%,
@@ -144,6 +163,33 @@
       box-shadow:
         -0.1rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) r 0 0) 80%, transparent),
         0.1rem 0 0 color-mix(in srgb, rgb(from var(--crt-shadow-color) 0 g b) 80%, transparent),
+        0 0 0.12rem var(--crt-shadow-color),
+        0 0 0.36rem color-mix(in srgb, var(--crt-shadow-color) 60%, transparent);
+    }
+  }
+
+  @keyframes crt-shadow-glow-no-aberration {
+    0%,
+    19%,
+    21%,
+    62%,
+    64%,
+    100% {
+      box-shadow:
+        0 0 0.1rem var(--crt-shadow-color),
+        0 0 0.3rem color-mix(in srgb, var(--crt-shadow-color) 50%, transparent);
+    }
+
+    20%,
+    63% {
+      box-shadow:
+        0 0 0.08rem var(--crt-shadow-color),
+        0 0 0.22rem color-mix(in srgb, var(--crt-shadow-color) 35%, transparent);
+    }
+
+    20.5%,
+    63.5% {
+      box-shadow:
         0 0 0.12rem var(--crt-shadow-color),
         0 0 0.36rem color-mix(in srgb, var(--crt-shadow-color) 60%, transparent);
     }

@@ -309,9 +309,12 @@ function sameCell(first: Cell, second: Cell): boolean {
 </script>
 
 <style lang="scss">
+@use '@/styles/mixins/crt';
+
 .snake {
   &__container {
     @apply flex h-dvh w-full flex-col content-center items-center justify-center gap-2 overflow-hidden py-2;
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
 
     @media (pointer: coarse) {
       @apply justify-between;
@@ -332,6 +335,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
   &__screen {
     @apply w-full border-2 border-neutral;
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
 
     @media (orientation: landscape) {
       @apply flex h-full w-fit flex-col;
@@ -340,6 +344,8 @@ function sameCell(first: Cell, second: Cell): boolean {
 
   &__title,
   &__board {
+    @include crt.shadow(theme('colors.neutral.DEFAULT'));
+
     @media (orientation: landscape) {
       @apply h-auto min-h-0 w-auto;
       height: calc(100% - var(--score-height));
@@ -429,6 +435,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
   &__snake {
     @apply bg-accent;
+    @include crt.shadow-no-aberration(theme('colors.accent.DEFAULT'));
 
     [data-theme='p1-phosphor'] & {
       @apply bg-foreground;
@@ -438,6 +445,7 @@ function sameCell(first: Cell, second: Cell): boolean {
   &__food {
     &--lemon {
       @apply bg-warning;
+      @include crt.shadow(theme('colors.warning.DEFAULT'));
 
       [data-theme='p1-phosphor'] & {
         background: repeating-linear-gradient(
@@ -450,6 +458,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
     &--tomato {
       @apply bg-danger;
+      @include crt.shadow(theme('colors.danger.DEFAULT'));
 
       [data-theme='p1-phosphor'] & {
         background: repeating-linear-gradient(
@@ -462,6 +471,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
     &--apple {
       @apply bg-success;
+      @include crt.shadow(theme('colors.success.DEFAULT'));
 
       [data-theme='p1-phosphor'] & {
         @apply bg-success;
@@ -470,6 +480,7 @@ function sameCell(first: Cell, second: Cell): boolean {
 
     &--strawberry {
       @apply bg-foreground;
+      @include crt.shadow(theme('colors.foreground'));
       animation: snake-strawberry-blink 0.4s steps(1, end) infinite;
 
       [data-theme='p1-phosphor'] & {
