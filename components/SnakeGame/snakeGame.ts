@@ -5,7 +5,9 @@ export const foodCount = 5
 const normalSpeed = 300
 const fastSpeed = 150
 const accelerationTicks = 2
-const foodScore = 100
+const baseFoodScore = 100
+const comboMultiplier = 1.1
+const scoreStep = 5
 const scoreLoss = 5
 const scoreInterval = 1000
 const scoreFeedbackDuration = 1000
@@ -38,6 +40,8 @@ export interface SnakeGame {
   food: Food[]
   direction: Direction
   score: number
+  combo: number
+  comboFruit?: Fruit
   gameOver: boolean
 }
 
@@ -78,6 +82,7 @@ export function createGame(): SnakeGame {
     food: createFood(snake, []),
     direction: Direction.Right,
     score: 0,
+    combo: 0,
     gameOver: false,
   }
 }
@@ -105,7 +110,8 @@ export function move(game: SnakeGame): SnakeGame {
     x: head.x + (game.direction === Direction.Right ? 1 : game.direction === Direction.Left ? -1 : 0),
     y: head.y + (game.direction === Direction.Down ? 1 : game.direction === Direction.Up ? -1 : 0),
   }
-  const ateFood = game.food.some((food) => sameCell(nextHead, food))
+  const eatenFood = game.food.find((food) => sameCell(nextHead, food))
+  const ateFood = eatenFood !== undefined
   const nextSnake = [
     nextHead,
     ...game.snake,
@@ -119,6 +125,8 @@ export function move(game: SnakeGame): SnakeGame {
     return { ...game, gameOver: true }
   }
 
+  const combo = eatenFood === undefined ? game.combo : eatenFood.fruit === game.comboFruit ? game.combo + 1 : 1
+
   return {
     ...game,
     snake: nextSnake,
@@ -128,7 +136,9 @@ export function move(game: SnakeGame): SnakeGame {
           game.food.filter((food) => !sameCell(nextHead, food)),
         )
       : game.food,
-    score: ateFood ? game.score + foodScore : game.score,
+    score: ateFood ? game.score + calculateFoodScore(combo) : game.score,
+    combo,
+    comboFruit: eatenFood?.fruit ?? game.comboFruit,
   }
 }
 
@@ -169,6 +179,7 @@ export function useSnakeGame(): SnakeGameController {
     }
 
     const previousFood = game.value.food
+    const previousScore = game.value.score
     game.value = move(game.value)
 
     if (heldDirection === game.value.direction) {
@@ -182,7 +193,7 @@ export function useSnakeGame(): SnakeGameController {
     const eatenFood = previousFood.find((food) => !game.value.food.some((currentFood) => sameCell(food, currentFood)))
 
     if (eatenFood !== undefined) {
-      showScoreFeedback(eatenFood)
+      showScoreFeedback(eatenFood, game.value.score - previousScore)
     }
 
     if (game.value.gameOver) {
@@ -215,9 +226,9 @@ export function useSnakeGame(): SnakeGameController {
     }
   }
 
-  function showScoreFeedback(food: Food): void {
+  function showScoreFeedback(food: Food, points: number): void {
     clearScoreFeedback()
-    scoreFeedback.value = { x: food.x, y: food.y, fruit: food.fruit, points: foodScore }
+    scoreFeedback.value = { x: food.x, y: food.y, fruit: food.fruit, points }
     scoreFeedbackTimer = window.setTimeout(clearScoreFeedback, scoreFeedbackDuration)
   }
 
@@ -474,4 +485,8 @@ function isWall(cell: Cell): boolean {
 
 function sameCell(first: Cell, second: Cell): boolean {
   return first.x === second.x && first.y === second.y
+}
+
+function calculateFoodScore(combo: number): number {
+  return Math.round((baseFoodScore * Math.pow(comboMultiplier, combo - 1)) / scoreStep) * scoreStep
 }
