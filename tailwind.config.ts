@@ -103,6 +103,7 @@ export default {
         'scrollbar',
         'code-lang',
         'code-copy',
+        'snake-score-feedback',
         'scroll-to-bottom',
         'crt-overlay',
       ],

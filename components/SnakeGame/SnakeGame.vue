@@ -29,6 +29,17 @@
             class="snake__cell"
             :class="cell.className"
           ></div>
+          <span
+            v-if="scoreFeedback !== undefined"
+            class="snake__score-feedback"
+            :class="`snake__score-feedback--${scoreFeedback.fruit}`"
+            :style="{
+              left: `${(scoreFeedback.x + 0.5) * 5}%`,
+              top: `${(scoreFeedback.y + 0.5) * 5}%`,
+            }"
+          >
+            +{{ scoreFeedback.points }}
+          </span>
           <div
             v-if="phase === Phase.Paused || phase === Phase.GameOver"
             class="snake__overlay"
@@ -121,7 +132,7 @@ import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
 import ArrowUpIcon from '@/components/Icons/ArrowUpIcon.vue'
-import { boardSize, Direction, Phase, type Cell, type Food } from './snakeGame'
+import { boardSize, Direction, Phase, type Cell, type Food, type ScoreFeedback } from './snakeGame'
 
 export default defineComponent({
   name: 'SnakeGame',
@@ -151,6 +162,10 @@ export default defineComponent({
     score: {
       required: true,
       type: Number,
+    },
+    scoreFeedback: {
+      default: undefined,
+      type: Object as PropType<ScoreFeedback | undefined>,
     },
   },
 
@@ -272,6 +287,22 @@ function sameCell(first: Cell, second: Cell): boolean {
 
   &__score {
     @apply m-0 shrink-0 whitespace-nowrap bg-neutral pb-2;
+  }
+
+  &__score-feedback {
+    @apply pointer-events-none absolute z-snake-score-feedback -translate-x-1/2 -translate-y-1/2 whitespace-nowrap;
+
+    &--lemon {
+      @apply text-warning;
+    }
+
+    &--tomato {
+      @apply text-danger;
+    }
+
+    &--apple {
+      @apply text-success;
+    }
   }
 
   &__board {

@@ -10,6 +10,7 @@ route_history_prompt: false
 :food="game.food"
 :phase="phase"
 :score="game.score"
+:score-feedback="scoreFeedback"
 :snake="game.snake"
 @direction-start="startDirection"
 @direction-end="stopDirection"
@@ -21,5 +22,5 @@ route_history_prompt: false
 import SnakeGame from '@/components/SnakeGame/SnakeGame.vue'
 import { useSnakeGame } from '@/components/SnakeGame/snakeGame.ts'
 
-const { exitGame, game, phase, startDirection, stopDirection, togglePause } = useSnakeGame()
+const { exitGame, game, phase, scoreFeedback, startDirection, stopDirection, togglePause } = useSnakeGame()
 </script>

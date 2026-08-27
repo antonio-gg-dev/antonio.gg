@@ -4,9 +4,12 @@ export const boardSize = 20
 export const foodCount = 5
 const normalSpeed = 300
 const fastSpeed = 150
+const accelerationTicks = 2
 const foodScore = 100
 const scoreLoss = 5
 const scoreInterval = 1000
+const scoreFeedbackDuration = 1000
+const directionBufferSize = 2
 
 export enum Direction {
   Up = 'up',
@@ -38,6 +41,11 @@ export interface SnakeGame {
   gameOver: boolean
 }
 
+export interface ScoreFeedback extends Cell {
+  fruit: Fruit
+  points: number
+}
+
 export enum Phase {
   Title = 'title',
   Playing = 'playing',
@@ -48,6 +56,7 @@ export enum Phase {
 export interface SnakeGameController {
   phase: Ref<Phase>
   game: Ref<SnakeGame>
+  scoreFeedback: Ref<ScoreFeedback | undefined>
   changeGameDirection: (direction: Direction) => void
   startDirection: (direction: Direction) => void
   stopDirection: (direction: Direction) => void
@@ -126,35 +135,68 @@ export function move(game: SnakeGame): SnakeGame {
 export function useSnakeGame(): SnakeGameController {
   const phase = ref<Phase>(Phase.Title)
   const game = ref(createGame())
+  const scoreFeedback = ref<ScoreFeedback>()
   let interval: number | undefined
   let scoreTimer: number | undefined
+  let scoreFeedbackTimer: number | undefined
+  let pendingDirections: Direction[] = []
   let heldDirection: Direction | undefined
+  let heldTicks = 0
+  let isAccelerating = false
 
   function startGame(): void {
     game.value = createGame()
     phase.value = Phase.Playing
+    clearScoreFeedback()
+    pendingDirections = []
+    heldDirection = undefined
+    heldTicks = 0
+    isAccelerating = false
     startTimer()
     startScoreTimer()
   }
 
-  function startTimer(speed = normalSpeed): void {
+  function startTimer(): void {
     stopTimer()
-    interval = window.setInterval(moveGame, speed)
+    interval = window.setTimeout(moveGame, isAccelerating ? fastSpeed : normalSpeed)
   }
 
   function moveGame(): void {
+    const pendingDirection = pendingDirections.shift()
+
+    if (pendingDirection !== undefined) {
+      game.value = changeDirection(game.value, pendingDirection)
+    }
+
+    const previousFood = game.value.food
     game.value = move(game.value)
+
+    if (heldDirection === game.value.direction) {
+      heldTicks += 1
+      isAccelerating = heldTicks >= accelerationTicks
+    } else {
+      heldTicks = 0
+      isAccelerating = false
+    }
+
+    const eatenFood = previousFood.find((food) => !game.value.food.some((currentFood) => sameCell(food, currentFood)))
+
+    if (eatenFood !== undefined) {
+      showScoreFeedback(eatenFood)
+    }
 
     if (game.value.gameOver) {
       phase.value = Phase.GameOver
       stopTimer()
       stopScoreTimer()
+    } else {
+      startTimer()
     }
   }
 
   function stopTimer(): void {
     if (interval !== undefined) {
-      window.clearInterval(interval)
+      window.clearTimeout(interval)
       interval = undefined
     }
   }
@@ -170,6 +212,21 @@ export function useSnakeGame(): SnakeGameController {
     if (scoreTimer !== undefined) {
       window.clearInterval(scoreTimer)
       scoreTimer = undefined
+    }
+  }
+
+  function showScoreFeedback(food: Food): void {
+    clearScoreFeedback()
+    scoreFeedback.value = { x: food.x, y: food.y, fruit: food.fruit, points: foodScore }
+    scoreFeedbackTimer = window.setTimeout(clearScoreFeedback, scoreFeedbackDuration)
+  }
+
+  function clearScoreFeedback(): void {
+    scoreFeedback.value = undefined
+
+    if (scoreFeedbackTimer !== undefined) {
+      window.clearTimeout(scoreFeedbackTimer)
+      scoreFeedbackTimer = undefined
     }
   }
 
@@ -189,16 +246,14 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
-    const nextGame = changeDirection(game.value, direction)
+    const currentDirection = pendingDirections.at(-1) ?? game.value.direction
 
-    if (nextGame !== game.value) {
-      stopTimer()
-      game.value = nextGame
-      moveGame()
-
-      if (!game.value.gameOver) {
-        startTimer()
-      }
+    if (
+      pendingDirections.length < directionBufferSize &&
+      !isOpposite(currentDirection, direction) &&
+      currentDirection !== direction
+    ) {
+      pendingDirections.push(direction)
     }
   }
 
@@ -208,28 +263,32 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
-    if (isOpposite(game.value.direction, direction)) {
+    const currentDirection = pendingDirections.at(-1) ?? game.value.direction
+
+    if (isOpposite(currentDirection, direction)) {
       return
     }
 
-    if (game.value.direction === direction) {
-      heldDirection = direction
-      startTimer(fastSpeed)
+    if (currentDirection === direction) {
+      if (heldDirection !== direction) {
+        heldDirection = direction
+        heldTicks = 0
+        isAccelerating = false
+      }
       return
     }
 
     changeGameDirection(direction)
     heldDirection = direction
-    startTimer(fastSpeed)
+    heldTicks = 0
+    isAccelerating = false
   }
 
   function stopDirection(direction: Direction): void {
     if (heldDirection === direction) {
       heldDirection = undefined
-
-      if (phase.value === Phase.Playing) {
-        startTimer()
-      }
+      heldTicks = 0
+      isAccelerating = false
     }
   }
 
@@ -238,6 +297,8 @@ export function useSnakeGame(): SnakeGameController {
       phase.value = Phase.Paused
       stopTimer()
       stopScoreTimer()
+      heldTicks = 0
+      isAccelerating = false
     } else if (phase.value === Phase.Paused) {
       phase.value = Phase.Playing
       startTimer()
@@ -332,11 +393,13 @@ export function useSnakeGame(): SnakeGameController {
     window.removeEventListener('keyup', handleKeyup)
     stopTimer()
     stopScoreTimer()
+    clearScoreFeedback()
   })
 
   return {
     phase,
     game,
+    scoreFeedback,
     changeGameDirection,
     startDirection,
     stopDirection,
