@@ -326,7 +326,6 @@ function sameCell(first: Cell, second: Cell): boolean {
 .snake {
   &__container {
     @apply flex h-dvh w-full flex-col content-center items-center justify-center gap-2 overflow-hidden py-2;
-    @include crt.shadow(theme('colors.neutral.DEFAULT'));
 
     @media (pointer: coarse) {
       @apply justify-between;
