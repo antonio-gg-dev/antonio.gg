@@ -49,7 +49,10 @@
         class="snake__control snake__control--up"
         type="button"
         aria-label="Mover arriba"
-        @click="emitDirection(Direction.Up)"
+        @pointerdown.prevent="startDirection(Direction.Up)"
+        @pointerup="stopDirection(Direction.Up)"
+        @pointercancel="stopDirection(Direction.Up)"
+        @pointerleave="stopDirection(Direction.Up)"
       >
         <ArrowUpIcon aria-hidden="true" />
       </button>
@@ -57,7 +60,10 @@
         class="snake__control snake__control--left"
         type="button"
         aria-label="Mover izquierda"
-        @click="emitDirection(Direction.Left)"
+        @pointerdown.prevent="startDirection(Direction.Left)"
+        @pointerup="stopDirection(Direction.Left)"
+        @pointercancel="stopDirection(Direction.Left)"
+        @pointerleave="stopDirection(Direction.Left)"
       >
         <ArrowLeftIcon aria-hidden="true" />
       </button>
@@ -65,7 +71,10 @@
         class="snake__control snake__control--down"
         type="button"
         aria-label="Mover abajo"
-        @click="emitDirection(Direction.Down)"
+        @pointerdown.prevent="startDirection(Direction.Down)"
+        @pointerup="stopDirection(Direction.Down)"
+        @pointercancel="stopDirection(Direction.Down)"
+        @pointerleave="stopDirection(Direction.Down)"
       >
         <ArrowDownIcon aria-hidden="true" />
       </button>
@@ -73,7 +82,10 @@
         class="snake__control snake__control--right"
         type="button"
         aria-label="Mover derecha"
-        @click="emitDirection(Direction.Right)"
+        @pointerdown.prevent="startDirection(Direction.Right)"
+        @pointerup="stopDirection(Direction.Right)"
+        @pointercancel="stopDirection(Direction.Right)"
+        @pointerleave="stopDirection(Direction.Right)"
       >
         <ArrowRightIcon aria-hidden="true" />
       </button>
@@ -143,7 +155,8 @@ export default defineComponent({
   },
 
   emits: [
-    'direction',
+    'direction-start',
+    'direction-end',
     'pause',
     'exit',
   ],
@@ -189,8 +202,12 @@ export default defineComponent({
   },
 
   methods: {
-    emitDirection(direction: Direction): void {
-      this.$emit('direction', direction)
+    startDirection(direction: Direction): void {
+      this.$emit('direction-start', direction)
+    },
+
+    stopDirection(direction: Direction): void {
+      this.$emit('direction-end', direction)
     },
 
     updateScoreHeight(): void {

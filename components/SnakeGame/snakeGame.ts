@@ -1,6 +1,8 @@
 import { onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
 
 export const boardSize = 20
+const normalSpeed = 175
+const fastSpeed = 100
 
 export enum Direction {
   Up = 'up',
@@ -33,6 +35,8 @@ export interface SnakeGameController {
   phase: Ref<Phase>
   game: Ref<SnakeGame>
   changeGameDirection: (direction: Direction) => void
+  startDirection: (direction: Direction) => void
+  stopDirection: (direction: Direction) => void
   togglePause: () => void
   exitGame: () => void
 }
@@ -102,6 +106,7 @@ export function useSnakeGame(): SnakeGameController {
   const phase = ref<Phase>(Phase.Title)
   const game = ref(createGame())
   let interval: number | undefined
+  let heldDirection: Direction | undefined
 
   function startGame(): void {
     game.value = createGame()
@@ -109,16 +114,18 @@ export function useSnakeGame(): SnakeGameController {
     startTimer()
   }
 
-  function startTimer(): void {
+  function startTimer(speed = normalSpeed): void {
     stopTimer()
-    interval = window.setInterval(() => {
-      game.value = move(game.value)
+    interval = window.setInterval(moveGame, speed)
+  }
 
-      if (game.value.gameOver) {
-        phase.value = Phase.GameOver
-        stopTimer()
-      }
-    }, 175)
+  function moveGame(): void {
+    game.value = move(game.value)
+
+    if (game.value.gameOver) {
+      phase.value = Phase.GameOver
+      stopTimer()
+    }
   }
 
   function stopTimer(): void {
@@ -144,7 +151,41 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
-    game.value = changeDirection(game.value, direction)
+    const nextGame = changeDirection(game.value, direction)
+
+    if (nextGame !== game.value) {
+      game.value = nextGame
+      moveGame()
+
+      if (!game.value.gameOver) {
+        startTimer()
+      }
+    }
+  }
+
+  function startDirection(direction: Direction): void {
+    if (phase.value !== Phase.Playing) {
+      changeGameDirection(direction)
+      return
+    }
+
+    if (isOpposite(game.value.direction, direction)) {
+      return
+    }
+
+    changeGameDirection(direction)
+    heldDirection = direction
+    startTimer(fastSpeed)
+  }
+
+  function stopDirection(direction: Direction): void {
+    if (heldDirection === direction) {
+      heldDirection = undefined
+
+      if (phase.value === Phase.Playing) {
+        startTimer()
+      }
+    }
   }
 
   function togglePause(): void {
@@ -206,7 +247,29 @@ export function useSnakeGame(): SnakeGameController {
 
     if (direction !== undefined) {
       event.preventDefault()
-      changeGameDirection(direction)
+
+      if (!event.repeat) {
+        startDirection(direction)
+      }
+    }
+  }
+
+  function handleKeyup(event: KeyboardEvent): void {
+    const directions: Record<string, Direction> = {
+      ArrowUp: Direction.Up,
+      w: Direction.Up,
+      ArrowRight: Direction.Right,
+      d: Direction.Right,
+      ArrowDown: Direction.Down,
+      s: Direction.Down,
+      ArrowLeft: Direction.Left,
+      a: Direction.Left,
+    }
+    const direction = directions[event.key]
+
+    if (direction !== undefined) {
+      event.preventDefault()
+      stopDirection(direction)
     }
   }
 
@@ -214,10 +277,12 @@ export function useSnakeGame(): SnakeGameController {
     dispatchRouteHistoryEvent({ action: 'clear', preserveCurrentRoute: true })
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: false })
     window.addEventListener('keydown', handleKeydown)
+    window.addEventListener('keyup', handleKeyup)
   })
 
   onBeforeUnmount(() => {
     window.removeEventListener('keydown', handleKeydown)
+    window.removeEventListener('keyup', handleKeyup)
     stopTimer()
   })
 
@@ -225,6 +290,8 @@ export function useSnakeGame(): SnakeGameController {
     phase,
     game,
     changeGameDirection,
+    startDirection,
+    stopDirection,
     togglePause,
     exitGame,
   }
