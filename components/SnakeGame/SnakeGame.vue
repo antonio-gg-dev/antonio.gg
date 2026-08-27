@@ -429,24 +429,52 @@ function sameCell(first: Cell, second: Cell): boolean {
 
   &__snake {
     @apply bg-accent;
+
+    [data-theme='p1-phosphor'] & {
+      @apply bg-foreground;
+    }
   }
 
   &__food {
     &--lemon {
       @apply bg-warning;
+
+      [data-theme='p1-phosphor'] & {
+        background: repeating-linear-gradient(
+          to right,
+          var(--color-warning) 0 20%,
+          var(--color-warning-emphasis) 20% 40%
+        );
+      }
     }
 
     &--tomato {
       @apply bg-danger;
+
+      [data-theme='p1-phosphor'] & {
+        background: repeating-linear-gradient(
+          to bottom,
+          var(--color-danger-emphasis) 0 20%,
+          var(--color-danger) 20% 40%
+        );
+      }
     }
 
     &--apple {
       @apply bg-success;
+
+      [data-theme='p1-phosphor'] & {
+        @apply bg-success;
+      }
     }
 
     &--strawberry {
       @apply bg-foreground;
       animation: snake-strawberry-blink 0.4s steps(1, end) infinite;
+
+      [data-theme='p1-phosphor'] & {
+        @apply bg-success-emphasis;
+      }
 
       @keyframes snake-strawberry-blink {
         50% {

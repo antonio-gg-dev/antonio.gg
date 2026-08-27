@@ -1,9 +1,45 @@
 import { Preview } from '@storybook/vue3'
 import { themes } from '@storybook/theming'
 import '@/styles/index.scss'
+import { Theme, ThemeId, type PresetThemeId } from '@/config/Theme'
 import { Viewport } from '@/config/Viewport'
 
+const availableThemes = Theme.all()
+
 export default {
+  globalTypes: {
+    theme: {
+      description: 'Theme for the preview',
+      defaultValue: ThemeId.Mambo,
+      toolbar: {
+        icon: 'paintbrush',
+        items: Object.values(availableThemes).map((theme) => ({
+          value: theme.id,
+          title: theme.name,
+        })),
+      },
+    },
+  },
+
+  decorators: [
+    (story: () => unknown, context: { globals: { theme?: ThemeId } }) => {
+      const theme = availableThemes[context.globals.theme as PresetThemeId] ?? availableThemes[ThemeId.Mambo]
+
+      document.documentElement.dataset.theme = theme.id
+      Object.entries(theme.toCssProperties()).forEach(
+        ([
+          property,
+          value,
+        ]) => {
+          document.documentElement.style.setProperty(property, value)
+        },
+      )
+      document.body.style.backgroundColor = 'var(--color-background)'
+
+      return story()
+    },
+  ],
+
   parameters: {
     controls: {
       matchers: {
