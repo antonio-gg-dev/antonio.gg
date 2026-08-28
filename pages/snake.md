@@ -7,6 +7,7 @@ route_history_prompt: false
 ---
 
 <SnakeGame
+:active="active"
 :food="game.food"
 :high-score="highScore"
 :combo-food="game.comboFood"
@@ -25,5 +26,5 @@ route_history_prompt: false
 import SnakeGame from '@/components/SnakeGame/SnakeGame.vue'
 import { useSnakeGame } from '@/components/SnakeGame/snakeGame.ts'
 
-const { exitGame, game, highScore, phase, returnToMenu, scoreFeedback, startDirection, stopDirection, togglePause } = useSnakeGame()
+const { active, exitGame, game, highScore, phase, returnToMenu, scoreFeedback, startDirection, stopDirection, togglePause } = useSnakeGame()
 </script>

@@ -107,6 +107,7 @@
     >
       <button
         class="snake__control snake__control--up"
+        :disabled="!active"
         type="button"
         aria-label="Move up"
         @pointerdown.prevent="startDirection(Direction.Up)"
@@ -118,6 +119,7 @@
       </button>
       <button
         class="snake__control snake__control--left"
+        :disabled="!active"
         type="button"
         aria-label="Move left"
         @pointerdown.prevent="startDirection(Direction.Left)"
@@ -129,6 +131,7 @@
       </button>
       <button
         class="snake__control snake__control--down"
+        :disabled="!active"
         type="button"
         aria-label="Move down"
         @pointerdown.prevent="startDirection(Direction.Down)"
@@ -140,6 +143,7 @@
       </button>
       <button
         class="snake__control snake__control--right"
+        :disabled="!active"
         type="button"
         aria-label="Move right"
         @pointerdown.prevent="startDirection(Direction.Right)"
@@ -154,7 +158,7 @@
         :class="{ 'snake__control--hidden': phase !== Phase.Playing && phase !== Phase.Paused }"
         type="button"
         :aria-label="phase === Phase.Paused ? 'Resume game' : 'Pause game'"
-        :disabled="phase !== Phase.Playing && phase !== Phase.Paused"
+        :disabled="!active || (phase !== Phase.Playing && phase !== Phase.Paused)"
         @click="$emit('pause')"
       >
         <PausedIcon
@@ -171,7 +175,7 @@
         :class="{ 'snake__control--hidden': phase !== Phase.Title }"
         type="button"
         aria-label="Exit game"
-        :disabled="phase !== Phase.Title"
+        :disabled="!active || phase !== Phase.Title"
         @click="$emit('exit')"
       >
         <CloseIcon aria-hidden="true" />
@@ -181,7 +185,7 @@
         :class="{ 'snake__control--hidden': phase !== Phase.GameOver }"
         type="button"
         aria-label="Open menu"
-        :disabled="phase !== Phase.GameOver"
+        :disabled="!active || phase !== Phase.GameOver"
         @click="$emit('menu')"
       >
         <MenuIcon aria-hidden="true" />
@@ -217,6 +221,10 @@ export default defineComponent({
   },
 
   props: {
+    active: {
+      default: true,
+      type: Boolean,
+    },
     phase: {
       required: true,
       type: String as PropType<Phase>,
@@ -299,10 +307,18 @@ export default defineComponent({
 
   methods: {
     startDirection(direction: Direction): void {
+      if (!this.active) {
+        return
+      }
+
       this.$emit('direction-start', direction)
     },
 
     stopDirection(direction: Direction): void {
+      if (!this.active) {
+        return
+      }
+
       this.$emit('direction-end', direction)
     },
 

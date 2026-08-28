@@ -69,6 +69,7 @@ export enum Phase {
 }
 
 export interface SnakeGameController {
+  active: Ref<boolean>
   phase: Ref<Phase>
   game: Ref<SnakeGame>
   highScore: Ref<number>
@@ -166,6 +167,7 @@ export function move(game: SnakeGame): SnakeGame {
 }
 
 export function useSnakeGame(): SnakeGameController {
+  const active = ref(true)
   const phase = ref<Phase>(Phase.Title)
   const game = ref(createGame())
   const highScore = ref(initialHighScore)
@@ -419,7 +421,9 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
+    deactivate()
     dispatchRouteHistoryEvent({ action: 'set-prompt-visible', visible: true })
+    dispatchRouteHistoryEvent({ action: 'scroll-to-bottom' })
 
     if (isInternalReferrer()) {
       window.history.back()
@@ -429,6 +433,10 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function handleKeydown(event: KeyboardEvent): void {
+    if (!active.value) {
+      return
+    }
+
     if (isGameOverInputBlocked) {
       event.preventDefault()
       return
@@ -481,6 +489,10 @@ export function useSnakeGame(): SnakeGameController {
   }
 
   function handleKeyup(event: KeyboardEvent): void {
+    if (!active.value) {
+      return
+    }
+
     if (isGameOverInputBlocked) {
       event.preventDefault()
       return
@@ -512,18 +524,34 @@ export function useSnakeGame(): SnakeGameController {
     window.addEventListener('keyup', handleKeyup)
   })
 
-  onBeforeUnmount(() => {
+  function deactivate(): void {
+    if (!active.value) {
+      return
+    }
+
+    active.value = false
     window.removeEventListener('keydown', handleKeydown)
     window.removeEventListener('keyup', handleKeyup)
     stopTimer()
     stopScoreTimer()
     clearScoreFeedback()
+    heldDirection = undefined
+    heldTicks = 0
+    isAccelerating = false
+
     if (gameOverInputTimer !== undefined) {
       window.clearTimeout(gameOverInputTimer)
+      gameOverInputTimer = undefined
     }
+    isGameOverInputBlocked = false
+  }
+
+  onBeforeUnmount(() => {
+    deactivate()
   })
 
   return {
+    active,
     phase,
     game,
     highScore,

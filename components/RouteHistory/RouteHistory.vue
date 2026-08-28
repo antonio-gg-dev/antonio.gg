@@ -379,6 +379,10 @@ export default defineComponent({
         this.clearHistory(detail.preserveCurrentRoute === true)
       } else if (detail.action === 'set-prompt-visible' && typeof detail.visible === 'boolean') {
         this.promptVisible = detail.visible
+      } else if (detail.action === 'scroll-to-bottom') {
+        void this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       }
     },
 
@@ -416,6 +420,18 @@ export default defineComponent({
       if (commandPrompt?.$el instanceof HTMLElement) {
         scrollToElement(commandPrompt.$el)
       }
+    },
+
+    scrollToBottom(): void {
+      const scrollContainer = document.querySelector<HTMLElement>('.layout__surface')
+
+      if (scrollContainer === null) {
+        window.scrollTo(0, document.documentElement.scrollHeight)
+
+        return
+      }
+
+      scrollContainer.scrollTop = scrollContainer.scrollHeight
     },
   },
 })
