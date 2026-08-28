@@ -6,10 +6,10 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "vitepress dev",
+    "dev": "vitepress dev --port 5100",
     "build": "vitepress build",
     "preview": "vitepress preview",
-    "stories": "storybook dev -p 6006",
+    "stories": "storybook dev -p 6100 --no-open",
     "stories:build": "storybook build",
     "stories:publish": "npx chromatic -b stories:build --no-interactive",
     "lint": "eslint --ext .js,.ts,.vue .",
