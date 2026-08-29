@@ -3,10 +3,15 @@
     class="snake__container"
     aria-label="Snake game"
     lang="en-us"
+    @contextmenu.prevent
   >
     <div
       class="snake__screen"
       :style="{ '--score-height': `${scoreHeight}px` }"
+      @pointerdown.prevent="handleScreenPointerdown"
+      @pointermove.prevent="handleScreenPointermove"
+      @pointerup="handleScreenPointerup"
+      @pointercancel="handleScreenPointercancel"
     >
       <p
         ref="scoreElement"
@@ -101,10 +106,7 @@
       </template>
     </div>
 
-    <div
-      class="snake__controls"
-      @contextmenu.prevent
-    >
+    <div class="snake__controls">
       <button
         class="snake__control snake__control--up"
         :disabled="!active"
@@ -233,6 +235,10 @@ export default defineComponent({
       required: true,
       type: Array as PropType<Cell[]>,
     },
+    direction: {
+      required: true,
+      type: String as PropType<Direction>,
+    },
     comboFood: {
       default: undefined,
       type: String as PropType<FoodType | undefined>,
@@ -269,6 +275,11 @@ export default defineComponent({
       Phase,
       scoreHeight: 0,
       scoreObserver: null as ResizeObserver | null,
+      touchStartX: 0,
+      touchStartY: 0,
+      touchDirection: undefined as Direction | undefined,
+      touchPointerId: undefined as number | undefined,
+      touchStartedInPlaying: false,
     }
   },
 
@@ -328,6 +339,93 @@ export default defineComponent({
         this.scoreHeight = scoreElement.offsetHeight
       }
     },
+
+    handleScreenPointerdown(event: PointerEvent): void {
+      if (!this.active || event.pointerType !== 'touch') {
+        return
+      }
+
+      this.touchStartX = event.clientX
+      this.touchStartY = event.clientY
+      this.touchPointerId = event.pointerId
+      this.touchStartedInPlaying = this.phase === Phase.Playing
+
+      if (this.touchStartedInPlaying) {
+        this.touchDirection = this.direction
+        this.$emit('direction-start', this.direction)
+      } else {
+        this.touchDirection = undefined
+        this.$emit('direction-start', this.direction)
+      }
+
+      const board = event.currentTarget
+      if (board instanceof HTMLElement) {
+        board.setPointerCapture(event.pointerId)
+      }
+    },
+
+    handleScreenPointermove(event: PointerEvent): void {
+      if (
+        event.pointerType !== 'touch' ||
+        this.touchPointerId !== event.pointerId ||
+        !this.touchStartedInPlaying ||
+        this.touchDirection === undefined
+      ) {
+        return
+      }
+
+      const deltaX = event.clientX - this.touchStartX
+      const deltaY = event.clientY - this.touchStartY
+      const swipeThreshold = 24
+
+      if (Math.max(Math.abs(deltaX), Math.abs(deltaY)) < swipeThreshold || Math.abs(deltaX) === Math.abs(deltaY)) {
+        return
+      }
+
+      const direction =
+        Math.abs(deltaX) > Math.abs(deltaY)
+          ? deltaX > 0
+            ? Direction.Right
+            : Direction.Left
+          : deltaY > 0
+            ? Direction.Down
+            : Direction.Up
+
+      if (direction === this.touchDirection) {
+        return
+      }
+
+      this.$emit('direction-end', this.touchDirection)
+      this.$emit('direction-start', direction)
+      this.touchDirection = direction
+    },
+
+    handleScreenPointerup(event: PointerEvent): void {
+      this.finishScreenPointer(event)
+    },
+
+    handleScreenPointercancel(event: PointerEvent): void {
+      this.finishScreenPointer(event)
+    },
+
+    finishScreenPointer(event: PointerEvent): void {
+      if (event.pointerType !== 'touch' || this.touchPointerId !== event.pointerId) {
+        return
+      }
+
+      if (this.touchDirection !== undefined) {
+        this.$emit('direction-end', this.touchDirection)
+      }
+
+      const screen = event.currentTarget
+      if (screen instanceof HTMLElement && screen.hasPointerCapture(event.pointerId)) {
+        screen.releasePointerCapture(event.pointerId)
+      }
+
+      this.touchDirection = undefined
+      this.touchPointerId = undefined
+      this.touchStartedInPlaying = false
+    },
   },
 })
 
@@ -363,6 +461,7 @@ function sameCell(first: Cell, second: Cell): boolean {
   &__screen {
     @apply w-full border-2 border-neutral;
     @include crt.shadow(theme('colors.neutral.DEFAULT'));
+    touch-action: none;
 
     @media (orientation: landscape) {
       @apply flex h-full w-fit flex-col;
@@ -520,7 +619,7 @@ function sameCell(first: Cell, second: Cell): boolean {
   }
 
   &__food {
-    @apply m-1;
+    @apply m-[10%];
 
     &--lemon {
       @apply bg-warning;

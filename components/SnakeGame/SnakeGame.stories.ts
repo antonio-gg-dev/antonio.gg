@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/vue3'
 import SnakeGame from './SnakeGame.vue'
-import { FoodType, Phase } from './snakeGame'
+import { Direction, FoodType, Phase } from './snakeGame'
 
 const game = {
   snake: [
@@ -34,6 +34,7 @@ type Story = StoryObj<typeof SnakeGame>
 
 export const Title: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.Title,
     ...game,
     score: 0,
@@ -42,6 +43,7 @@ export const Title: Story = {
 
 export const Playing: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.Playing,
     ...game,
     comboFood: FoodType.Tomato,
@@ -51,6 +53,7 @@ export const Playing: Story = {
 
 export const PlayingWithStrawberry: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.Playing,
     ...game,
     food: [
@@ -66,6 +69,7 @@ export const PlayingWithStrawberry: Story = {
 
 export const Paused: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.Paused,
     ...game,
     score: 3,
@@ -74,6 +78,7 @@ export const Paused: Story = {
 
 export const GameOver: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.GameOver,
     ...game,
     score: 3,
@@ -82,6 +87,7 @@ export const GameOver: Story = {
 
 export const GameOverHighScore: Story = {
   args: {
+    direction: Direction.Right,
     phase: Phase.GameOver,
     ...game,
     score: 151120,

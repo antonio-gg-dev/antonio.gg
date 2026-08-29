@@ -8,6 +8,7 @@ route_history_prompt: false
 
 <SnakeGame
 :active="active"
+:direction="game.direction"
 :food="game.food"
 :high-score="highScore"
 :combo-food="game.comboFood"
