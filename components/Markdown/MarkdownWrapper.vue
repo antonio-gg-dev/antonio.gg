@@ -20,7 +20,7 @@ import { defineComponent, type PropType } from 'vue'
 import MarkdownIt from 'markdown-it'
 import { getHighlighter } from 'shikiji'
 import { createShikiTheme, shikiThemeName } from '@/config/ShikiTheme'
-import ScrollableContent from '@/components/ScrollableContent/ScrollableContent.vue'
+import ScrollableContent from '@/components/Scrollbar/ScrollableContent.vue'
 
 export default defineComponent({
   components: {
