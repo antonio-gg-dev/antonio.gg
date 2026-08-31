@@ -67,10 +67,38 @@ export default defineConfig({
 
       if (renderFence !== undefined) {
         md.renderer.rules.fence = (...args) =>
-          renderFence(...args).replace(
+          `<ScrollableContent>${renderFence(...args).replace(
             /<button title="([^"]*)" class="copy"><\/button>/,
             '<button title="$1" aria-label="$1" class="copy"><ClipboardCopyIcon class="code-copy-icon" aria-hidden="true" /></button>',
-          )
+          )}</ScrollableContent>`
+      }
+
+      const renderTableOpen = md.renderer.rules.table_open
+      const renderTableClose = md.renderer.rules.table_close
+
+      md.renderer.rules.table_open = (...args) => {
+        const [
+          tokens,
+          index,
+          options,
+          ,
+          renderer,
+        ] = args
+        const tableOpen = renderTableOpen?.(...args) ?? renderer.renderToken(tokens, index, options)
+
+        return `<ScrollableContent>${tableOpen}`
+      }
+      md.renderer.rules.table_close = (...args) => {
+        const [
+          tokens,
+          index,
+          options,
+          ,
+          renderer,
+        ] = args
+        const tableClose = renderTableClose?.(...args) ?? renderer.renderToken(tokens, index, options)
+
+        return `${tableClose}</ScrollableContent>`
       }
 
       const renderLinkClose = md.renderer.rules.link_close

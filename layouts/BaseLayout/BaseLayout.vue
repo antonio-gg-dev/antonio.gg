@@ -6,7 +6,7 @@
     >
       <RouteHistory />
     </div>
-    <Scrollbar target-id="layout-surface" />
+    <CustomScrollbar target-id="layout-surface" />
     <ScrollToBottomButton target-id="layout-surface" />
   </div>
 
@@ -44,14 +44,14 @@
 import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
 import ScrollToBottomButton from '@/components/ScrollToBottomButton/ScrollToBottomButton.vue'
-import Scrollbar from '@/components/Scrollbar/Scrollbar.vue'
+import CustomScrollbar from '@/components/Scrollbar/CustomScrollbar.vue'
 import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({
   components: {
     RouteHistory,
     ScrollToBottomButton,
-    Scrollbar,
+    CustomScrollbar,
   },
 
   mounted() {

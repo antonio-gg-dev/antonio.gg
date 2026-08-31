@@ -6,10 +6,12 @@
       v-html="result"
     />
 
-    <div
-      class="markdown-wrapper__code"
-      v-html="code"
-    />
+    <ScrollableContent class="markdown-wrapper__code-scroll">
+      <div
+        class="markdown-wrapper__code"
+        v-html="code"
+      />
+    </ScrollableContent>
   </div>
 </template>
 
@@ -18,8 +20,13 @@ import { defineComponent, type PropType } from 'vue'
 import MarkdownIt from 'markdown-it'
 import { getHighlighter } from 'shikiji'
 import { createShikiTheme, shikiThemeName } from '@/config/ShikiTheme'
+import ScrollableContent from '@/components/ScrollableContent/ScrollableContent.vue'
 
 export default defineComponent({
+  components: {
+    ScrollableContent,
+  },
+
   props: {
     template: {
       required: true,
@@ -84,12 +91,16 @@ export default defineComponent({
 
   &__code {
     @include crt.shadow(theme('colors.neutral.DEFAULT'));
-    @apply overflow-x-scroll bg-neutral p-4;
+    @apply min-w-max bg-neutral p-4;
 
     pre {
       background: none !important;
       font-size: 16px;
     }
+  }
+
+  &__code-scroll {
+    @apply min-w-0 bg-neutral;
   }
 }
 </style>
