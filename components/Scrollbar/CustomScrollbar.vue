@@ -3,18 +3,20 @@
     ref="track"
     :class="{
       scrollbar__scrollbar: true,
+      [`scrollbar__scrollbar--${variant}`]: true,
+      [`scrollbar__scrollbar--${orientation}`]: true,
       'scrollbar__scrollbar--scrollable': scrollable,
     }"
     :role="interactive ? 'scrollbar' : undefined"
     :tabindex="interactive && scrollable ? 0 : -1"
-    :aria-controls="interactive ? targetId : undefined"
+    :aria-controls="interactive && targetId !== '' ? targetId : undefined"
     :aria-disabled="interactive ? !scrollable : undefined"
     :aria-hidden="interactive ? undefined : true"
-    :aria-label="interactive ? 'Page scroll' : undefined"
-    :aria-orientation="interactive ? 'vertical' : undefined"
+    :aria-label="interactive ? (isPageVariant ? 'Page scroll' : 'Horizontal content scroll') : undefined"
+    :aria-orientation="interactive ? (isVerticalOrientation ? 'vertical' : 'horizontal') : undefined"
     :aria-valuemin="interactive ? 0 : undefined"
-    :aria-valuemax="interactive ? maximumScrollTop : undefined"
-    :aria-valuenow="interactive ? currentScrollTop : undefined"
+    :aria-valuemax="interactive ? ariaValueMax : undefined"
+    :aria-valuenow="interactive ? ariaValueNow : undefined"
     @keydown="handleKeydown"
     @lostpointercapture="finishDragging"
     @pointercancel="finishDragging"
@@ -26,6 +28,7 @@
       ref="thumb"
       :class="{
         scrollbar__thumb: true,
+        [`scrollbar__thumb--${orientation}`]: true,
         'scrollbar__thumb--dragging': dragging,
         'scrollbar__thumb--scrollable': scrollable,
       }"
@@ -38,26 +41,49 @@
 <script lang="ts">
 import { defineComponent, type CSSProperties, type PropType } from 'vue'
 
-export default defineComponent({
-  name: 'CustomScrollbar',
+export enum CustomScrollbarVariant {
+  Content = 'content',
+  Page = 'page',
+}
 
+export enum CustomScrollbarOrientation {
+  Horizontal = 'horizontal',
+  Vertical = 'vertical',
+}
+
+export default defineComponent({
   props: {
-    targetId: {
+    variant: {
       required: true,
+      type: String as PropType<CustomScrollbarVariant>,
+    },
+    orientation: {
+      required: true,
+      type: String as PropType<CustomScrollbarOrientation>,
+    },
+    targetId: {
+      default: '',
       type: String as PropType<string>,
+    },
+    targetElement: {
+      default: null,
+      type: Object as PropType<HTMLElement | null>,
     },
   },
 
   data() {
     return {
       currentScrollTop: 0,
+      currentScroll: 0,
       dragging: false,
       dragStartScrollTop: 0,
       dragStartY: 0,
       interactive: true,
       maximumScrollTop: 0,
+      maximumScroll: 0,
       mediaQueryListener: null as ((event: MediaQueryListEvent) => void) | null,
       minimumThumbHeight: null as number | null,
+      minimumThumbWidth: null as number | null,
       pointerId: null as number | null,
       pointerMediaQuery: null as MediaQueryList | null,
       resizeObserver: null as ResizeObserver | null,
@@ -67,11 +93,38 @@ export default defineComponent({
       thumbHeight: 0,
       thumbOffset: 0,
       trackHeight: 0,
+      trackWidth: 0,
+      thumbWidth: 0,
     }
   },
 
   computed: {
+    isPageVariant(): boolean {
+      return this.variant === CustomScrollbarVariant.Page
+    },
+
+    isVerticalOrientation(): boolean {
+      return this.orientation === CustomScrollbarOrientation.Vertical
+    },
+
+    ariaValueMax(): number {
+      return this.orientation === CustomScrollbarOrientation.Horizontal ? this.maximumScroll : this.maximumScrollTop
+    },
+
+    ariaValueNow(): number {
+      return this.orientation === CustomScrollbarOrientation.Horizontal ? this.currentScroll : this.currentScrollTop
+    },
+
     thumbStyle(): CSSProperties {
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        return {
+          minWidth:
+            this.minimumThumbWidth === null ? undefined : `${Math.min(this.minimumThumbWidth, this.trackWidth)}px`,
+          transform: `translateX(${this.thumbOffset}px)`,
+          width: `${this.thumbWidth}px`,
+        }
+      }
+
       return {
         height: `${this.thumbHeight}px`,
         ...(this.minimumThumbHeight === null
@@ -85,7 +138,7 @@ export default defineComponent({
   },
 
   mounted() {
-    this.target = document.getElementById(this.targetId)
+    this.target = this.targetElement ?? document.getElementById(this.targetId)
 
     if (this.target === null) {
       return
@@ -119,8 +172,17 @@ export default defineComponent({
       const thumb = this.$refs.thumb
 
       if (thumb instanceof HTMLElement) {
-        const minimumThumbHeight = Number.parseFloat(window.getComputedStyle(thumb).minHeight)
-        this.minimumThumbHeight = Number.isFinite(minimumThumbHeight) ? minimumThumbHeight : 0
+        const minimumThumbSize = Number.parseFloat(
+          window.getComputedStyle(thumb)[
+            this.orientation === CustomScrollbarOrientation.Horizontal ? 'minWidth' : 'minHeight'
+          ],
+        )
+
+        if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+          this.minimumThumbWidth = Number.isFinite(minimumThumbSize) ? minimumThumbSize : 0
+        } else {
+          this.minimumThumbHeight = Number.isFinite(minimumThumbSize) ? minimumThumbSize : 0
+        }
       }
 
       this.updateScrollbar()
@@ -162,6 +224,38 @@ export default defineComponent({
         return
       }
 
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        const distance = 40
+        let nextScrollLeft: number
+
+        switch (event.key) {
+          case 'ArrowLeft':
+            nextScrollLeft = this.target.scrollLeft - distance
+            break
+          case 'ArrowRight':
+            nextScrollLeft = this.target.scrollLeft + distance
+            break
+          case 'PageUp':
+            nextScrollLeft = this.target.scrollLeft - this.target.clientWidth
+            break
+          case 'PageDown':
+            nextScrollLeft = this.target.scrollLeft + this.target.clientWidth
+            break
+          case 'Home':
+            nextScrollLeft = 0
+            break
+          case 'End':
+            nextScrollLeft = this.maximumScroll
+            break
+          default:
+            return
+        }
+
+        event.preventDefault()
+        this.target.scrollLeft = nextScrollLeft
+        return
+      }
+
       const lineDistance = 40
       let nextScrollTop: number
 
@@ -193,7 +287,24 @@ export default defineComponent({
     },
 
     handlePointerMove(event: PointerEvent): void {
-      if (!this.dragging || this.pointerId !== event.pointerId || this.target === null || this.maximumScrollTop === 0) {
+      if (
+        !this.dragging ||
+        this.pointerId !== event.pointerId ||
+        this.target === null ||
+        (this.orientation === CustomScrollbarOrientation.Horizontal ? this.maximumScroll : this.maximumScrollTop) === 0
+      ) {
+        return
+      }
+
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        const availableTrack = this.trackWidth - this.thumbWidth
+
+        if (availableTrack === 0) {
+          return
+        }
+
+        const pointerDistance = event.clientX - this.dragStartY
+        this.target.scrollLeft = this.dragStartScrollTop + (pointerDistance / availableTrack) * this.maximumScroll
         return
       }
 
@@ -221,6 +332,20 @@ export default defineComponent({
       event.preventDefault()
       this.focusTrack()
 
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        const pointerPosition = event.clientX - track.getBoundingClientRect().left
+        const availableTrack = this.trackWidth - this.thumbWidth
+
+        if (availableTrack === 0) {
+          return
+        }
+
+        const thumbOffset = Math.min(Math.max(pointerPosition - this.thumbWidth / 2, 0), availableTrack)
+        this.target.scrollLeft = (thumbOffset / availableTrack) * this.maximumScroll
+        this.startDragging(event)
+        return
+      }
+
       const desiredThumbOffset = event.clientY - track.getBoundingClientRect().top - this.thumbHeight / 2
       const availableTrack = this.trackHeight - this.thumbHeight
 
@@ -244,6 +369,12 @@ export default defineComponent({
       this.dragging = true
       this.dragStartScrollTop = this.target.scrollTop
       this.dragStartY = event.clientY
+
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        this.dragStartScrollTop = this.target.scrollLeft
+        this.dragStartY = event.clientX
+      }
+
       this.pointerId = event.pointerId
 
       const track = this.$refs.track
@@ -261,6 +392,26 @@ export default defineComponent({
       const track = this.$refs.track
 
       if (!(track instanceof HTMLElement)) {
+        return
+      }
+
+      if (this.orientation === CustomScrollbarOrientation.Horizontal) {
+        this.trackWidth = this.target.clientWidth
+        this.maximumScroll = Math.max(this.target.scrollWidth - this.target.clientWidth, 0)
+        this.currentScroll = Math.round(Math.min(Math.max(this.target.scrollLeft, 0), this.maximumScroll))
+        this.scrollable = this.maximumScroll > 0 && this.trackWidth > 0
+
+        if (!this.scrollable) {
+          this.thumbWidth = this.trackWidth
+          this.thumbOffset = 0
+          return
+        }
+
+        this.thumbWidth = Math.min(
+          this.trackWidth,
+          Math.max(this.minimumThumbWidth ?? 0, (this.target.clientWidth / this.target.scrollWidth) * this.trackWidth),
+        )
+        this.thumbOffset = (this.currentScroll / this.maximumScroll) * (this.trackWidth - this.thumbWidth)
         return
       }
 
@@ -293,14 +444,42 @@ export default defineComponent({
   $p: &;
 
   &__scrollbar {
-    @apply invisible absolute inset-y-2 right-0 z-scrollbar w-2 touch-none bg-transparent;
+    @apply invisible z-scrollbar touch-none bg-background;
 
-    @screen md {
-      @apply inset-y-4 w-4;
+    &--horizontal {
+      @apply relative hidden h-2 w-full overflow-hidden;
+
+      @screen md {
+        @apply h-4;
+      }
+
+      @screen xl {
+        @apply h-8;
+      }
+
+      &#{$p}__scrollbar--scrollable {
+        @apply block;
+      }
     }
 
-    @screen xl {
-      @apply inset-y-8 w-8;
+    &--vertical {
+      @apply absolute inset-y-2 right-0 w-2;
+
+      @screen md {
+        @apply inset-y-4 w-4;
+      }
+
+      @screen xl {
+        @apply inset-y-8 w-8;
+      }
+    }
+
+    &--page {
+      @apply absolute right-0;
+
+      &#{$p}__scrollbar--horizontal {
+        @apply bottom-0 left-0 right-0;
+      }
     }
 
     &::before {
@@ -310,9 +489,17 @@ export default defineComponent({
       @screen md {
         @apply border-0.5 border-neutral bg-transparent;
       }
+    }
 
+    &--vertical::before {
       @screen xl {
         @apply inset-x-2;
+      }
+    }
+
+    &--horizontal::before {
+      @screen xl {
+        @apply inset-y-2;
       }
     }
 
@@ -342,6 +529,30 @@ export default defineComponent({
       }
     }
 
+    &--content {
+      @apply relative inset-auto bottom-auto left-auto right-auto top-auto;
+
+      &#{$p}__scrollbar--vertical {
+        @apply absolute inset-y-0 right-0 w-2;
+
+        @screen md {
+          @apply w-4;
+        }
+
+        @screen xl {
+          @apply w-8;
+        }
+      }
+
+      @media (pointer: coarse) {
+        @apply pointer-events-auto;
+      }
+
+      @media print {
+        @apply hidden;
+      }
+    }
+
     @media (pointer: coarse) {
       @apply pointer-events-none;
     }
@@ -352,7 +563,15 @@ export default defineComponent({
   }
 
   &__thumb {
-    @apply absolute inset-x-0 top-0 min-h-8 will-change-transform;
+    @apply absolute will-change-transform;
+
+    &--vertical {
+      @apply inset-x-0 top-0 min-h-8;
+    }
+
+    &--horizontal {
+      @apply bottom-0 left-0 right-auto top-0 h-full min-h-0 min-w-8 overflow-hidden;
+    }
 
     &::before {
       @apply absolute inset-0 bg-neutral-emphasis content-[''];
@@ -361,9 +580,17 @@ export default defineComponent({
       @screen md {
         @apply inset-1;
       }
+    }
 
+    &--vertical::before {
       @screen xl {
         @apply inset-x-3;
+      }
+    }
+
+    &--horizontal::before {
+      @screen xl {
+        @apply inset-y-3;
       }
     }
 
