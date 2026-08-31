@@ -453,24 +453,16 @@ export default defineComponent({
         @apply h-4;
       }
 
-      @screen xl {
-        @apply h-8;
-      }
-
       &#{$p}__scrollbar--scrollable {
         @apply block;
       }
     }
 
     &--vertical {
-      @apply absolute inset-y-2 right-0 w-2;
+      @apply absolute right-0 w-2;
 
       @screen md {
-        @apply inset-y-4 w-4;
-      }
-
-      @screen xl {
-        @apply inset-y-8 w-8;
+        @apply w-4;
       }
     }
 
@@ -479,6 +471,30 @@ export default defineComponent({
 
       &#{$p}__scrollbar--horizontal {
         @apply bottom-0 left-0 right-0;
+
+        @screen xl {
+          @apply h-8;
+        }
+      }
+
+      &#{$p}__scrollbar--vertical {
+        @apply inset-y-2;
+
+        @screen xl {
+          @apply w-8;
+        }
+      }
+
+      &#{$p}__scrollbar--vertical::before {
+        @screen xl {
+          @apply inset-x-2;
+        }
+      }
+
+      &#{$p}__scrollbar--horizontal::before {
+        @screen xl {
+          @apply inset-y-2;
+        }
       }
     }
 
@@ -488,18 +504,6 @@ export default defineComponent({
 
       @screen md {
         @apply border-0.5 border-neutral bg-transparent;
-      }
-    }
-
-    &--vertical::before {
-      @screen xl {
-        @apply inset-x-2;
-      }
-    }
-
-    &--horizontal::before {
-      @screen xl {
-        @apply inset-y-2;
       }
     }
 
@@ -532,15 +536,17 @@ export default defineComponent({
     &--content {
       @apply relative inset-auto bottom-auto left-auto right-auto top-auto;
 
+      &#{$p}__scrollbar--horizontal {
+        @screen xl {
+          @apply h-4;
+        }
+      }
+
       &#{$p}__scrollbar--vertical {
         @apply absolute inset-y-0 right-0 w-2;
 
-        @screen md {
-          @apply w-4;
-        }
-
         @screen xl {
-          @apply w-8;
+          @apply w-4;
         }
       }
 
@@ -582,13 +588,13 @@ export default defineComponent({
       }
     }
 
-    &--vertical::before {
+    #{$p}__scrollbar--page#{$p}__scrollbar--vertical &::before {
       @screen xl {
         @apply inset-x-3;
       }
     }
 
-    &--horizontal::before {
+    #{$p}__scrollbar--page#{$p}__scrollbar--horizontal &::before {
       @screen xl {
         @apply inset-y-3;
       }
