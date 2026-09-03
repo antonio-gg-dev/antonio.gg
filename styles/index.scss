@@ -1,16 +1,17 @@
+@use 'sass:meta';
 @use 'mixins/crt';
 
 @tailwind base;
 
-@import 'fonts/pixel-code';
+@include meta.load-css('fonts/pixel-code');
 
-@import 'base/commons';
-@import 'base/background';
-@import 'base/headings';
-@import 'base/lists';
-@import 'base/tables';
-@import 'base/code-blocks';
-@import 'base/custom-containers';
+@include meta.load-css('base/commons');
+@include meta.load-css('base/background');
+@include meta.load-css('base/headings');
+@include meta.load-css('base/lists');
+@include meta.load-css('base/tables');
+@include meta.load-css('base/code-blocks');
+@include meta.load-css('base/custom-containers');
 
 @tailwind components;
 

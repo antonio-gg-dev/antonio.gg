@@ -1,4 +1,4 @@
-import type { ThemeRegistration } from 'shikiji'
+import type { ThemeRegistration } from 'shiki'
 
 export const shikiThemeName = 'antonio-gg'
 

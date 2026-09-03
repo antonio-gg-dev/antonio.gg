@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
 import MarkdownIt from 'markdown-it'
-import { getHighlighter } from 'shikiji'
+import { createHighlighter } from 'shiki'
 import { createShikiTheme, shikiThemeName } from '@/config/ShikiTheme'
 import ScrollableContent from '@/components/Scrollbar/ScrollableContent.vue'
 
@@ -36,7 +36,7 @@ export default defineComponent({
   data() {
     return {
       markdownIt: null as null | MarkdownIt,
-      shikiji: null as null | Awaited<ReturnType<typeof getHighlighter>>,
+      highlighter: null as null | Awaited<ReturnType<typeof createHighlighter>>,
     }
   },
   computed: {
@@ -48,11 +48,11 @@ export default defineComponent({
       return this.markdownIt.render(this.template)
     },
     code() {
-      if (this.shikiji === null) {
+      if (this.highlighter === null) {
         return ''
       }
 
-      return this.shikiji.codeToHtml(this.template, {
+      return this.highlighter.codeToHtml(this.template, {
         lang: 'md',
         theme: shikiThemeName,
       })
@@ -61,12 +61,12 @@ export default defineComponent({
   created() {
     this.markdownIt = new MarkdownIt()
 
-    getHighlighter({
+    createHighlighter({
       themes: [createShikiTheme()],
       langs: ['md'],
     })
-      .then((shikiji) => {
-        this.shikiji = shikiji
+      .then((highlighter) => {
+        this.highlighter = highlighter
       })
       .catch(() => {})
   },
