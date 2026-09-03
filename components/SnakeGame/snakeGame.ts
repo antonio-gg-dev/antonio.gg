@@ -116,7 +116,7 @@ export function move(game: SnakeGame): SnakeGame {
     return game
   }
 
-  const head = game.snake[0]
+  const head = game.snake.at(0)
 
   if (head === undefined) {
     return game
@@ -187,7 +187,9 @@ export function useSnakeGame(): SnakeGameController {
     let storedHighScore: unknown
 
     try {
-      storedHighScore = storedValue === null ? undefined : JSON.parse(storedValue).highScore
+      const stored: unknown = storedValue === null ? undefined : JSON.parse(storedValue)
+
+      storedHighScore = isRecord(stored) ? stored.highScore : undefined
     } catch {
       storedHighScore = undefined
     }
@@ -467,7 +469,7 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
-    const directions: Record<string, Direction> = {
+    const directions: Partial<Record<string, Direction>> = {
       ArrowUp: Direction.Up,
       w: Direction.Up,
       ArrowRight: Direction.Right,
@@ -498,7 +500,7 @@ export function useSnakeGame(): SnakeGameController {
       return
     }
 
-    const directions: Record<string, Direction> = {
+    const directions: Partial<Record<string, Direction>> = {
       ArrowUp: Direction.Up,
       w: Direction.Up,
       ArrowRight: Direction.Right,
@@ -523,6 +525,10 @@ export function useSnakeGame(): SnakeGameController {
     window.addEventListener('keydown', handleKeydown)
     window.addEventListener('keyup', handleKeyup)
   })
+
+  function isRecord(value: unknown): value is Record<string, unknown> {
+    return typeof value === 'object' && value !== null && !Array.isArray(value)
+  }
 
   function deactivate(): void {
     if (!active.value) {

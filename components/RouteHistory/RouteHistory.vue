@@ -100,7 +100,7 @@ export default defineComponent({
   },
 
   data() {
-    const data = this.routeHistoryData as VitePressData
+    const data = this.routeHistoryData as VitePressData<unknown>
     const router = this.routeHistoryRouter as Router
     const initialEntry = createEntry(router.route.path, router.route.component, data, 0)
 
@@ -115,7 +115,7 @@ export default defineComponent({
       routeHistoryListener: null as ((event: Event) => void) | null,
       timeline: shallowReactive<RouteHistoryTimelineItem[]>([
         {
-          key: `route-${initialEntry.id}`,
+          key: `route-${initialEntry.id.toString()}`,
           type: 'route',
           entry: initialEntry,
         },
@@ -208,7 +208,7 @@ export default defineComponent({
       const entry = createEntry(to, this.vitePressRouter.route.component, this.vitePressData, this.nextEntryId++)
       this.entries.push(entry)
       this.timeline.push({
-        key: `route-${entry.id}`,
+        key: `route-${entry.id.toString()}`,
         type: 'route',
         entry,
       })
@@ -224,7 +224,7 @@ export default defineComponent({
       )
 
       this.timeline.push({
-        key: `terminal-${this.nextTimelineId++}`,
+        key: `terminal-${String(this.nextTimelineId++)}`,
         type: 'command',
         command: rawCommand,
         shellPath: formatShellPath(this.currentPath),
@@ -232,7 +232,7 @@ export default defineComponent({
 
       if (definition === undefined) {
         this.timeline.push({
-          key: `terminal-${this.nextTimelineId++}`,
+          key: `terminal-${String(this.nextTimelineId++)}`,
           type: 'error',
           message: commandNotFoundMessage,
         })
@@ -265,7 +265,7 @@ export default defineComponent({
       if (preserveCurrentRoute && currentEntry !== undefined) {
         this.entries.splice(0, this.entries.length, currentEntry)
         this.timeline.push({
-          key: `route-${currentEntry.id}`,
+          key: `route-${currentEntry.id.toString()}`,
           type: 'route',
           entry: currentEntry,
         })
@@ -439,7 +439,7 @@ export default defineComponent({
 function createEntry(
   to: string,
   component: RouteHistoryItem['component'],
-  data: VitePressData,
+  data: VitePressData<unknown>,
   id: number,
 ): RouteHistoryItem {
   const url = new URL(to, 'http://antonio.gg')
@@ -453,7 +453,7 @@ function createEntry(
   }
 }
 
-function createDataSnapshot(data: VitePressData, hash: string): VitePressData {
+function createDataSnapshot(data: VitePressData<unknown>, hash: string): VitePressData<unknown> {
   return {
     site: shallowRef(data.site.value),
     theme: shallowRef(data.theme.value),
@@ -470,7 +470,7 @@ function createDataSnapshot(data: VitePressData, hash: string): VitePressData {
   }
 }
 
-function updateDataSnapshot(snapshot: VitePressData, data: VitePressData): void {
+function updateDataSnapshot(snapshot: VitePressData<unknown>, data: VitePressData<unknown>): void {
   snapshot.site.value = data.site.value
   snapshot.theme.value = data.theme.value
   snapshot.page.value = data.page.value
@@ -567,11 +567,11 @@ function scrollToElement(element: HTMLElement): void {
 }
 
 function findEntryElement(container: HTMLElement | null, entryId: number): HTMLElement | null {
-  return container?.querySelector<HTMLElement>(`[data-route-history-id="${entryId}"]`) ?? null
+  return container?.querySelector<HTMLElement>(`[data-route-history-id="${entryId.toString()}"]`) ?? null
 }
 
 function createIdPrefix(entryId: number): string {
-  return `route-history-${entryId}--`
+  return `route-history-${entryId.toString()}--`
 }
 
 function decodeHash(hash: string): string {

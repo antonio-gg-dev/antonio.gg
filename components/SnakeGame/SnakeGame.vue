@@ -286,7 +286,8 @@ export default defineComponent({
       return Array.from({ length: boardSize * boardSize }, (_, index) => {
         const cell = { x: index % boardSize, y: Math.floor(index / boardSize) }
         const isSnake = this.snake.some((snakeCell) => sameCell(snakeCell, cell))
-        const isHead = this.snake[0] !== undefined && sameCell(this.snake[0], cell)
+        const head = this.snake.at(0)
+        const isHead = head !== undefined && sameCell(head, cell)
         const food = this.food.find((foodCell) => sameCell(foodCell, cell))
 
         return {

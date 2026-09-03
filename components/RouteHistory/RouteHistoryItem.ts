@@ -6,5 +6,5 @@ export interface RouteHistoryItem {
   path: string
   hash: string
   component: Component | null
-  data: VitePressData
+  data: VitePressData<unknown>
 }

@@ -299,10 +299,6 @@ export default defineComponent({
         return
       }
 
-      if (this.historyIndex === null) {
-        return
-      }
-
       this.active = true
       this.setDraft(this.commandHistory[this.historyIndex])
 
