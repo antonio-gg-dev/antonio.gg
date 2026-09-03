@@ -75,14 +75,14 @@ export default {
       },
     },
 
-    borderWidth: ({ theme }) => ({
+    borderWidth: (utils) => ({
       0: '0px',
       DEFAULT: '1px',
-      0.5: theme('spacing')['0.5'],
-      1: theme('spacing.1'),
-      2: theme('spacing.2'),
-      3: theme('spacing.3'),
-      4: theme('spacing.4'),
+      0.5: readThemeValue(utils.theme('spacing'), '0.5'),
+      1: readThemeValue(utils.theme('spacing.1')),
+      2: readThemeValue(utils.theme('spacing.2')),
+      3: readThemeValue(utils.theme('spacing.3')),
+      4: readThemeValue(utils.theme('spacing.4')),
     }),
 
     container: {
@@ -111,14 +111,30 @@ export default {
   },
 
   plugins: [
-    plugin(({ addBase }) => {
-      addBase(createThemeBaseStyles())
+    plugin((api) => {
+      api.addBase(createThemeBaseStyles())
     }),
   ],
 } satisfies Config
 
 function variableColor(name: string): string {
   return `rgb(from var(--color-${name}) r g b / <alpha-value>)`
+}
+
+function readThemeValue(value: unknown, key?: string): string {
+  if (key !== undefined && isRecord(value) && key in value) {
+    return readThemeValue(value[key])
+  }
+
+  if (typeof value !== 'string') {
+    throw new TypeError('Expected Tailwind theme value to be a string.')
+  }
+
+  return value
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 function generateZIndexes(negative: string[], positive: string[]): Record<string, string> {

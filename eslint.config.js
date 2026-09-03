@@ -22,10 +22,13 @@ export default typescriptEslint.config(
   },
   js.configs.recommended,
   {
-    extends: [typescriptEslint.configs.recommended],
+    extends: [typescriptEslint.configs.strictTypeChecked],
     files: ['**/*.{ts,vue}'],
     languageOptions: {
       globals: browserGlobals,
+      parserOptions: {
+        projectService: true,
+      },
     },
   },
   ...vue.configs['flat/recommended'],
@@ -37,6 +40,7 @@ export default typescriptEslint.config(
       parserOptions: {
         extraFileExtensions: ['.vue'],
         parser: typescriptEslint.parser,
+        projectService: true,
         sourceType: 'module',
       },
     },

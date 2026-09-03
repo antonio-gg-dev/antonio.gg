@@ -12,6 +12,6 @@ export class Viewport {
   ) {}
 
   public get pixelWidth(): string {
-    return `${this.width}px`
+    return `${this.width.toString()}px`
   }
 }
