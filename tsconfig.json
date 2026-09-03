@@ -3,7 +3,7 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "strict": true,
     "noEmit": true,
     "jsx": "preserve",
@@ -16,12 +16,17 @@
       "DOM"
     ],
     "skipLibCheck": true,
-    "types": ["vite/client"],
+    "types": [
+      "node",
+      "vite/client"
+    ],
     "paths": {
       "@/*": ["./*"]
     }
   },
   "include": [
+    ".storybook/**/*.ts",
+    ".vitepress/**/*.ts",
     "**/*.ts",
     "**/*.vue"
   ],
