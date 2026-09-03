@@ -13,24 +13,39 @@ export interface Project {
   coverAlt: string
 }
 
+interface ProjectFrontmatter {
+  command: string[]
+  title: string
+  description: string
+  created_at: string
+  author: string
+  tags: string[]
+  cover_url: string
+  cover_alt: string
+}
+
 export default createContentLoader<Project[]>('./projects/*.md', {
   includeSrc: true,
 
   transform(projects) {
     return projects
       .filter((project) => project.url !== '/projects/')
-      .map((project): Project => ({
-        url: project.url,
-        fileName: project.frontmatter.command[0].replace(/^projects open\s+/, ''),
-        title: project.frontmatter.title,
-        description: project.frontmatter.description,
-        createdAt: new Date(String(project.frontmatter.created_at)).toISOString(),
-        author: project.frontmatter.author,
-        wordCount: project.src?.split(/\s+/).length ?? 0,
-        tags: project.frontmatter.tags,
-        coverUrl: project.frontmatter.cover_url,
-        coverAlt: project.frontmatter.cover_alt,
-      }))
+      .map((project): Project => {
+        const frontmatter = project.frontmatter as ProjectFrontmatter
+
+        return {
+          url: project.url,
+          fileName: frontmatter.command[0].replace(/^projects open\s+/, ''),
+          title: frontmatter.title,
+          description: frontmatter.description,
+          createdAt: new Date(frontmatter.created_at).toISOString(),
+          author: frontmatter.author,
+          wordCount: project.src?.split(/\s+/).length ?? 0,
+          tags: frontmatter.tags,
+          coverUrl: frontmatter.cover_url,
+          coverAlt: frontmatter.cover_alt,
+        }
+      })
       .sort((projectA, projectB) => (projectA.createdAt < projectB.createdAt ? 1 : -1))
   },
 })

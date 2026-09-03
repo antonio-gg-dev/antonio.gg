@@ -22,7 +22,7 @@ export default defineComponent({
 
   computed: {
     variantClass(): string {
-      return `hash-tag__label--${this.hash(this.tag) % 28}`
+      return `hash-tag__label--${(this.hash(this.tag) % 28).toString()}`
     },
   },
 

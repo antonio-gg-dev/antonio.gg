@@ -89,7 +89,7 @@ export default defineComponent({
     },
 
     approximateWordCountTitle(): string {
-      return `~${this.roundedWordCount} palabras`
+      return `~${this.roundedWordCount.toString()} palabras`
     },
 
     roundedWordCount(): number {

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
-import MarkdownIt from 'markdown-it'
+import MarkdownIt, { type MarkdownIt as MarkdownItInstance } from 'markdown-it'
 import { createHighlighter } from 'shiki'
 import { createShikiTheme, shikiThemeName } from '@/config/ShikiTheme'
 import ScrollableContent from '@/components/Scrollbar/ScrollableContent.vue'
@@ -35,7 +35,7 @@ export default defineComponent({
   },
   data() {
     return {
-      markdownIt: null as null | MarkdownIt,
+      markdownIt: null as MarkdownItInstance | null,
       highlighter: null as null | Awaited<ReturnType<typeof createHighlighter>>,
     }
   },
