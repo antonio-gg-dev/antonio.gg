@@ -2,6 +2,9 @@ import { defineConfig } from 'vitepress'
 import path from 'path'
 import { createShikiTheme } from '../config/ShikiTheme'
 
+const siteUrl = 'https://antonio.gg'
+const defaultSocialImage = '/images/og-image.png'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   // Site Metadata
@@ -23,13 +26,26 @@ export default defineConfig({
       'meta',
       { property: 'og:type', content: 'website' },
     ],
-    [
-      'meta',
-      { property: 'og:image', content: '/images/og-image.png' },
-    ],
   ],
   transformHead(context) {
-    const canonical = context.page.replace(/(index)?\.md$/, '')
+    const canonicalUrl = new URL(context.page.replace(/(index)?\.md$/, ''), `${siteUrl}/`)
+    const frontmatter = context.pageData.frontmatter
+    const description = context.description
+    const socialImage = getAbsoluteUrl(frontmatter.cover_url)
+    const socialImageAlt = getFrontmatterString(frontmatter.cover_alt)
+    const socialImageAltHead =
+      socialImageAlt === ''
+        ? []
+        : [
+            [
+              'meta',
+              { property: 'og:image:alt', content: socialImageAlt },
+            ],
+            [
+              'meta',
+              { name: 'twitter:image:alt', content: socialImageAlt },
+            ],
+          ]
 
     return [
       [
@@ -38,11 +54,36 @@ export default defineConfig({
       ],
       [
         'meta',
-        { property: 'og:url', content: `https://antonio.gg/${canonical}` },
+        { property: 'og:description', content: description },
       ],
       [
+        'meta',
+        { property: 'og:url', content: canonicalUrl.href },
+      ],
+      [
+        'meta',
+        { property: 'og:image', content: socialImage },
+      ],
+      [
+        'meta',
+        { name: 'twitter:card', content: 'summary_large_image' },
+      ],
+      [
+        'meta',
+        { name: 'twitter:title', content: context.title },
+      ],
+      [
+        'meta',
+        { name: 'twitter:description', content: description },
+      ],
+      [
+        'meta',
+        { name: 'twitter:image', content: socialImage },
+      ],
+      ...socialImageAltHead,
+      [
         'link',
-        { rel: 'canonical', href: `https://antonio.gg/${canonical}` },
+        { rel: 'canonical', href: canonicalUrl.href },
       ],
     ]
   },
@@ -144,3 +185,15 @@ export default defineConfig({
     },
   },
 })
+
+function getAbsoluteUrl(value: unknown): string {
+  if (typeof value !== 'string' || value.trim() === '') {
+    return new URL(defaultSocialImage, `${siteUrl}/`).href
+  }
+
+  return new URL(value, `${siteUrl}/`).href
+}
+
+function getFrontmatterString(value: unknown): string {
+  return typeof value === 'string' ? value : ''
+}
