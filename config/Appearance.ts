@@ -1,4 +1,4 @@
-import { type Theme } from './Theme'
+import { type Theme } from '@/config/Theme'
 
 export enum AppearanceEffect {
   Aberration = 'aberration',

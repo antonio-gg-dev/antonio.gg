@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-imports */
+
 import { type Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 import { Theme, ThemeId } from './config/Theme'

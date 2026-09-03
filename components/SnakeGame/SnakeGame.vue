@@ -206,7 +206,15 @@ import ArrowDownIcon from '@/components/Icons/ArrowDownIcon.vue'
 import ArrowLeftIcon from '@/components/Icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from '@/components/Icons/ArrowRightIcon.vue'
 import ArrowUpIcon from '@/components/Icons/ArrowUpIcon.vue'
-import { boardSize, Direction, Phase, type Cell, type FoodCell, type FoodType, type ScoreFeedback } from './snakeGame'
+import {
+  boardSize,
+  Direction,
+  Phase,
+  type Cell,
+  type FoodCell,
+  type FoodType,
+  type ScoreFeedback,
+} from '@/components/SnakeGame/snakeGame'
 
 export default defineComponent({
   components: {

@@ -1,4 +1,4 @@
-import RandomHint from './RandomHint.vue'
+import RandomHint from '@/components/RandomHint/RandomHint.vue'
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 export default {

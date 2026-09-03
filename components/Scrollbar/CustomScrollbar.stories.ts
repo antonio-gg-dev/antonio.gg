@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 import { defineComponent, nextTick } from 'vue'
-import CustomScrollbar from './CustomScrollbar.vue'
-import { CustomScrollbarOrientation, CustomScrollbarVariant } from './customScrollbar'
+import CustomScrollbar from '@/components/Scrollbar/CustomScrollbar.vue'
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from '@/components/Scrollbar/customScrollbar'
 
 interface CustomScrollbarStoryArgs {
   contentHeight: string

@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-imports */
+
 import { createContentLoader } from 'vitepress'
 import { clearCommandDefinition, normalizeCommand, type CommandDefinition } from '../components/CommandPrompt/Command'
 

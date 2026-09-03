@@ -41,7 +41,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue'
-import { formatShellPath, normalizeCommand, type CommandDefinition } from './Command'
+import { formatShellPath, normalizeCommand, type CommandDefinition } from '@/components/CommandPrompt/Command'
 
 export default defineComponent({
   props: {

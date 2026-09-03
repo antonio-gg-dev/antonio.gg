@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
-import HashTag from './HashTag.vue'
+import HashTag from '@/components/HashTag/HashTag.vue'
 
 const meta = {
   component: HashTag,

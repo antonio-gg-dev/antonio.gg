@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, type CSSProperties, type PropType } from 'vue'
-import { CustomScrollbarOrientation, CustomScrollbarVariant } from './customScrollbar'
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from '@/components/Scrollbar/customScrollbar'
 
 export default defineComponent({
   props: {

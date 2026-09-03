@@ -49,6 +49,14 @@ export default typescriptEslint.config(
   prettierRecommended,
   {
     rules: {
+      'no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            '.*',
+          ],
+        },
+      ],
       'prettier/prettier': 'error',
     },
   },

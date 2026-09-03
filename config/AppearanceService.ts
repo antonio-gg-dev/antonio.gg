@@ -1,7 +1,7 @@
 import { shallowRef } from 'vue'
-import { Appearance, AppearanceEffect } from './Appearance'
-import { isPresetThemeId, Theme, ThemeColor, ThemeId } from './Theme'
-import { Viewport } from './Viewport'
+import { Appearance, AppearanceEffect } from '@/config/Appearance'
+import { isPresetThemeId, Theme, ThemeColor, ThemeId } from '@/config/Theme'
+import { Viewport } from '@/config/Viewport'
 
 interface StoredAppearance {
   theme: ThemeId

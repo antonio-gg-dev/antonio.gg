@@ -1,4 +1,4 @@
-import type { RouteHistoryItem } from './RouteHistoryItem'
+import type { RouteHistoryItem } from '@/components/RouteHistory/RouteHistoryItem'
 
 export type RouteHistoryTimelineItem = RouteTimelineItem | CommandTimelineItem | HintTimelineItem | ErrorTimelineItem
 

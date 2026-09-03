@@ -1,4 +1,4 @@
-import CompactSocialLinks from './CompactSocialLinks.vue'
+import CompactSocialLinks from '@/components/CompactSocialLinks/CompactSocialLinks.vue'
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 export default {

@@ -1,4 +1,4 @@
-import SocialLinks from './SocialLinks.vue'
+import SocialLinks from '@/components/SocialLinks/SocialLinks.vue'
 import LinkIcon from '@/components/Icons/LinkIcon.vue'
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 

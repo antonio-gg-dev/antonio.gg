@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-imports */
+
 import { defineConfig, type HeadConfig } from 'vitepress'
 import path from 'path'
 import { fileURLToPath } from 'url'

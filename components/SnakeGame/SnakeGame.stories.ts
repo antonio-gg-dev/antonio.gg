@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
-import SnakeGame from './SnakeGame.vue'
-import { Direction, FoodType, Phase } from './snakeGame'
+import SnakeGame from '@/components/SnakeGame/SnakeGame.vue'
+import { Direction, FoodType, Phase } from '@/components/SnakeGame/snakeGame'
 
 const game = {
   snake: [

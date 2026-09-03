@@ -22,7 +22,7 @@
 import { dataSymbol } from 'vitepress'
 import { defineComponent, type PropType } from 'vue'
 import { commandNotFoundMessage } from '@/components/CommandPrompt/Command'
-import type { RouteHistoryItem } from './RouteHistoryItem'
+import type { RouteHistoryItem } from '@/components/RouteHistory/RouteHistoryItem'
 
 export default defineComponent({
   provide() {

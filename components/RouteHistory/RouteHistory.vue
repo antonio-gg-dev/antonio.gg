@@ -68,11 +68,11 @@ import {
 } from '@/components/CommandPrompt/Command'
 import CommandPrompt from '@/components/CommandPrompt/CommandPrompt.vue'
 import { data as commands } from '@/pages/commands.data'
-import { getNavigationOrigin } from './NavigationOrigin'
-import RouteHistoryEntry from './RouteHistoryEntry.vue'
-import { routeHistoryRouterSymbol } from './RouteHistoryInjection'
-import type { RouteHistoryItem } from './RouteHistoryItem'
-import type { RouteHistoryTimelineItem } from './RouteHistoryTimelineItem'
+import { getNavigationOrigin } from '@/components/RouteHistory/NavigationOrigin'
+import RouteHistoryEntry from '@/components/RouteHistory/RouteHistoryEntry.vue'
+import { routeHistoryRouterSymbol } from '@/components/RouteHistory/RouteHistoryInjection'
+import type { RouteHistoryItem } from '@/components/RouteHistory/RouteHistoryItem'
+import type { RouteHistoryTimelineItem } from '@/components/RouteHistory/RouteHistoryTimelineItem'
 
 const idReferenceAttributes = [
   'aria-controls',
