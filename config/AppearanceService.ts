@@ -1,6 +1,6 @@
 import { shallowRef } from 'vue'
 import { Appearance, AppearanceEffect } from './Appearance'
-import { Theme, ThemeColor, ThemeId, type PresetThemeId } from './Theme'
+import { isPresetThemeId, Theme, ThemeColor, ThemeId } from './Theme'
 import { Viewport } from './Viewport'
 
 interface StoredAppearance {
@@ -190,11 +190,11 @@ class AppearanceService {
   }
 
   private createTheme(id: string, customTheme: Theme | null = null): Theme | null {
-    if (id === ThemeId.Custom) {
+    if (id === ThemeId.Custom.toString()) {
       return customTheme
     }
 
-    return Theme.all()[id as PresetThemeId] ?? null
+    return isPresetThemeId(id) ? Theme.all()[id] : null
   }
 
   private readStoredAppearance(): string | null {

@@ -8,6 +8,10 @@ export enum ThemeId {
 
 export type PresetThemeId = Exclude<ThemeId, ThemeId.Custom>
 
+export function isPresetThemeId(value: unknown): value is PresetThemeId {
+  return typeof value === 'string' && Object.hasOwn(Theme.all(), value)
+}
+
 export enum ThemeColor {
   Bezel = 'bezel',
   Background = 'background',

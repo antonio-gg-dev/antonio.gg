@@ -1,7 +1,7 @@
 import { type Preview } from '@storybook/vue3-vite'
 import { themes } from 'storybook/theming'
 import '@/styles/index.scss'
-import { Theme, ThemeId, type PresetThemeId } from '@/config/Theme'
+import { isPresetThemeId, Theme, ThemeId } from '@/config/Theme'
 import { Viewport } from '@/config/Viewport'
 
 const availableThemes = Theme.all()
@@ -23,7 +23,8 @@ export default {
 
   decorators: [
     (story, context) => {
-      const theme = availableThemes[context.globals.theme as PresetThemeId] ?? availableThemes[ThemeId.Mambo]
+      const themeId: unknown = context.globals.theme
+      const theme = isPresetThemeId(themeId) ? availableThemes[themeId] : availableThemes[ThemeId.Mambo]
 
       document.documentElement.dataset.theme = theme.id
       Object.entries(theme.toCssProperties()).forEach(
