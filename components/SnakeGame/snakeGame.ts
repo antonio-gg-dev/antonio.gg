@@ -144,7 +144,7 @@ export function move(game: SnakeGame): SnakeGame {
   const ateStrawberry = eatenFood?.type === FoodType.Strawberry
   const combo =
     eatenFood === undefined ? game.combo : ateStrawberry || eatenFood.type === game.comboFood ? game.combo + 1 : 1
-  const comboFood = ateStrawberry ? game.comboFood : eatenFood?.type ?? game.comboFood
+  const comboFood = ateStrawberry ? game.comboFood : (eatenFood?.type ?? game.comboFood)
   const score = ateFood ? game.score + calculateFoodScore(combo) : game.score
   const nextFood = ateFood
     ? createFood(

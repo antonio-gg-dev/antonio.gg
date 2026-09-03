@@ -165,7 +165,7 @@ class AppearanceService {
       const customTheme = this.createCustomTheme(stored)
       const theme =
         typeof stored.theme === 'string'
-          ? this.createTheme(stored.theme, customTheme) ?? fallback.theme
+          ? (this.createTheme(stored.theme, customTheme) ?? fallback.theme)
           : fallback.theme
 
       return new Appearance(
