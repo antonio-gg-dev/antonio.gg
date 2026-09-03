@@ -1,6 +1,6 @@
 import ProjectList from './ProjectList.vue'
 import { bashunit, huezzle } from './stories.fixtures'
-import { type Meta, type StoryObj } from '@storybook/vue3'
+import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 export default {
   component: ProjectList,

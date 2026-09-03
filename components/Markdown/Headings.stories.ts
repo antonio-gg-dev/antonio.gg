@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import MarkdownWrapper from '@/components/Markdown/MarkdownWrapper.vue'
 
 enum headings {

@@ -1,5 +1,5 @@
 import { defineComponent, type Component } from 'vue'
-import { type Meta, type StoryObj } from '@storybook/vue3'
+import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 const iconModules = import.meta.glob('./*.vue', { eager: true })
 

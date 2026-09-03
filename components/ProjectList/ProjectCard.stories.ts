@@ -1,6 +1,6 @@
 import ProjectCard from './ProjectCard.vue'
 import { bashunit, carDoorTrashBin, huezzle } from './stories.fixtures'
-import { type Meta, type StoryObj } from '@storybook/vue3'
+import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 export default {
   component: ProjectCard,

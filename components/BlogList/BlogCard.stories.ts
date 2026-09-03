@@ -1,6 +1,6 @@
 import BlogCard from './BlogCard.vue'
 import { porQueUsarInlineSvgs, reAprendiendoOop } from './stories.fixtures'
-import { type Meta, type StoryObj } from '@storybook/vue3'
+import { type Meta, type StoryObj } from '@storybook/vue3-vite'
 
 export default {
   component: BlogCard,
