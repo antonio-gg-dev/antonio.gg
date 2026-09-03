@@ -40,6 +40,13 @@ const legacyLoveCompatibilityRules = {
   'prefer-named-capture-group': 'off',
   'require-unicode-regexp': 'off',
 }
+const sharedLoveConfig = {
+  plugins: love.plugins,
+  rules: {
+    ...love.rules,
+    ...legacyLoveCompatibilityRules,
+  },
+}
 
 export default [
   {
@@ -54,17 +61,15 @@ export default [
   ...vue.configs['flat/recommended'],
   {
     ...love,
+    ...sharedLoveConfig,
     files: sourceFiles,
     languageOptions: {
       ...love.languageOptions,
       globals: browserGlobals,
     },
-    rules: {
-      ...love.rules,
-      ...legacyLoveCompatibilityRules,
-    },
   },
   {
+    ...sharedLoveConfig,
     files: vueFiles,
     languageOptions: {
       globals: browserGlobals,
@@ -75,11 +80,6 @@ export default [
         projectService: true,
         sourceType: 'module',
       },
-    },
-    plugins: love.plugins,
-    rules: {
-      ...love.rules,
-      ...legacyLoveCompatibilityRules,
     },
   },
   ...storybook.configs['flat/recommended'],
