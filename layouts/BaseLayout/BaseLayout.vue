@@ -48,10 +48,8 @@
 import { defineComponent } from 'vue'
 import RouteHistory from '@/components/RouteHistory/RouteHistory.vue'
 import ScrollToBottomButton from '@/components/ScrollToBottomButton/ScrollToBottomButton.vue'
-import CustomScrollbar, {
-  CustomScrollbarOrientation,
-  CustomScrollbarVariant,
-} from '@/components/Scrollbar/CustomScrollbar.vue'
+import CustomScrollbar from '@/components/Scrollbar/CustomScrollbar.vue'
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from '@/components/Scrollbar/customScrollbar'
 import { appearanceService } from '@/config/AppearanceService'
 
 export default defineComponent({

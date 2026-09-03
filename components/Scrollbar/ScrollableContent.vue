@@ -20,10 +20,8 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import CustomScrollbar, {
-  CustomScrollbarOrientation,
-  CustomScrollbarVariant,
-} from '@/components/Scrollbar/CustomScrollbar.vue'
+import CustomScrollbar from '@/components/Scrollbar/CustomScrollbar.vue'
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from '@/components/Scrollbar/customScrollbar'
 
 export default defineComponent({
   components: {

@@ -40,16 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, type CSSProperties, type PropType } from 'vue'
-
-export enum CustomScrollbarVariant {
-  Content = 'content',
-  Page = 'page',
-}
-
-export enum CustomScrollbarOrientation {
-  Horizontal = 'horizontal',
-  Vertical = 'vertical',
-}
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from './customScrollbar'
 
 export default defineComponent({
   props: {
@@ -119,20 +110,22 @@ export default defineComponent({
       if (this.orientation === CustomScrollbarOrientation.Horizontal) {
         return {
           minWidth:
-            this.minimumThumbWidth === null ? undefined : `${Math.min(this.minimumThumbWidth, this.trackWidth)}px`,
-          transform: `translateX(${this.thumbOffset}px)`,
-          width: `${this.thumbWidth}px`,
+            this.minimumThumbWidth === null
+              ? undefined
+              : `${Math.min(this.minimumThumbWidth, this.trackWidth).toString()}px`,
+          transform: `translateX(${this.thumbOffset.toString()}px)`,
+          width: `${this.thumbWidth.toString()}px`,
         }
       }
 
       return {
-        height: `${this.thumbHeight}px`,
+        height: `${this.thumbHeight.toString()}px`,
         ...(this.minimumThumbHeight === null
           ? {}
           : {
-              minHeight: `${Math.min(this.minimumThumbHeight, this.trackHeight)}px`,
+              minHeight: `${Math.min(this.minimumThumbHeight, this.trackHeight).toString()}px`,
             }),
-        transform: `translateY(${this.thumbOffset}px)`,
+        transform: `translateY(${this.thumbOffset.toString()}px)`,
       }
     },
   },

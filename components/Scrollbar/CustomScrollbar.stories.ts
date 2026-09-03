@@ -1,15 +1,16 @@
 import { type Meta, type StoryObj } from '@storybook/vue3-vite'
-import { defineComponent } from 'vue'
-import CustomScrollbar, { CustomScrollbarOrientation, CustomScrollbarVariant } from './CustomScrollbar.vue'
+import { defineComponent, nextTick } from 'vue'
+import CustomScrollbar from './CustomScrollbar.vue'
+import { CustomScrollbarOrientation, CustomScrollbarVariant } from './customScrollbar'
 
 interface CustomScrollbarStoryArgs {
   contentHeight: string
   contentWidth: string
   initialScrollLeft: number
   initialScrollTop: number
-  orientation: string
+  orientation: CustomScrollbarOrientation
   targetId: string
-  variant: string
+  variant: CustomScrollbarVariant
 }
 
 const meta = {
@@ -38,12 +39,12 @@ const meta = {
       },
 
       mounted() {
-        void this.$nextTick(() => {
-          const surface = this.$refs.surface
+        void nextTick(() => {
+          const surface = document.getElementById(args.targetId)
 
-          if (surface instanceof HTMLElement) {
-            surface.scrollLeft = this.initialScrollLeft
-            surface.scrollTop = this.initialScrollTop
+          if (surface !== null) {
+            surface.scrollLeft = args.initialScrollLeft
+            surface.scrollTop = args.initialScrollTop
           }
         })
       },
