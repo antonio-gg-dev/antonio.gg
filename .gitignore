@@ -12,3 +12,6 @@ node_modules
 build-storybook.log
 storybook-static
 *storybook.log
+
+# Chromatic
+*chromatic.log
